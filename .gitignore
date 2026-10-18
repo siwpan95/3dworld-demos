@@ -1,0 +1,19 @@
+# 本地产物（体积大 / 可再生产）：成片与 exe 不入库
+recordings/
+dist/
+
+# Python
+__pycache__/
+*.pyc
+*.pyo
+.venv/
+venv/
+
+# 编辑器
+.vscode/
+.idea/
+*.swp
+
+# 系统
+Thumbs.db
+Desktop.ini
