@@ -22,7 +22,6 @@
 import asyncio
 import math
 import os
-import sys
 import tempfile
 
 import pyglet
@@ -31,18 +30,7 @@ from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3, Vec4
 from pyglet.window import key, mouse
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, run
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
 
 from world3d.host.tree import WANT_STORM, config_path, mount_tree  # noqa: E402
 from world3d.engine.camera import look_at_matrix  # noqa: E402
@@ -73,14 +61,11 @@ void main() {
     final_colors = vec4(v_col, 1.0);
 }'''
 
-
 def _mat_translate(tx, ty, tz):
     return Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, tx, ty, tz, 1)
 
-
 def _mat_scale(sx, sy, sz):
     return Mat4(sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1)
-
 
 def _flat_quad(hx, hy, y=0.0):
     """XZ 平面上的方形（半宽 hx / 半深 hy）。"""
@@ -90,7 +75,6 @@ def _flat_quad(hx, hy, y=0.0):
         pos.extend(p)
         shade.extend((1.0, 1.0, 1.0))
     return pos, shade
-
 
 def _unit_cube():
     faces = [
@@ -109,7 +93,6 @@ def _unit_cube():
             shade.extend((s, s, s))
     return pos, shade
 
-
 TINT_FLOOR = (0.10, 0.105, 0.125)
 TINT_BORDER = (0.05, 0.05, 0.06)
 TINT_PLAYER = (0.40, 0.62, 0.95)
@@ -123,7 +106,6 @@ TINT_PARTICLE = (1.00, 0.82, 0.45)
 TINT_FLASH = (1.00, 1.00, 1.00)
 
 PARTICLE_SLOTS = 512            # 粒子渲染预分配槽位（snapshot 超出部分截断）
-
 
 class SwarmwardDemo(DemoApp):
     TITLE = '弹潮 / Swarmward —— 弹幕固定屏射击（全向生存 · 双摇杆 · 程序化编波）'
@@ -495,7 +477,6 @@ class SwarmwardDemo(DemoApp):
                 f'{"  [AUTO]" if self.auto else ""}'
                 f'{"  [ENDLESS]" if k.endless else ""}'
                 f'{"  [PAUSED]" if self.paused else ""}')
-
 
 if __name__ == '__main__':
     run(SwarmwardDemo)

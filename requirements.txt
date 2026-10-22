@@ -1,0 +1,27 @@
+# 3dworld-demos —— 运行依赖（单一事实来源）
+#
+# 2026-10-22 变更（重要）
+# ----------------------
+# 此前 39 个 demo 的头部都有一句
+#     sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
+# 用来把「相邻目录里的引擎源码」塞进搜索路径。演示仓从引擎仓剥离之后，这句指向的
+# 已经不是引擎根（而是演示仓自己的父目录），于是所有 demo 都会
+#     ModuleNotFoundError: No module named 'world3d'
+#
+# 现在一律由 **pip 提供引擎**：examples/*.py 里不再有任何 sys.path 引导，直接
+#     from world3d.platform.app import DemoApp, run
+# 完整背景、仓间关系与例外说明见 docs/依赖与版本.md。
+#
+# 版本号为什么用范围而不是钉死
+# ----------------------------
+# 演示不锁定引擎小版本（0.3.x 都接受）：它们是能力的「演示形态」，引擎发新版就跟着涨。
+# 需要**逐位可复现**（截图对照 / 发版归档）时用旁边的 requirements.lock.txt。
+
+# ① 引擎本体：发行名 3dworld，导入名 world3d（Python 不能以数字开头做包名）
+#    传递依赖自动带进来：pyglet==2.1.16、PyYAML>=6、watchdog>=4
+3dworld>=0.3.0,<0.4
+
+# ② 可选增强：examples/scene_walker.py 的马尔可夫演出变体（纯标准库实现）
+#    不装的话 scene_walker 只是没有发光变体，其余功能照常（ImportError 已兜住）
+#    —— 2026-10-22 起不再是环境变量 ZHUANGTAIJI_PATH + 目录探测那一套
+zhuangtaiji>=1.1.0,<2

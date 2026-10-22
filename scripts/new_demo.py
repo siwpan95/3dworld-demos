@@ -54,7 +54,6 @@ DEMO_TEMPLATE = '''# -*- coding: utf-8 -*-
 """
 import math
 import os
-import sys
 
 import pyglet
 from pyglet.gl import GL_DEPTH_TEST, GL_TRIANGLES, glClearColor, glEnable
@@ -62,12 +61,10 @@ from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
 from pyglet.window import key
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ **必须显式写**：`from world3d.platform.app import ...` 不再隐式插项目根，
-# 少了这行就会 `ModuleNotFoundError: No module named 'world3d'`
-# （P2-1 实测：当时 30 个 demo 一起炸）。
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+# ⚠️ **不要再加 sys.path 引导**：引擎由 `pip install 3dworld` 提供
+# （见 requirements.txt 与 docs/依赖与版本.md）。旧的那句
+# `sys.path.insert(0, dirname(dirname(abspath(__file__))))` 在演示仓剥离后指向的
+# 已经不是引擎根，会让 demo 直接 ModuleNotFoundError（2026-10-22 全仓清理掉 235 行）。
 from world3d.platform.app import DemoApp, orbit_camera_input, run  # noqa: E402
 from world3d.engine.baked_mesh import unit_cube  # noqa: E402
 from world3d.logic.camera import OrbitCamera  # noqa: E402
@@ -165,10 +162,8 @@ TEST_TEMPLATE = '''# -*- coding: utf-8 -*-
   并在 README 的测试清单里加一行（门禁 `readme-test-modules` 会核对双向一致）。
 """
 import os
-import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
+# 同上：被测模块来自 pip 安装的 world3d，**不写 sys.path 引导**。
 from world3d.core.contracts import CORES  # noqa: E402  ← 换成被测模块
 
 

@@ -51,16 +51,6 @@ import pyglet
 from pyglet.gl import GL_DEPTH_TEST, GL_TRIANGLES, glDisable
 from pyglet.graphics.shader import Shader, ShaderProgram
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, make_fullscreen_quad, run
 
 VERTEX_SRC = '''#version 330 core
@@ -254,7 +244,6 @@ void main() {
     final_colors = vec4(col, 1.0);
 }'''
 
-
 class RaymarchDemo(DemoApp):
     TITLE = 'SDF 光线步进 · smooth-min 融合 + 软阴影 + AO'
     HELP = ('鼠标拖动 转视角   滚轮 推拉   1/2/3 配色   T 软阴影   A 自动环绕   '
@@ -343,9 +332,7 @@ class RaymarchDemo(DemoApp):
                 f't={self.time:5.2f}s/{self.DURATION:.0f}s   {self.fps:5.1f} fps'
                 f'{"  [PAUSED]" if self.paused else ""}')
 
-
 GROUND_Y = -1.15          # 兜底常量（自检脚本用；权威值是 RaymarchDemo.GROUND_Y）
-
 
 if __name__ == '__main__':
     run(RaymarchDemo)

@@ -1,0 +1,15 @@
+# 3dworld-demos —— 开发/验收期依赖（跑演示本身**不需要**）
+#
+#   python -m pip install -r requirements.txt -r requirements-dev.txt
+#
+# 注意与引擎仓区分：这里的 dev 依赖只服务于「演示仓自己的工作流」
+# （代码门禁、打包、成片录制），引擎自身的可选依赖走 `pip install 3dworld[dev]`。
+
+# 静态门禁：本仓随之使用与引擎一致的 select = ["F", "E9"] / line-length 100
+ruff>=0.17.0
+
+# 打包成单文件 exe：scripts/build_exe.py 需要（打 exe 时才装，日常不必）
+PyInstaller>=6.0
+
+# 成片录制：scripts/record_all.py 调用外部 ffmpeg.exe，走 ain.exe 路径不在 pip 管里
+# （Windows 上 ffmpeg 需自行下载，本仓不 vendor 二进制）

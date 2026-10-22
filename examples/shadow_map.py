@@ -42,16 +42,6 @@ from pyglet.image import Framebuffer, Texture
 from pyglet.image.buffer import Renderbuffer
 from pyglet.math import Mat4, Vec3
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, orbit_camera_input, run
 from world3d.core.geometry import box_data
 from world3d.engine.soft_shadow import pcss_glsl
@@ -180,7 +170,6 @@ void main() {
     final_colors = vec4(vec3(mix(t, 1.0, edge)), 1.0);
 }'''
 
-
 # ---------------------------------------------------------------- 几何 --
 def _sphere_data(radius, rings, sectors, rgb):
     """UV 球体（面片法线由着色器现算，故顶点只要 position/color）。"""
@@ -201,7 +190,6 @@ def _sphere_data(radius, rings, sectors, rgb):
                 colors += [rgb[0], rgb[1], rgb[2], 1.0]
     return verts, colors
 
-
 def _ground_data(half=13, tile=1.0):
     """棋盘地面（顶面朝上，单个合并网格）。"""
     verts, colors = [], []
@@ -217,7 +205,6 @@ def _ground_data(half=13, tile=1.0):
                 colors += [g, g * 0.98, g * 0.92, 1.0]
     return verts, colors
 
-
 # 场景物体：(名字, 尺寸或球半径, 基准位置, 颜色, 动画描述)
 _BOXES = (
     ('a', (2.2, 3.0, 2.2), (-3.6, 1.50, 0.2), (0.86, 0.36, 0.30), ('y', 22.0, 0.0)),
@@ -227,7 +214,6 @@ _BOXES = (
 )
 _SPHERE = ('s', 1.35, (-1.2, 1.35, -3.4), (0.80, 0.80, 0.86))
 BIASES = (0.0008, 0.0018, 0.0035)
-
 
 class ShadowDemo(DemoApp):
     TITLE = '阴影贴图 · 离屏深度图(R32F) + PCF 软阴影 (pyglet Framebuffer)'
@@ -440,7 +426,6 @@ class ShadowDemo(DemoApp):
                 f'阴影 {"开" if self.shadow_on else "关"}   '
                 f'影图 {self.MAP_SIZE}²   {"FBO-OK" if self.fbo_ok else "FBO-FAIL"}   '
                 f'{self.fps:5.1f} fps{"  [PAUSED]" if self.paused else ""}')
-
 
 if __name__ == '__main__':
     run(ShadowDemo)

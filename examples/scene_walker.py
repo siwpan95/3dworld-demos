@@ -33,18 +33,7 @@ import math
 import os
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-sys.path.insert(0, ROOT)
-sys.path.insert(0, os.path.join(ROOT, 'examples'))
-
 import pyglet                                                       # noqa: E402
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.platform.app import (DemoApp, PROJECT_ROOT, orbit_camera_input,    # noqa: E402
                       run)
@@ -56,7 +45,6 @@ SFX_DIR = os.path.join(PROJECT_ROOT, 'assets', 'sfx')
 _ENV_KEYS = ('sun_dir', 'sun_color', 'sun_intensity', 'sky_zenith',
              'sky_horizon', 'sky_ground', 'ibl_intensity', 'sky_intensity',
              'env_size', 'prefilter_levels')
-
 
 def _extract_file(argv):
     args = list(argv)
@@ -73,7 +61,6 @@ def _extract_file(argv):
                 del args[i]
                 break
     return path, args
-
 
 class WalkerApp(DemoApp):
     TITLE = 'scene walker · 可漫步场景（S1 场景 + 交互 + 自适应音景）'
@@ -188,24 +175,22 @@ class WalkerApp(DemoApp):
                 if sum(e) > 0.05:
                     self._glow[n.name] = tuple(e)
 
-        # 演出变体（可选）：zhuangtaiji 马尔可夫链驱动发光模式
+        # 演出变体（可选）：zhuangtaiji 马尔可夫链驱动发光模式。
+        # 2026-10-22：不再读写环境变量 ZHUANGTAIJI_PATH / 目录探测 —— zhuangtaiji 已进
+        # PyPI（`pip install zhuangtaiji`，纯标准库、零依赖），改成"装了就启用，没装就跳过"。
         self._mc, self._mc_t, self._mc_gain = None, 0.0, {}
         try:
-            z = os.environ.get('ZHUANGTAIJI_PATH', r'G:\repos\zhuangtaiji')
-            if os.path.isdir(z):
-                if z not in sys.path:
-                    sys.path.insert(0, z)
-                from world3d.core.markov_chain import MarkovChain
-                self._mc = MarkovChain(
-                    ['dim', 'glow', 'spark', 'flare'],
-                    {'dim': {'dim': 0.55, 'glow': 0.40, 'spark': 0.05, 'flare': 0.0},
-                     'glow': {'dim': 0.35, 'glow': 0.40, 'spark': 0.20, 'flare': 0.05},
-                     'spark': {'dim': 0.20, 'glow': 0.35, 'spark': 0.30, 'flare': 0.15},
-                     'flare': {'dim': 0.45, 'glow': 0.30, 'spark': 0.20, 'flare': 0.05}},
-                    initial='dim')
-                self._mc_gain = {'dim': 0.55, 'glow': 0.9,
-                                 'spark': 1.35, 'flare': 1.9}
-        except Exception:
+            from zhuangtaiji.core.markov_chain import MarkovChain
+            self._mc = MarkovChain(
+                ['dim', 'glow', 'spark', 'flare'],
+                {'dim': {'dim': 0.55, 'glow': 0.40, 'spark': 0.05, 'flare': 0.0},
+                 'glow': {'dim': 0.35, 'glow': 0.40, 'spark': 0.20, 'flare': 0.05},
+                 'spark': {'dim': 0.20, 'glow': 0.35, 'spark': 0.30, 'flare': 0.15},
+                 'flare': {'dim': 0.45, 'glow': 0.30, 'spark': 0.20, 'flare': 0.05}},
+                initial='dim')
+            self._mc_gain = {'dim': 0.55, 'glow': 0.9,
+                             'spark': 1.35, 'flare': 1.9}
+        except ImportError:
             self._mc = None
 
         # 场景热重载（编辑 JSON 即时套用 TRS，碰撞同步重建）
@@ -647,13 +632,11 @@ class WalkerApp(DemoApp):
                     f'{ch}{msg}')
         return f'{base}   [ORBIT]   V 进入漫游{msg}'
 
-
 def main():
     path, argv = _extract_file(sys.argv[1:])
     if path:
         WalkerApp.JSON_PATH = path
     run(WalkerApp, argv)
-
 
 if __name__ == '__main__':
     main()

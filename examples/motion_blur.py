@@ -26,8 +26,6 @@
       M 模糊开关   V 看运动矢量   SPACE 暂停   拖动/滚轮 看视角   ESC 退出
 """
 import math
-import os
-import sys
 
 from pyglet.gl import (GL_COLOR_ATTACHMENT0, GL_COLOR_BUFFER_BIT, GL_DEPTH_ATTACHMENT,
                        GL_DEPTH_BUFFER_BIT, GL_DEPTH_COMPONENT24, GL_DEPTH_TEST,
@@ -38,12 +36,6 @@ from pyglet.image import Framebuffer, Texture
 from pyglet.image.buffer import Renderbuffer
 from pyglet.math import Mat4, Vec3
 from pyglet.window import key
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError（P2-1 全量验收实测，30 个 demo 一起炸）。
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.platform.app import DemoApp, orbit_camera_input, run  # noqa: E402
 from world3d.core.geometry import box_data  # noqa: E402
@@ -148,7 +140,6 @@ GROUND = (0.20, 0.55, 0.22, 1.0)          # 绿色 ⇒ 着色器会给它加棋�
 PILLAR_A = (0.80, 0.44, 0.30, 1.0)
 PILLAR_B = (0.34, 0.52, 0.84, 1.0)
 
-
 def _scene():
     out = [((400.0, 0.4, 400.0), (0.0, -0.2, -40.0), GROUND)]
     for i in range(16):
@@ -159,7 +150,6 @@ def _scene():
     for i in range(3):
         out.append(((3.0, 12.0, 3.0), (-16.0 + i * 16.0, 6.0, -150.0), (0.5, 0.5, 0.55, 1.0)))
     return out
-
 
 class MotionBlurApp(DemoApp):
     TITLE = '运动模糊 —— 相机重投影（近处扫得远、远处几乎不动）'
@@ -378,7 +368,6 @@ class MotionBlurApp(DemoApp):
                 f'{"[模糊]" if self.mb_on > 0.5 else "[清晰]"}'
                 f'{"[看矢量]" if self.show_mv > 0.5 else ""}  '
                 f't={self.time:4.1f}s {self.fps:4.1f}fps')
-
 
 if __name__ == '__main__':
     run(MotionBlurApp)

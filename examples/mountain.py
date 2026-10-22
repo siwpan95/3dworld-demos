@@ -32,6 +32,9 @@ import sys
 import time
 
 # 复用 terrain_flyover 的纯噪声原语（同一套可复现哈希，跨平台逐位一致）。
+# ⚠️ 这条 sys.path 是**唯一需要保留**的：这里的兄弟依赖是 examples/ 内部的
+# `terrain_flyover.py`（不是引擎）。引擎一律在 `pip install 3dworld` 之后直接 import，
+# 其余 demo 都不需要任何路径引导。
 sys.path.insert(0, os.path.dirname(os.path.abspath(__file__)))
 from terrain_flyover import _hash01, _value_noise, _fbm  # noqa: E402
 
@@ -42,13 +45,6 @@ from pyglet.gl import (GL_BLEND, GL_DEPTH_TEST, GL_ONE_MINUS_SRC_ALPHA,
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
 from pyglet.window import key as K
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.platform.app import DemoApp, orbit_camera_input, run
 from world3d.logic.camera import OrbitCamera
@@ -63,7 +59,6 @@ TAU = 6.28318531
 SPAN = 120.0          # 山体底面世界尺寸
 HALF = SPAN * 0.5
 
-
 # ============================================================ 小工具函数 ==
 def _smooth(e0, e1, x):
     if e1 == e0:
@@ -71,12 +66,10 @@ def _smooth(e0, e1, x):
     t = min(1.0, max(0.0, (x - e0) / (e1 - e0)))
     return t * t * (3.0 - 2.0 * t)
 
-
 def _mix3(a, b, t):
     return (a[0] + (b[0] - a[0]) * t,
             a[1] + (b[1] - a[1]) * t,
             a[2] + (b[2] - a[2]) * t)
-
 
 # ====================================================== 山体高度场（复用噪声）==
 def mountain_field(x, z, P):
@@ -103,7 +96,6 @@ def mountain_field(x, z, P):
     m = _smooth(0.0, 0.28, e)
     return (top * m, bot * m)
 
-
 def top_albedo(h, slope, P):
     """顶面反照率（仅颜色，光照在片元着色器里算）。"""
     snow_t = _smooth(P['snow'] - 6.0, P['snow'] + 4.0, h) * (1.0 - 0.5 * slope)
@@ -117,11 +109,9 @@ def top_albedo(h, slope, P):
     c = _mix3(c, (0.30, 0.28, 0.26), _smooth(3.0, 0.0, h) * 0.6)  # 底部裙边略暗
     return c
 
-
 def bot_albedo(depth_frac, P):
     """底面反照率：越深越暗的冷灰岩。"""
     return _mix3((0.30, 0.27, 0.25), (0.05, 0.05, 0.08), min(1.0, depth_frac))
-
 
 # ============================================================== 着色器 ==
 LIT_VERT = '''#version 330 core
@@ -188,7 +178,6 @@ void main() {
 }'''
 
 MAX_POINTS = 3200
-
 
 # ============================================================== 应用 ==
 class MountainApp(DemoApp):
@@ -952,7 +941,6 @@ class MountainApp(DemoApp):
                 f'物体 {len(self.objects)}  植物 {len(self.plants)}   '
                 f'三角 {self.tris}   t={self.time:6.1f}s   '
                 f'{self.fps:5.1f} fps{"  [PAUSED]" if self.paused else ""}')
-
 
 if __name__ == '__main__':
     run(MountainApp)

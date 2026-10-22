@@ -23,8 +23,6 @@
       PAGE_UP/PAGE_DOWN 步数   SPACE 暂停   拖动/滚轮 看视角   ESC 退出
 """
 import math
-import os
-import sys
 
 from pyglet.gl import (GL_COLOR_ATTACHMENT0, GL_COLOR_BUFFER_BIT, GL_DEPTH_ATTACHMENT,
                        GL_DEPTH_BUFFER_BIT, GL_DEPTH_COMPONENT24, GL_DEPTH_TEST,
@@ -36,12 +34,6 @@ from pyglet.image import Framebuffer, Texture
 from pyglet.image.buffer import Renderbuffer
 from pyglet.math import Mat4, Vec3
 from pyglet.window import key
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError（P2-1 全量验收实测，30 个 demo 一起炸）。
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.platform.app import DemoApp, orbit_camera_input, run  # noqa: E402
 from world3d.core.geometry import box_data  # noqa: E402
@@ -174,7 +166,6 @@ BEAM = (0.40, 0.38, 0.36, 1.0)
 #: 场景清单：(尺寸, 世界位置, 颜色)——确定性，剧照可复现
 SCENE = []
 
-
 def _build_scene():
     if SCENE:
         return SCENE
@@ -191,7 +182,6 @@ def _build_scene():
                          (4.0, 20.0, -70.0, 3.6), (0.0, 24.0, -96.0, 4.2)):
         SCENE.append(((s, s * 0.7, s), (x, y, z), (0.44, 0.43, 0.47, 1.0)))
     return SCENE
-
 
 class VolumetricFogApp(DemoApp):
     TITLE = '体积雾 / 光轴 —— 高度雾闭式积分 + 单次散射'
@@ -434,7 +424,6 @@ class VolumetricFogApp(DemoApp):
                 f'{"[光轴]" if self.shafts_on > 0.5 else "[无光轴]"}  '
                 f'阴影图 {self.SHADOW_SIZE}²  曝光 {self.exposure:.2f}  '
                 f't={self.time:4.1f}s {self.fps:4.1f}fps')
-
 
 if __name__ == '__main__':
     run(VolumetricFogApp)

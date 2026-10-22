@@ -25,7 +25,6 @@ import asyncio
 import math
 import os
 import random
-import sys
 import tempfile
 
 import pyglet
@@ -34,18 +33,7 @@ from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4
 from pyglet.window import key, mouse
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, make_fullscreen_quad, run
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
 
 # 试点三：挂载由 cordis.fps.yml 声明（与 config_boot 的 headless 验证同一入口）
 from world3d.host.tree import WANT_FPS, config_path, mount_tree  # noqa: E402
@@ -264,7 +252,6 @@ void main() {
 
     final_colors = vec4(col, 1.0);
 }'''
-
 
 class RayholdDemo(DemoApp):
     TITLE = '迷堡枪影 / Rayhold —— 射线 FPS（SDF 光线步进 · 程序化迷宫）'
@@ -601,7 +588,6 @@ class RayholdDemo(DemoApp):
                 f'{"  [AUTO]" if self.auto else ""}'
                 f'{"  [LOCKED]" if self._locked else ""}'
                 f'{"  [PAUSED]" if self.paused else ""}')
-
 
 if __name__ == '__main__':
     run(RayholdDemo)

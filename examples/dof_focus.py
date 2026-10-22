@@ -22,8 +22,6 @@
       V 看弥散圆   A 自动扫焦   SPACE 暂停   拖动/滚轮 看视角   ESC 退出
 """
 import math
-import os
-import sys
 
 from pyglet.gl import (GL_COLOR_ATTACHMENT0, GL_COLOR_BUFFER_BIT, GL_DEPTH_ATTACHMENT,
                        GL_DEPTH_BUFFER_BIT, GL_DEPTH_COMPONENT24, GL_DEPTH_TEST,
@@ -34,12 +32,6 @@ from pyglet.image import Framebuffer, Texture
 from pyglet.image.buffer import Renderbuffer
 from pyglet.math import Mat4, Vec3
 from pyglet.window import key
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError（P2-1 全量验收实测，30 个 demo 一起炸）。
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.platform.app import DemoApp, orbit_camera_input, run  # noqa: E402
 from world3d.core.geometry import box_data  # noqa: E402
@@ -135,7 +127,6 @@ NEAR_COL = (0.86, 0.42, 0.30, 1.0)
 FAR_COL = (0.36, 0.52, 0.82, 1.0)
 BALL_COL = (0.90, 0.82, 0.40, 1.0)
 
-
 def _scene():
     """(尺寸, 世界位置, 颜色) 清单 —— 全部确定性，剧照可复现。"""
     out = [((400.0, 0.4, 400.0), (0.0, -0.2, -40.0), GROUND)]
@@ -156,7 +147,6 @@ def _scene():
         out.append(((2.0, 14.0, 2.0), (-14.0 + i * 14.0, 7.0, -130.0 - i * 10.0),
                     (0.55, 0.58, 0.64, 1.0)))
     return out
-
 
 class DofFocusApp(DemoApp):
     TITLE = '景深（DoF）—— 弥散圆 / 超焦距 / 散景'
@@ -361,7 +351,6 @@ class DofFocusApp(DemoApp):
                 f'{"[景深]" if self.dof_on > 0.5 else "[全清晰]"}'
                 f'{"[看 CoC]" if self.show_coc > 0.5 else ""}'
                 f'{"[扫焦]" if self.rack else ""}  t={self.time:4.1f}s {self.fps:4.1f}fps')
-
 
 if __name__ == '__main__':
     run(DofFocusApp)

@@ -47,16 +47,6 @@ from pyglet.gl import (GL_DEPTH_TEST, GL_FILL, GL_FRONT_AND_BACK, GL_LINE,
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Vec3
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, orbit_camera_input, run
 from world3d.logic.camera import (DIST_MAX, DIST_MIN, PITCH_MAX, PITCH_MIN,
                           OrbitCamera)
@@ -93,7 +83,6 @@ C_STRATA = ((0.30, 0.29, 0.33), (0.38, 0.34, 0.28),
 
 _MASK = 0xFFFFFFFF
 
-
 def _hash01(x, y, z, seed):
     """确定性哈希 -> [0,1)：色块抖动与高度图都用它，重建必然一致。"""
     h = (x * 0x27D4EB2D) & _MASK
@@ -104,7 +93,6 @@ def _hash01(x, y, z, seed):
     h = ((h ^ (h >> 13)) * 0x297A2D39) & _MASK
     h ^= h >> 16
     return (h & 0xFFFFFF) / 16777216.0
-
 
 def build_heights(seed):
     """高度图：白噪声 -> 几轮 3x3 均值（连绵起伏）-> 混回一点原始噪声 -> 量化。"""
@@ -131,7 +119,6 @@ def build_heights(seed):
     span = max(1e-6, hi - lo)
     return [1 + int((v - lo) / span * (MAXH - 1.6) + 0.45) for v in mixed]
 
-
 def voxel_rgb(x, y, z, h, seed):
     """块色 = 分层色 x 哈希抖动；表层按高度给生物群系，内部给岩层。"""
     if y == h - 1:
@@ -141,7 +128,6 @@ def voxel_rgb(x, y, z, h, seed):
         base = C_STRATA[min(3, y // 4)]
     k = 0.86 + 0.28 * _hash01(x, y * 7 + 1, z, seed + 31337)
     return base[0] * k, base[1] * k, base[2] * k
-
 
 def build_mesh(heights, seed, cull, pos=None, col=None, z0=0, z1=None):
     """把世界网格化成三角形汤（可分段：只处理 z ∈ [z0, z1) 的列）。
@@ -187,7 +173,6 @@ def build_mesh(heights, seed, cull, pos=None, col=None, z0=0, z1=None):
                     faces += 1
     return pos, col, faces
 
-
 VERTEX_SRC = '''#version 330 core
 in vec3 position;
 in vec4 colors;          // 已含分层色与逐面亮度
@@ -202,7 +187,6 @@ FRAGMENT_SRC = '''#version 330 core
 in vec4 v_col;
 out vec4 final_colors;
 void main() { final_colors = v_col; }'''
-
 
 class _AutoOrbit:
     """把 OrbitCamera 拆成「自动机位」+「用户增量」两层。
@@ -232,11 +216,9 @@ class _AutoOrbit:
         c.dist = max(DIST_MIN, min(DIST_MAX, dist + self.user_dist))
         self._base = (c.yaw, c.pitch, c.dist)
 
-
 def _nearest_angle(cur, want):
     """把目标角度折算到离 cur 最近的同名角：避免切机位时绕 360 度大回环。"""
     return want + 360.0 * round((cur - want) / 360.0)
-
 
 class VoxelDemo(DemoApp):
     TITLE = '体素地形 · 面剔除网格化 (pyglet 逐面剔除)'
@@ -469,7 +451,6 @@ class VoxelDemo(DemoApp):
                 f'{name}   线框 {"开" if self.wire else "关"}   重建 {self.rebuild_ms:.0f}ms   '
                 f't={self.time:4.1f}s/{self.DURATION:.0f}s   {self.fps:5.1f} fps'
                 f'{"  [PAUSED]" if self.paused else ""}')
-
 
 if __name__ == '__main__':
     run(VoxelDemo)

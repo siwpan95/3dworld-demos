@@ -22,8 +22,6 @@
 按键：1 阴影  2 雾  3 景深  4 运动模糊   P 打印当前计划   SPACE 暂停   ESC 退出
 """
 import math
-import os
-import sys
 
 from pyglet.gl import (GL_COLOR_ATTACHMENT0, GL_COLOR_BUFFER_BIT, GL_DEPTH_ATTACHMENT,
                        GL_DEPTH_BUFFER_BIT, GL_DEPTH_COMPONENT24, GL_DEPTH_TEST,
@@ -36,12 +34,6 @@ from pyglet.image import Framebuffer, Texture
 from pyglet.image.buffer import Renderbuffer
 from pyglet.math import Mat4, Vec3
 from pyglet.window import key
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError（P2-1 全量验收实测，30 个 demo 一起炸）。
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.platform.app import DemoApp, orbit_camera_input, run  # noqa: E402
 from world3d.core.geometry import box_data  # noqa: E402
@@ -190,7 +182,6 @@ GROUND = (0.24, 0.30, 0.26, 1.0)
 PILLAR = (0.72, 0.62, 0.52, 1.0)
 PILLAR_FAR = (0.42, 0.46, 0.56, 1.0)
 
-
 def _scene():
     out = [((400.0, 0.4, 400.0), (0.0, -0.2, -40.0), GROUND)]
     for i in range(14):
@@ -202,7 +193,6 @@ def _scene():
         out.append(((9.0, 1.2, 9.0), (-19.0 + i * 13.0, 13.0, -20.0 - i * 10.0),
                     (0.5, 0.48, 0.44, 1.0)))
     return out
-
 
 class FrameGraphApp(DemoApp):
     TITLE = '帧图驱动渲染 —— 按编译出来的计划逐 pass 派发'
@@ -611,7 +601,6 @@ class FrameGraphApp(DemoApp):
         return (f'帧图 {len(self.plan.order)} pass [{order}]  别名组 {alias}{culled}  '
                 f'对焦 {self.focus:.0f}m  快门 {self.shutter * 360:.0f}°  '
                 f't={self.time:4.1f}s {self.fps:4.1f}fps')
-
 
 if __name__ == '__main__':
     run(FrameGraphApp)

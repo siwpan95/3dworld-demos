@@ -36,7 +36,6 @@ import array
 import asyncio
 import math
 import os
-import sys
 import tempfile
 
 import pyglet
@@ -45,21 +44,10 @@ from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
 from pyglet.window import mouse
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, run
 from world3d.logic.camera import OrbitCamera
 from world3d.engine.picking import ray_from_screen
 from world3d.engine.audio import Track, render_wav, SfxPlayer
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
 
 # 试点三：挂载由 cordis.td.yml 配置树声明（host.tree 共享引导——
 # config_boot.py 的 headless 验证走同一函数与同一 WANT 列表）
@@ -108,7 +96,6 @@ ENEMY_TYPES = {
 # 开局自动布防（键=(i,j) 格，值=塔类型键）——在内核 __cordis_init__ 里免费建造
 AUTO_TOWERS = [((5, 2), '1'), ((15, 2), '1'), ((10, 2), '2'), ((16, 4), '3')]
 
-
 # ============================================================= 纯函数几何 ==
 def _seg_dist(px, pz, ax, az, bx, bz):
     """点到线段 (a,b) 的最短距离（XZ 平面）。"""
@@ -120,13 +107,11 @@ def _seg_dist(px, pz, ax, az, bx, bz):
     t = max(0.0, min(1.0, t))
     return math.hypot(px - (ax + dx * t), pz - (az + dz * t))
 
-
 def lane_length():
     L = 0.0
     for k in range(len(LANE) - 1):
         L += math.hypot(LANE[k + 1][0] - LANE[k][0], LANE[k + 1][1] - LANE[k][1])
     return L
-
 
 def lane_point(dist):
     """沿车道折线取距离 dist 处的世界 (x,z)。"""
@@ -141,18 +126,14 @@ def lane_point(dist):
         d -= seg
     return LANE[-1]
 
-
 def cell_center(i, j):
     return (-HALF + (i + 0.5) * CELL, -HALF + (j + 0.5) * CELL)
-
 
 def _mat_translate(tx, ty, tz):
     return Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, tx, ty, tz, 1)
 
-
 def _mat_scale(sx, sy, sz):
     return Mat4(sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1)
-
 
 def _hash01(i, j):
     h = (i * 0x27D4EB2D) & 0xFFFFFFFF
@@ -161,7 +142,6 @@ def _hash01(i, j):
     h = ((h ^ (h >> 12)) * 0x297A2D39) & 0xFFFFFFFF
     h ^= h >> 15
     return (h & 0xFFFFFF) / 16777216.0
-
 
 # ============================================================= 网格几何 ==
 def _unit_cube():
@@ -182,7 +162,6 @@ def _unit_cube():
             shade.extend((s, s, s))
     return pos, shade
 
-
 def _unit_sphere(seg=10, rings=8):
     """低面 UV 球，按纬度烘焙明暗。"""
     pos, shade = [], []
@@ -201,7 +180,6 @@ def _unit_sphere(seg=10, rings=8):
                 sh = 0.6 + 0.4 * (math.sin(lat) * 0.5 + 0.5)
                 shade.extend((sh, sh, sh))
     return pos, shade
-
 
 # ============================================================= 着色器 ==
 VERTEX_SRC = '''#version 330 core
@@ -235,7 +213,6 @@ void main() {
     float fog = 1.0 - exp(-d * 0.012);
     final_colors = vec4(mix(v_col, u_fog, clamp(fog, 0.0, 1.0)), 1.0);
 }'''
-
 
 # ============================================================= DemoApp ==
 class TowerDefenseDemo(DemoApp):
@@ -537,7 +514,6 @@ class TowerDefenseDemo(DemoApp):
         return (f'金{gold:.0f}  波{r.wave_index + 1}/{r.total_waves} {st}{extra}  '
                 f'基地HP{r.base_hp}  选中:{sel}  | 1箭塔 2炮塔 3冰塔 N开波  SPACE暂停  '
                 f't={k.time:.0f}s {self.fps:.0f}fps' + ('  [PAUSED]' if self.paused else ''))
-
 
 if __name__ == '__main__':
     run(TowerDefenseDemo)

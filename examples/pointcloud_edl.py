@@ -21,12 +21,7 @@
 from __future__ import annotations
 
 import ctypes
-import os
 import sys
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
 
 import pyglet                                                   # noqa: E402
 from pyglet.gl import (GL_BLEND, GL_COLOR_BUFFER_BIT,            # noqa: E402
@@ -37,13 +32,6 @@ from pyglet.gl import (GL_BLEND, GL_COLOR_BUFFER_BIT,            # noqa: E402
 from pyglet.gl import GL_POINTS                                # noqa: E402
 from pyglet.graphics.shader import Shader, ShaderProgram        # noqa: E402
 from pyglet.math import Mat4, Vec3                              # noqa: E402
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.engine.app import EngineApp, run                            # noqa: E402
 from world3d.engine.camera import OrbitCamera                            # noqa: E402
@@ -84,7 +72,6 @@ void main() {
     float a = 1.0 - smoothstep(0.55, 1.0, sqrt(r2));
     outColor = vec4(vColor * (0.75 + 0.55 * a), a);
 }'''
-
 
 class PointCloudEDLApp(EngineApp):
     TITLE = TITLE
@@ -205,10 +192,8 @@ void main() { outColor = texture(uTex, vNdc * 0.5 + 0.5); }''', 'fragment'))
         return (f'{self.cloud} · {n} 点 · EDL {"开" if self.edl_on else "关"} · '
                 f'点大小 {self.point_scale:.0f} · {self.fps:5.1f} fps')
 
-
 def main(argv=None):
     return run(PointCloudEDLApp, argv)
-
 
 if __name__ == '__main__':
     sys.exit(main())

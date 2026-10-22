@@ -21,21 +21,9 @@ logic.nordic_scene 的程序化场景）；配乐由 logic.nordic_audio 离线�
 from __future__ import annotations
 
 import math
-import os
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
-
 from pyglet.math import Vec3                                      # noqa: E402
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.logic.nordic_scene import (CAMPFIRE, build_nordic_scene,      # noqa: E402
                                snow_height)
@@ -58,7 +46,6 @@ SHOTS = ((4.0, 'docs/nordic_01_dive.png'),
          (45.6, 'docs/nordic_05_runes.png'),
          (52.2, 'docs/nordic_06_takeoff.png'))
 DURATION = NS.DURATION
-
 
 class NordicSagaApp(EngineApp):
     TITLE = TITLE
@@ -248,11 +235,9 @@ class NordicSagaApp(EngineApp):
             self.audio.close()
         super().close()
 
-
 def _axis_quat(axis, deg):
     from world3d.engine.mathkit import quat_from_axis_angle
     return quat_from_axis_angle(axis, deg)
-
 
 if __name__ == '__main__':
     sys.exit(run(NordicSagaApp))

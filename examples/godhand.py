@@ -33,7 +33,6 @@ import array
 import asyncio
 import math
 import os
-import sys
 import tempfile
 
 import pyglet
@@ -42,21 +41,10 @@ from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
 from pyglet.window import mouse
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, run
 from world3d.logic.camera import OrbitCamera
 from world3d.engine.picking import ray_from_screen
 from world3d.engine.audio import Track, render_wav, SfxPlayer
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
 
 # 试点三：挂载由 cordis.godhand.yml 配置树声明（host.tree 共享引导）；
 # 绘制所需几何常量从内核「包路径」取（单一模块身份，不再走顶层名双副本）
@@ -65,15 +53,12 @@ from world3d.games.godhand.kernel import HALF_T, SEA  # noqa: E402
 
 SKY = (0.60, 0.72, 0.86)
 
-
 # ============================================================= 纯函数几何 ==
 def _mat_translate(tx, ty, tz):
     return Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, tx, ty, tz, 1)
 
-
 def _mat_scale(sx, sy, sz):
     return Mat4(sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1)
-
 
 # ============================================================= 网格几何 ==
 def _unit_cube():
@@ -93,7 +78,6 @@ def _unit_cube():
             pos.extend(p)
             shade.extend((s, s, s))
     return pos, shade
-
 
 # ============================================================= 着色器 ==
 VERTEX_SRC = '''#version 330 core
@@ -127,7 +111,6 @@ void main() {
     float fog = 1.0 - exp(-d * 0.012);
     final_colors = vec4(mix(v_col, u_fog, clamp(fog, 0.0, 1.0)), 1.0);
 }'''
-
 
 # ============================================================= DemoApp ==
 class GodHandDemo(DemoApp):
@@ -400,7 +383,6 @@ class GodHandDemo(DemoApp):
         return (f'神力{mana:.0f}  聚落{len(k.settlements)} {st}  神手:{powname} {auto}  '
                 f'| R抬山 F挖海 A自动  SPACE暂停  t={k.time:.0f}s {self.fps:.0f}fps'
                 + ('  [PAUSED]' if self.paused else ''))
-
 
 if __name__ == '__main__':
     run(GodHandDemo)

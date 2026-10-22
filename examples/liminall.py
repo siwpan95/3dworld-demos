@@ -17,10 +17,7 @@
       F 手电（L7/L8 照它它会退）   R 重开   SPACE 暂停   ESC 退出
 """
 import math
-import os
 import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pyglet
 from pyglet.gl import GL_DEPTH_TEST, glDisable, glEnable
@@ -43,7 +40,6 @@ HOTSPOTS = (
     ('phone', 0.7, 4.0),
 )
 INTERACT_RANGE = 1.9
-
 
 class LimApp(EngineApp):
     TITLE = TITLE
@@ -256,10 +252,8 @@ class LimApp(EngineApp):
         self._scare_lb.x = width // 2
         self._scare_lb.y = height // 2
 
-
 def main(argv=None):
     return run(LimApp, argv)
-
 
 if __name__ == '__main__':
     sys.exit(main())

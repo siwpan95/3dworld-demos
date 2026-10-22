@@ -1,0 +1,12 @@
+# 3dworld-demos —— 精确锁版（2026-10-22 实测快照）
+#
+# 生成：python -m pip freeze > requirements.lock.txt（在干净 venv 里装完 requirements.txt 之后）
+# 用途：截图对照 / 发版归档 / CI 复现 —— 要的是**逐位一致**，所以这里全部钉死版本号。
+# 日常开发请用 requirements.txt（接受 0.3.x 小版本增量）。
+#
+# 快照环境：Windows 10 x64 / Python 3.13 / 3dworld 0.3.0（PyPI 发行）
+3dworld==0.3.0
+PyYAML==6.0.3
+pyglet==2.1.16
+watchdog==6.0.0
+zhuangtaiji==1.1.0

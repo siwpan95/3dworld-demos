@@ -26,7 +26,6 @@
 import asyncio
 import math
 import os
-import sys
 import tempfile
 import time
 
@@ -36,18 +35,7 @@ from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
 from pyglet.window import key, mouse
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from world3d.platform.app import DemoApp, run
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
+from world3d.platform.app import PROJECT_ROOT, DemoApp, run
 
 # 试点三：挂载由 cordis.puzzle.yml 声明（与 config_boot 的 headless 验证同一入口）
 from world3d.host.tree import WANT_PUZZLE, config_path, mount_tree  # noqa: E402
@@ -80,14 +68,11 @@ void main() {
     final_colors = vec4(v_col, 1.0);
 }'''
 
-
 def _mat_translate(tx, ty, tz):
     return Mat4(1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, tx, ty, tz, 1)
 
-
 def _mat_scale(sx, sy, sz):
     return Mat4(sx, 0, 0, 0, 0, sy, 0, 0, 0, 0, sz, 0, 0, 0, 0, 1)
-
 
 def _floor_quad(half=20.0, y=0.0):
     a, b, c, d = (-half, y, half), (half, y, half), (half, y, -half), (-half, y, -half)
@@ -96,7 +81,6 @@ def _floor_quad(half=20.0, y=0.0):
         pos.extend(p)
         shade.extend((1.0, 1.0, 1.0))
     return pos, shade
-
 
 def _cube_geom():
     """单位立方体（与内核 _unit_cube 同款：顶亮/侧中/底暗的烘焙 shade）。"""
@@ -116,7 +100,6 @@ def _cube_geom():
             shade.extend((s, s, s))
     return pos, shade
 
-
 TINT_WALL = (0.52, 0.50, 0.47)
 TINT_FLOOR = (0.14, 0.13, 0.125)
 TINT_BOX = (0.82, 0.60, 0.18)
@@ -124,7 +107,6 @@ TINT_BOX_ON_GOAL = (0.35, 0.85, 0.45)
 TINT_PLAYER = (0.38, 0.58, 0.92)
 TINT_GOAL = (0.95, 0.72, 0.22)
 TINT_CURSOR = (0.30, 0.90, 0.95)
-
 
 class BoxwardDemo(DemoApp):
     TITLE = '归仓 / Boxward —— 方块解谜（推箱入仓 · 贪心合批 · 程序化关卡）'
@@ -204,7 +186,7 @@ class BoxwardDemo(DemoApp):
                                          y=self.window.height // 2, **kw)
 
     def _resolve(self, p):
-        return p if os.path.isabs(p) else os.path.join(ROOT, p)
+        return p if os.path.isabs(p) else os.path.join(PROJECT_ROOT, p)
 
     # -------------------------------------------------- Cordis 挂载 --
     def _boot_kernel(self):
@@ -334,10 +316,10 @@ class BoxwardDemo(DemoApp):
         name = f'editor-{time.strftime("%H%M%S")}'
         data = self.grid.to_dict(name=name)
         data['meta']['par'] = sol.pushes
-        out_dir = os.path.join(ROOT, 'levels')
+        out_dir = os.path.join(PROJECT_ROOT, 'levels')
         os.makedirs(out_dir, exist_ok=True)
         path = level_to_json(data, os.path.join(out_dir, name + '.json'))
-        self._edit_msg = (f'已导出 {os.path.relpath(path, ROOT)} '
+        self._edit_msg = (f'已导出 {os.path.relpath(path, PROJECT_ROOT)} '
                           f'（可解：{len(sol.moves)} 步 / {sol.pushes} 推）')
         print(f'[boxward] level exported: {path}', flush=True)
 
@@ -478,7 +460,6 @@ class BoxwardDemo(DemoApp):
                 f'{"  [PAUSED]" if self.paused else ""}'
                 f'{"  " + st if st else ""}'
                 f'   t={self.time:5.1f}s {self.fps:4.1f}fps')
-
 
 if __name__ == '__main__':
     run(BoxwardDemo)

@@ -60,16 +60,6 @@ from pyglet.gl import (GL_BLEND, GL_DEPTH_TEST, GL_LINES, GL_ONE_MINUS_SRC_ALPHA
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Vec3
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, orbit_camera_input, run
 from world3d.logic.boids import DOMAIN, Flock, PRESET_LABELS
 from world3d.logic.camera import OrbitCamera
@@ -179,7 +169,6 @@ void main() {
     final_colors = vec4(mix(bottom, top, v_t), 1.0);
 }'''
 
-
 def bird_geometry():
     """三角翼"鸟"：3 个三角形，局部朝 +Z 飞，落在 XY 平面（薄片）。"""
     verts, cols = [], []
@@ -198,7 +187,6 @@ def bird_geometry():
     tri(nose, tail, (0.0, 0.17, -0.34), body)       # 尾舵
     return verts, cols
 
-
 def ring_geometry(radius=1.15, segments=40):
     """三个正交圆环（捕食者准星）：比实心球更省顶点，也更"准星"。"""
     verts, cols = [], []
@@ -216,7 +204,6 @@ def ring_geometry(radius=1.15, segments=40):
                     verts.extend((radius * ca, radius * sa, 0.0))
                 cols.extend((1.0, 0.36, 0.26, 1.0))
     return verts, cols
-
 
 class BoidsDemo(DemoApp):
     TITLE = 'logic.boids · 3D 鸟群（原生实例化 / 顶点着色器定向）'
@@ -436,7 +423,6 @@ class BoidsDemo(DemoApp):
                 f'step={self.step_ms:5.2f}ms  尾迹={"开" if self.tails_on else "关"}  '
                 f'捕食者={pred}   t={self.time:5.1f}s/{self.DURATION:.0f}s   '
                 f'{self.fps:5.1f} fps{"  [PAUSED]" if self.paused else ""}')
-
 
 if __name__ == '__main__':
     run(BoidsDemo)

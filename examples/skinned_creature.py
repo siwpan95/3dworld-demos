@@ -20,21 +20,11 @@ import math
 import os
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
-
 import pyglet                                                   # noqa: E402
 from pyglet.math import Vec3                                    # noqa: E402
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.engine.app import EngineApp, run                           # noqa: E402
+from world3d.platform.app import PROJECT_ROOT                       # noqa: E402
 from world3d.engine.camera import OrbitCamera                           # noqa: E402
 from world3d.engine.env import LightEnvironment                         # noqa: E402
 from world3d.engine.gltf import GLTF                                    # noqa: E402
@@ -45,14 +35,13 @@ from world3d.engine.shaders import get                                  # noqa: 
 from world3d.engine.skin import make_skin_from_gltf                     # noqa: E402
 from world3d.logic.animation import quat_from_axis_angle                # noqa: E402
 
-GLTF_PATH = os.path.join(ROOT, 'assets', 'skinned_snake.gltf')
+GLTF_PATH = os.path.join(PROJECT_ROOT, 'assets', 'skinned_snake.gltf')
 
 TITLE = 'skinned creature · 骨节蛇（P2-3 蒙皮骨骼动画）'
 HELP = ('ESC quit  SPACE pause  A animate  drag orbit  wheel zoom')
 SHOTS = ((0.8, 'docs/skinned_01.png'),
          (1.8, 'docs/skinned_02.png'),
          (2.8, 'docs/skinned_03.png'))
-
 
 class SkinnedCreatureApp(EngineApp):
     TITLE = TITLE
@@ -156,10 +145,8 @@ class SkinnedCreatureApp(EngineApp):
                 f'摆动 {"开" if self.animate else "关"} · '
                 f'{"暂停" if self.paused else "播放"} t={self.t:.1f}s')
 
-
 def main(argv=None):
     return run(SkinnedCreatureApp, argv)
-
 
 if __name__ == '__main__':
     sys.exit(main())

@@ -20,12 +20,7 @@ from __future__ import annotations
 
 import asyncio
 import ctypes
-import os
 import sys
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
 
 import pyglet                                                   # noqa: E402
 from pyglet.gl import (GL_BLEND, GL_COLOR_BUFFER_BIT,            # noqa: E402
@@ -36,13 +31,6 @@ from pyglet.gl import (GL_BLEND, GL_COLOR_BUFFER_BIT,            # noqa: E402
                        glVertexAttribPointer)
 from pyglet.graphics.shader import Shader, ShaderProgram        # noqa: E402
 from pyglet.math import Mat4, Vec3                                    # noqa: E402
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.engine.app import EngineApp, run                            # noqa: E402
 from world3d.host.tree import (WANT_HALL, config_path,  # noqa: E402
@@ -71,7 +59,6 @@ TINT_LOCKED = (0.30, 0.22, 0.24)
 
 # 自动推进序列（每个景内取"能推进谜题"的热点）
 AUTO_SEQ = ('h_take_key', 'h_to_hall', 'h_lamp', 'h_to_vault', 'h_final')
-
 
 class StillhallApp(EngineApp):
     TITLE = TITLE
@@ -215,7 +202,6 @@ class StillhallApp(EngineApp):
                 f"谜 {st['id'] if st else '全解'} · {self.ctx.rules.state()}"
                 + (f' · {self.msg}' if self.msg_t > 0 else ''))
 
-
 class _MiniCtx:
     """（已弃用：demo 改走 mount_tree 与验收同源；保留类名以说明差异。）"""
 
@@ -236,10 +222,8 @@ class _MiniCtx:
     def __init__(self):
         self.rules = _MiniCtx._Rules()
 
-
 def main(argv=None):
     return run(StillhallApp, argv)
-
 
 if __name__ == '__main__':
     sys.exit(main())

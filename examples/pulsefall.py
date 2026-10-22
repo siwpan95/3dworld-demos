@@ -18,12 +18,7 @@
 from __future__ import annotations
 
 import asyncio
-import os
 import sys
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
 
 import pyglet                                                   # noqa: E402
 from pyglet.gl import (GL_BLEND, GL_COLOR_BUFFER_BIT,            # noqa: E402
@@ -32,13 +27,6 @@ from pyglet.gl import (GL_BLEND, GL_COLOR_BUFFER_BIT,            # noqa: E402
                        glClear, glClearColor, glDisable, glEnable)
 from pyglet.graphics.shader import Shader, ShaderProgram        # noqa: E402
 from pyglet.math import Mat4, Vec3                               # noqa: E402
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.engine.app import EngineApp, run                            # noqa: E402
 from world3d.games.pulse.kernel import (BPM_LIST, GOOD_MS,  # noqa: E402
@@ -71,7 +59,6 @@ T_NOTE = {'0': (0.45, 0.85, 1.0), '1': (0.55, 0.95, 0.55),
 T_LINE = (0.75, 0.80, 0.88)
 VERDICT_TINT = {'PERFECT': (0.45, 0.98, 0.75), 'GOOD': (0.98, 0.85, 0.35),
                 'MISS': (0.98, 0.42, 0.42)}
-
 
 class PulsefallApp(EngineApp):
     TITLE = TITLE
@@ -186,10 +173,8 @@ class PulsefallApp(EngineApp):
             s += '  ✗ 血量耗尽'
         return s + ('  [AUTO]' if self.auto else '')
 
-
 def main(argv=None):
     return run(PulsefallApp, argv)
-
 
 if __name__ == '__main__':
     sys.exit(main())

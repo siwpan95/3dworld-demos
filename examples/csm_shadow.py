@@ -27,8 +27,6 @@ CSM 按视距分区，**近处用小盒（纹素细）+ 远处用大盒（纹素
 A 自动环绕相机　SPACE 暂停　鼠标拖动/滚轮　ESC 退出
 """
 import math
-import os
-import sys
 
 from pyglet.gl import (GL_COLOR_ATTACHMENT0, GL_COLOR_BUFFER_BIT, GL_DEPTH_ATTACHMENT,
                        GL_DEPTH_BUFFER_BIT, GL_DEPTH_COMPONENT24, GL_DEPTH_TEST,
@@ -39,12 +37,6 @@ from pyglet.image import Framebuffer, Texture
 from pyglet.image.buffer import Renderbuffer
 from pyglet.math import Mat4, Vec3
 from pyglet.window import key
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError（P2-1 全量验收实测，30 个 demo 一起炸）。
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.platform.app import DemoApp, orbit_camera_input, run  # noqa: E402
 from world3d.core.geometry import box_data  # noqa: E402
@@ -168,7 +160,6 @@ void main() {
 CASCADE_TINTS = ('青', '紫', '橙', '绿')
 PILLAR_COLORS = [(0.82, 0.76, 0.62), (0.70, 0.78, 0.86), (0.86, 0.70, 0.66),
                  (0.74, 0.82, 0.70), (0.84, 0.74, 0.86)]
-
 
 class CsmShadowApp(DemoApp):
     TITLE = '级联阴影（CSM）—— 按视距分层，近处锐、远处也还在'
@@ -423,7 +414,6 @@ class CsmShadowApp(DemoApp):
                 f'{"[无阴影]" if not self.shadow_on else ""}'
                 f'  阴影图 {len(self.shadows)}/{MAX_CASCADES} 张  投影片 {self.caster_count}  '
                 f't={self.time:4.1f}s {self.fps:4.1f}fps')
-
 
 if __name__ == '__main__':
     run(CsmShadowApp)

@@ -25,20 +25,10 @@ import math
 import os
 import sys
 
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
-
 from pyglet.math import Mat4, Vec3                                   # noqa: E402
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.engine.app import EngineApp, run                                # noqa: E402
+from world3d.platform.app import PROJECT_ROOT                            # noqa: E402
 from world3d.engine.camera import FlyCamera, OrbitCamera                     # noqa: E402
 from world3d.engine.env import LightEnvironment                              # noqa: E402
 from world3d.engine.geometry import box, cylinder, ground_grid, plane, sphere, torus  # noqa: E402
@@ -60,7 +50,6 @@ SCENE_JSON = 'docs/engine_scene.json'
 
 FIELD_N = 24                      # 实例化阵列 24x24 = 576 个（1 次 draw call）
 PILLAR_N = 80                     # 独立柱体数量（视锥剔除的样本）
-
 
 class ShowcaseApp(EngineApp):
     TITLE = TITLE
@@ -189,7 +178,7 @@ class ShowcaseApp(EngineApp):
         self.renderer.set_point_lights([((0, 0, 0), (0, 0, 0))] * 3)
 
         # --- 场景序列化的热重载 ---
-        self.watcher = SceneWatcher(os.path.join(ROOT, SCENE_JSON),
+        self.watcher = SceneWatcher(os.path.join(PROJECT_ROOT, SCENE_JSON),
                                     on_reload=self._on_scene_reloaded)
         self.reload_msg = ''
 
@@ -336,12 +325,12 @@ class ShowcaseApp(EngineApp):
         elif s == 'G':
             self.show_field = not self.show_field
         elif s == 'K':
-            path = save_scene(self.scene, os.path.join(ROOT, SCENE_JSON))
+            path = save_scene(self.scene, os.path.join(PROJECT_ROOT, SCENE_JSON))
             self.reload_msg = f'saved {os.path.basename(path)}'
         elif s == 'L':
             from world3d.engine.serialize import load_scene
             try:
-                loaded = load_scene(os.path.join(ROOT, SCENE_JSON))
+                loaded = load_scene(os.path.join(PROJECT_ROOT, SCENE_JSON))
                 self._apply_loaded(loaded)
                 self.reload_msg = 'loaded'
             except Exception as e:
@@ -411,17 +400,14 @@ class ShowcaseApp(EngineApp):
     def _apply_loaded(self, loaded):
         self._on_scene_reloaded(loaded)
 
-
 # ------------------------------------------------------------------ 工具 --
 def _yaw_quat(deg):
     from world3d.engine.mathkit import quat_from_axis_angle
     return quat_from_axis_angle((0.0, 1.0, 0.0), deg)
 
-
 def _trs(t):
     from world3d.engine.mathkit import mat4_from_trs
     return mat4_from_trs(t, (1.0, 0.0, 0.0, 0.0), (1.0, 1.0, 1.0))
-
 
 if __name__ == '__main__':
     sys.exit(run(ShowcaseApp))

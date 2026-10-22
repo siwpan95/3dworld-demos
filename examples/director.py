@@ -54,29 +54,17 @@ import math
 import os
 import sys
 
-# 项目根进 sys.path（`platform` / `engine` / `presentation` / `host` 都是顶层包）。
-#
-# ⚠️ 导入路径必须**全仓一致**：一律 `from world3d.platform.app import ...`。
+# ⚠️ 导入路径**全仓一致**：一律 `from world3d.platform.app import ...` —— 引擎由
+# `pip install 3dworld` 提供，**任何 demo 都不再写 sys.path 引导**。
 # 历史教训（P0-3 实踩）：曾写成 `from demos._harness import ...`，于是同一个文件被当成
 # 两个模块导入、`DemoApp` 成了两个不同的类对象，`scripts/record_all.py` /
 # `scripts/verify_demos.py` 的 `issubclass(cls, DemoApp)` 判定为假 ——
 # 症状是"验收表里这个 demo 的截图数恒为 0"、"录制脚本走进裸 App 分支后
 # TypeError: unexpected keyword 'shots'"。P2-1 起真身在 `world3d/platform/app.py`，
 # 旧路径 `examples/_harness.py` 只是薄兼容层（不要再用）。
-_HERE = os.path.dirname(os.path.abspath(__file__))
-_ROOT = os.path.dirname(_HERE)
-if _ROOT not in sys.path:
-    sys.path.insert(0, _ROOT)
 
 import pyglet  # noqa: E402
 from pyglet import shapes, text  # noqa: E402
-
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 from world3d.platform.app import DemoApp, PROJECT_ROOT, run  # noqa: E402
 from world3d.engine.mathkit import quat_mul, quat_normalize  # noqa: E402
@@ -110,7 +98,6 @@ COL_ENV = (140, 220, 170, 255)
 COL_CAM = (120, 190, 255, 255)
 COL_NODE = (230, 180, 255, 255)
 
-
 # ==================================================================== 默认演出
 # 相机弧形闭环环绕的参数。整条是**闭环**（末帧 = 首帧），录出来的一段 mp4
 # 首尾相接可以无缝循环（发行版附件会循环播）。
@@ -131,7 +118,6 @@ _ORBIT_FOV0, _ORBIT_FOV1 = 52.0, 46.0
 _ORBIT_AZ0 = 45.0                      # 起始方位（度）
 _ORBIT_SEGMENTS = 8                    # 一整圈分 8 段（每段 45°）
 
-
 def _orbit_cam_keys():
     """生成闭环环绕的相机关键帧 ``[(t, pos, target, fov), ...]``（含末帧回原点）。"""
     keys = []
@@ -145,9 +131,7 @@ def _orbit_cam_keys():
         keys.append((round(20.0 * u, 4), pos, _ORBIT_TGT, fov))
     return keys
 
-
 _CAM_KEYS = _orbit_cam_keys()
-
 
 def _sun_from_cam(cam_pos, lift=0.52, skew=0.42):
     """把太阳方位**跟着相机**摆：太阳落在相机的同一水平方位上（略微偏一点）。
@@ -162,7 +146,6 @@ def _sun_from_cam(cam_pos, lift=0.52, skew=0.42):
     a = math.atan2(z, x) + skew
     c, s = math.cos(lift), math.sin(lift)
     return (c * math.cos(a), s, c * math.sin(a))
-
 
 def default_shot(name=DEFAULT_SHOT_NAME, duration=20.0) -> Shot:
     """默认演出：绕祭坛一整圈（闭环）+ 主体自转/呼吸 + 太阳随相机扫过。
@@ -210,7 +193,6 @@ def default_shot(name=DEFAULT_SHOT_NAME, duration=20.0) -> Shot:
                   [1.05, 1.45, 1.30, 1.10, 1.35, 1.05])
     s.add_channel(ENV_NODE, 'ibl_intensity', [0, 8, 16, 20], [0.72, 0.92, 0.86, 0.72])
     return s
-
 
 # ================================================================ 关键帧面板
 class KeyframePanel:
@@ -370,7 +352,6 @@ class KeyframePanel:
                         return ('key', (idx, best))
                 return ('row', idx)
         return None
-
 
 # ==================================================================== 导演台
 class DirectorApp(DemoApp):
@@ -883,7 +864,6 @@ class DirectorApp(DemoApp):
         return (f'{base}  {self.shot.name}  tgt={self.target}  '
                 f'{len(chans)}通道/{ks}键  选中[{self.selected + 1}]{sel}  « {self.msg} »')
 
-
 # ------------------------------------------------------------------ 入口 --
 def _extract_shot_json(argv):
     """从 argv 里摘出 ``--shot-json``（world3d.platform.app.parse_args 不认识它）。
@@ -904,14 +884,12 @@ def _extract_shot_json(argv):
             break
     return path, args
 
-
 def main():
     path, argv = _extract_shot_json(sys.argv[1:])
     if path:
         DirectorApp.SHOT_PATH = path
     os.makedirs(SHOT_DIR, exist_ok=True)
     run(DirectorApp, argv)
-
 
 if __name__ == '__main__':
     main()

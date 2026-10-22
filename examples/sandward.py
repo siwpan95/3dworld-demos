@@ -16,10 +16,7 @@ mr=ORM，零外部素材），光照为 **GGX 直接光 + 半球环境 + 法线�
       SPACE 暂停   ESC 退出
 """
 import math
-import os
 import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
 
 import pyglet
 from pyglet.math import Mat4, Vec3
@@ -35,7 +32,6 @@ HELP = ('WASD 走   拖拽 转视角   SHIFT 疾走   TAB 显示模式（PBR/棋
 SHOTS = ((13.0, 'docs/sandward_01.png'),        # 西北角场（沿环线）
          (32.0, 'docs/sandward_02.png'),        # 东环 / 东南角场
          (25.5, 'docs/sandward_03.png'))        # 北环东行（开阔全景）
-
 
 class SandwardApp(EngineApp):
     TITLE = TITLE
@@ -136,10 +132,8 @@ class SandwardApp(EngineApp):
     def render(self):
         self.renderer.draw()
 
-
 def main(argv=None):
     return run(SandwardApp, argv)
-
 
 if __name__ == '__main__':
     sys.exit(main())

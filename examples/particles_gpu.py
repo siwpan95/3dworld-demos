@@ -54,16 +54,6 @@ from pyglet.gl import (GL_BLEND, GL_DEPTH_TEST, GL_FALSE, GL_ONE,
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Vec3
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, orbit_camera_input, run
 from world3d.logic.camera import OrbitCamera
 
@@ -185,12 +175,10 @@ void main() {
     final_colors = vec4(v_col.rgb, v_col.a * falloff);
 }'''
 
-
 # 预设：(名字, 相机距离, 注视点高度)
 PRESETS = (('星系漩涡', 21.0, 1.6),
            ('喷泉烟花', 26.0, 4.5),
            ('湍流云', 25.0, 2.0))
-
 
 class ParticlesDemo(DemoApp):
     TITLE = 'GPU 实例化粒子 (pyglet 2.1.16 vertex_list_instanced)'
@@ -334,7 +322,6 @@ class ParticlesDemo(DemoApp):
                 f'{name}  能量 {self.energy:.1f}  尺寸 x{self.size_scale:.1f}  {auto}   '
                 f't={self.time:5.1f}s/{self.DURATION:.0f}s   {self.fps:5.1f} fps'
                 f'{"  [PAUSED]" if self.paused else ""}')
-
 
 if __name__ == '__main__':
     run(ParticlesDemo)

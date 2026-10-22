@@ -19,8 +19,6 @@ from __future__ import annotations
 import os
 import sys
 
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 import pyglet  # noqa: E402
 
 from world3d.platform.app import (DemoApp, PROJECT_ROOT, orbit_camera_input,  # noqa: E402
@@ -32,7 +30,6 @@ DEFAULT_JSON = os.path.join(PROJECT_ROOT, 'docs', 'llm_scene_demo.json')
 _ENV_KEYS = ('sun_dir', 'sun_color', 'sun_intensity', 'sky_zenith',
              'sky_horizon', 'sky_ground', 'ibl_intensity', 'sky_intensity',
              'env_size', 'prefilter_levels')
-
 
 def _extract_file(argv):
     """从 argv 中摘出 --file（world3d.platform.app.parse_args 不认识它）。"""
@@ -52,7 +49,6 @@ def _extract_file(argv):
                 del args[i]
                 break
     return path, args
-
 
 class SceneViewerApp(DemoApp):
     TITLE = 'scene viewer · scene JSON (hot reload)'
@@ -167,13 +163,11 @@ class SceneViewerApp(DemoApp):
         return (f'{base}   {os.path.basename(self._json_path)}   '
                 f'draws={draws}   [{self.reload_msg}]')
 
-
 def main():
     path, argv = _extract_file(sys.argv[1:])
     if path:
         SceneViewerApp.JSON_PATH = path
     run(SceneViewerApp, argv)
-
 
 if __name__ == '__main__':
     main()

@@ -41,16 +41,6 @@ from pyglet.gl import (GL_BLEND, GL_DEPTH_TEST, GL_LINES, GL_ONE_MINUS_SRC_ALPHA
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, run
 from world3d.engine.fixedstep import FixedStepper
 from world3d.logic import kid_a as K
@@ -111,7 +101,6 @@ for _a, _b in _LINKS:
     _BOX_LINES.append(_BOXV[_a])
     _BOX_LINES.append(_BOXV[_b])
 
-
 # ------------------------------------------------------------ 视觉调色板 --
 WALL_RGB = (0.24, 0.27, 0.38)        # 深蓝灰墙（kkrieger 走廊色系）
 FLOOR_RGB = (0.13, 0.14, 0.20)
@@ -154,7 +143,6 @@ MOVE_SPEED = 4.6
 SPRINT = 1.7
 PLAYER_R = 0.32
 
-
 # ------------------------------------------------------------ 区块网格 --
 def _quad(pos, col, p0, p1, p2, p3, rgb, emissive, shade):
     """两三角 + 顶点色（shade 为面亮度）。"""
@@ -164,10 +152,8 @@ def _quad(pos, col, p0, p1, p2, p3, rgb, emissive, shade):
         pos.extend(p)
         col.extend(c)
 
-
 STRIP_RGB = (0.10, 0.62, 0.58)       # 发光踢脚线（kkrieger 走廊标志色）
 STRIP_H = 0.15                        # 踢脚线高度
-
 
 def build_chunk_mesh(world, cx, cy):
     """把区块 (cx,cy) 网格化成 (pos, col) 数组。
@@ -244,7 +230,6 @@ def build_chunk_mesh(world, cx, cy):
                          ccx + 0.28, 0.62, ccz + 0.28, rgb, em)
     return pos, col
 
-
 def _box(pos, col, x0, y0, z0, x1, y1, z1, rgb, em):
     """通用小盒（六面，亮度分级）。"""
     _quad(pos, col, (x0, y0, z1), (x1, y0, z1), (x1, y1, z1), (x0, y1, z1),
@@ -259,7 +244,6 @@ def _box(pos, col, x0, y0, z0, x1, y1, z1, rgb, em):
           rgb, em, 1.0)
     _quad(pos, col, (x0, y0, z0), (x1, y0, z0), (x1, y0, z1), (x0, y0, z1),
           rgb, em, 0.5)
-
 
 # --------------------------------------------------------------- 配乐 --
 class ZoneSynthLite:
@@ -377,7 +361,6 @@ class ZoneSynthLite:
     def toggle(self):
         self.muted = not self.muted
         return self.muted
-
 
 # ---------------------------------------------------------------- Demo --
 class KidAApp(DemoApp):
@@ -863,7 +846,6 @@ class KidAApp(DemoApp):
                 f'{zname}{dark}  碎片 {self.frag.unique_types()}/10'
                 f'（共{self.frag.total()}）  探索 {len(self.visited)} 区块'
                 f'  {self.fps:4.1f} fps{msg}')
-
 
 if __name__ == '__main__':
     run(KidAApp)

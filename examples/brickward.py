@@ -27,7 +27,6 @@
 import asyncio
 import math
 import os
-import sys
 import tempfile
 import time
 
@@ -37,17 +36,7 @@ from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
 from pyglet.window import key, mouse
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError（P2-1 全量验收实测，30 个 demo 一起炸）。
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
-from world3d.platform.app import DemoApp, run  # noqa: E402
-
-ROOT = os.path.dirname(os.path.dirname(os.path.abspath(__file__)))
-if ROOT not in sys.path:
-    sys.path.insert(0, ROOT)
+from world3d.platform.app import PROJECT_ROOT, DemoApp, run  # noqa: E402
 
 from world3d.host.tree import WANT_BRICKWARD, config_path, mount_tree  # noqa: E402
 from world3d.games.brickward.kernel import (  # noqa: E402
@@ -84,7 +73,6 @@ void main() {
     final_colors = vec4(v_col, 1.0);
 }'''
 
-
 # ---------------------------------------------------------------- 几何（共享小网格）
 def _quad_geom():
     """单位地砖（XZ 平面，y = 0，中心在原点）。"""
@@ -94,7 +82,6 @@ def _quad_geom():
         pos.extend(p)
         shade.extend((1.0, 1.0, 1.0))
     return pos, shade
-
 
 def _pyramid_geom():
     """单位尖刺（底 1×1 @ y = 0，顶点 y = 1）。四面各自烘焙明暗。"""
@@ -109,7 +96,6 @@ def _pyramid_geom():
             shade.extend((shades[k], shades[k], shades[k]))
     return pos, shade
 
-
 def _mat_trs(tx, ty, tz, sx=1.0, sy=1.0, sz=1.0, spin=0.0):
     """平移 × 绕 y 旋转 × 缩放（绕 y 的旋转对上下对称的体块没有视觉差，
     但对"键/炸弹/史莱姆"这类有朝向感的件有用，也让静止画面有细微活气）。"""
@@ -117,7 +103,6 @@ def _mat_trs(tx, ty, tz, sx=1.0, sy=1.0, sz=1.0, spin=0.0):
     if spin:
         m = m @ Mat4.from_rotation(math.radians(spin), Vec3(0, 1, 0))
     return m @ Mat4.from_scale(Vec3(sx, sy, sz))
-
 
 # ---------------------------------------------------------------- 配色
 TINT_FLOOR = (0.15, 0.145, 0.155)
@@ -158,13 +143,11 @@ GLYPH = {CRATE: '箱', BUTTON: '钮', LEVER: '杆', DOOR: '门', GOLD_DOOR: '金
 ORDER = ('U', 'R', 'D', 'L')          # 顺时针；用于把屏幕方向映射成格方向
 LINK_MODES = ('open', 'toggle', 'close')
 
-
 def _screen_dirs(rot):
     """屏幕方向 → 格方向（相机绕 y 转 90°·rot，输入映射跟着按 90° 取整）。"""
     r = rot % 4
     return {'W': ORDER[r], 'D': ORDER[(1 + r) % 4],
             'S': ORDER[(2 + r) % 4], 'A': ORDER[(3 + r) % 4]}
-
 
 class BrickwardDemo(DemoApp):
     TITLE = '砖境 / Brickward —— 机关解谜 + 谜题编辑器'
@@ -267,7 +250,7 @@ class BrickwardDemo(DemoApp):
                                          y=self.window.height // 2, **kw)
 
     def _resolve(self, p):
-        return p if os.path.isabs(p) else os.path.join(ROOT, p)
+        return p if os.path.isabs(p) else os.path.join(PROJECT_ROOT, p)
 
     def _read_level_file(self, path):
         return level_from_json(path)          # 不合法直接抛，别静默跑一个假关卡
@@ -436,14 +419,14 @@ class BrickwardDemo(DemoApp):
         level = dict(k.level)
         level['name'] = name
         level['par'] = len(path_sol) if path_sol else None
-        out = os.path.join(ROOT, 'levels', name + '.json')
+        out = os.path.join(PROJECT_ROOT, 'levels', name + '.json')
         level_to_json(level, out)
         self._exported.append(out)
         self._msg = f'已导出 levels/{name}.json（{self._msg}）'
         print(f'[brickward] level exported: {out}', flush=True)
 
     def _import_next(self):
-        d = os.path.join(ROOT, 'levels')
+        d = os.path.join(PROJECT_ROOT, 'levels')
         files = sorted(f for f in os.listdir(d) if f.endswith('.json')) \
             if os.path.isdir(d) else []
         if not files:
@@ -835,7 +818,6 @@ class BrickwardDemo(DemoApp):
         return (f"{snap['level']} 步{snap['steps']} 推{snap['pushes']} "
                 f"死{snap['deaths']} {ent} {st}{flags}{pal} {self._msg} "
                 f"t={self.time:4.1f}s")
-
 
 if __name__ == '__main__':
     run(BrickwardDemo)

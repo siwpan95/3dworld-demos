@@ -57,16 +57,6 @@ from pyglet.gl import GL_BLEND, GL_DEPTH_TEST, GL_ONE_MINUS_SRC_ALPHA, GL_SRC_AL
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, orbit_camera_input, run
 from world3d.logic.animation import quat_from_axis_angle, quat_to_mat4
 from world3d.logic.skeleton import Skeleton
@@ -123,7 +113,6 @@ def uv_sphere(radius, stacks=18, slices=24, rgb=(0.7, 0.7, 0.75), _shade=True, b
                 colors += [rgb[0] * k, rgb[1] * k, rgb[2] * k, 1.0]
     return verts, colors
 
-
 def ring_band(r_in, r_out, segments=96, rgb=(0.78, 0.70, 0.52), alpha=1.0, shade=0.86):
     """土星环：XZ 平面上的扁环带（上下两面 + 内外侧壁），36 顶点/扇区。
 
@@ -158,7 +147,6 @@ def ring_band(r_in, r_out, segments=96, rgb=(0.78, 0.70, 0.52), alpha=1.0, shade
                 verts += [p[0], p[1], p[2]]
                 colors += [rgb[0] * k * band, rgb[1] * k * band, rgb[2] * k * band, alpha]
     return verts, colors
-
 
 # --------------------------------------------------------------- 着色器 --
 BODY_VERT = '''#version 330 core
@@ -270,7 +258,6 @@ void main() {
     final_colors = vec4(v_color.rgb * (0.5 + 1.3 * lit), 1.0);
 }'''
 
-
 # ------------------------------------------------------------ 天体数据 --
 class Body:
     """一颗行星/卫星的静态参数（运行期状态都在 Skeleton 节点里）。"""
@@ -291,7 +278,6 @@ class Body:
         self.parent = parent                # 父天体名（'' = 太阳）
         self.focus_dist = focus_dist        # 聚焦它时的相机距离
         self.light_gain = light_gain        # 片元着色器的照度补偿
-
 
 # (名字, 半径, 半长轴, 真实公转周期(年), 自转轴倾角°, 自转周期(压缩秒), 颜色, 云带数)
 # 半长轴单位：1.0 = 1 AU；半径是"观感半径"，不是等比（等比的话地球只有 5e-5 AU，
@@ -327,7 +313,6 @@ FOCUS_PITCH = 6.0                              # 聚焦行星时的近黄道面�
 SATURN_PITCH = 22.0                            # 土星专用：太低环就成一条线，取折中
 PHASE_FRACTION = 0.20                          # 相位视角的照亮比例（新月形）
 
-
 def tilt_spin(inclination_deg, spin_deg):
     """自转 = Rz(倾角) @ Ry(自转角)，返回 **Mat4**。
 
@@ -345,7 +330,6 @@ def tilt_spin(inclination_deg, spin_deg):
     """
     return (quat_to_mat4(quat_from_axis_angle((0, 0, 1), inclination_deg))
             @ quat_to_mat4(quat_from_axis_angle((0, 1, 0), spin_deg)))
-
 
 class SolarSystemDemo(DemoApp):
     TITLE = '太阳系 · 层级变换 + 压缩轨道力学 + 实例化小行星带'
@@ -765,7 +749,6 @@ class SolarSystemDemo(DemoApp):
         flag = '  [PAUSED]' if self.paused else ''
         return (f'聚焦 {name}   公转周期 {period}{phase}{lock}   t={self.time:6.2f}s   '
                 f'd={self.camera.dist:.1f}   {self.fps:5.1f} fps{flag}')
-
 
 if __name__ == '__main__':
     run(SolarSystemDemo)

@@ -43,16 +43,6 @@ from pyglet.gl import GL_DEPTH_TEST, GL_TRIANGLES, glClearColor, glEnable
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
 
-# ---- sys.path 引导（平台/引擎/逻辑各顶层包）-------------------------------
-# ⚠️ 必须**显式**写：P2-1 之前这行是隐式的 —— `from _harness import ...`（裸名）时
-# `_harness` 自己会插项目根；改成 `from world3d.platform.app import ...` 后不再隐式生效，
-# 少了它就会 ModuleNotFoundError: No module named 'world3d'（P2-1 全量验收实测）。
-
-import os
-import sys
-
-sys.path.insert(0, os.path.dirname(os.path.dirname(os.path.abspath(__file__))))
-
 from world3d.platform.app import DemoApp, orbit_camera_input, run
 from world3d.logic.camera import (DIST_MAX, DIST_MIN, PITCH_MAX, PITCH_MIN,
                           OrbitCamera)
@@ -63,7 +53,6 @@ TAU = 6.28318531
 # 全部是模块级纯函数：同 (坐标, seed) 必然得到同一个高程，不依赖任何全局状态，
 # 所以 R 键重建、以及跨进程截图都是可复现的。
 _MASK = 0xFFFFFFFF
-
 
 def _hash01(ix, iy, seed):
     """整数格点 + seed -> [0,1) 的确定性哈希。
@@ -78,7 +67,6 @@ def _hash01(ix, iy, seed):
     h = ((h ^ (h >> 12)) * 0x297A2D39) & _MASK
     h ^= h >> 15
     return (h & 0xFFFFFF) / 16777216.0
-
 
 def _value_noise(x, y, seed):
     """双线性插值的值噪声（smoothstep 平滑，避免菱形格纹）。"""
@@ -95,7 +83,6 @@ def _value_noise(x, y, seed):
     b = n01 + (n11 - n01) * ux
     return a + (b - a) * uy
 
-
 def _fbm(x, y, seed, octaves=4):
     """分形叠加：每层频率 x2、振幅 x0.5（用不同 seed 偏移避免层间相关）。"""
     amp, freq, total, norm = 1.0, 1.0, 0.0, 0.0
@@ -105,7 +92,6 @@ def _fbm(x, y, seed, octaves=4):
         amp *= 0.5
         freq *= 2.0
     return total / norm
-
 
 def height_at(wx, wz, seed):
     """世界坐标 -> 高程。三层噪声分工：大起伏 / 山脊 / 平原谷地。"""
@@ -117,7 +103,6 @@ def height_at(wx, wz, seed):
     return (56.0 * bb ** 1.25 + 34.0 * ridge ** 2.2 * (0.30 + 0.70 * plain)
             - 18.0 * plain - 15.0)
 
-
 # ---- 配色分层（CPU 烘焙，片元着色器里不做地形纹理）----
 WATER_LEVEL = 0.0
 C_DEEP = (0.045, 0.16, 0.36)
@@ -128,12 +113,10 @@ C_ROCK = (0.40, 0.36, 0.32)
 C_SNOW = (0.93, 0.95, 0.98)
 LIGHT_DIR = (0.42, 0.78, 0.30)          # 主光（不做归一化也行，下面统一归一）
 
-
 def _mix3(a, b, t):
     return (a[0] + (b[0] - a[0]) * t,
             a[1] + (b[1] - a[1]) * t,
             a[2] + (b[2] - a[2]) * t)
-
 
 def _smooth(e0, e1, x):
     """把 x 从 [e0,e1] 映射到 [0,1] 并做平滑（分层过渡用）。"""
@@ -141,7 +124,6 @@ def _smooth(e0, e1, x):
         return 0.0
     t = min(1.0, max(0.0, (x - e0) / (e1 - e0)))
     return t * t * (3.0 - 2.0 * t)
-
 
 def terrain_color(h, slope, lambert, jitter):
     """(高度, 坡度(0平1陡), 面向光亮度, 抖动) -> 烘焙好的 RGB。
@@ -162,7 +144,6 @@ def terrain_color(h, slope, lambert, jitter):
     return (min(1.0, c[0] * k * j),
             min(1.0, c[1] * k * j),
             min(1.0, c[2] * k * j))
-
 
 # ================================================================== 着色器 ==
 VERTEX_SRC = '''#version 330 core
@@ -190,7 +171,6 @@ void main() {
 }'''
 
 SKY = (0.58, 0.70, 0.84)
-
 
 # ============================================================ 相机：自动+用户 ==
 class _AutoOrbit:
@@ -221,7 +201,6 @@ class _AutoOrbit:
         c.dist = max(DIST_MIN, min(DIST_MAX, dist + self.user_dist))
         self._base = (c.yaw, c.pitch, c.dist)
 
-
 def emit_row(pos, col, hs, cols, n, step, ox, oz, j):
     """把第 j 行四边形带写成三角形汤，追加到 pos/col（纯函数，可无窗口单测）。
 
@@ -244,7 +223,6 @@ def emit_row(pos, col, hs, cols, n, step, ox, oz, j):
         col.extend(cols[a])
         col.extend(cols[d])
         col.extend(cols[c])
-
 
 class TerrainDemo(DemoApp):
     TITLE = '程序化地形低空飞行 (值噪声 + fBm + 烘焙光照)'
@@ -491,7 +469,6 @@ class TerrainDemo(DemoApp):
                 f'{math.degrees(self.roll):+4.1f}°   t={self.time:5.1f}s/'
                 f'{self.DURATION:.0f}s   重建 {self.last_rebuild_ms:.0f}ms   {self.fps:5.1f} fps'
                 f'{"  [PAUSED]" if self.paused else ""}')
-
 
 if __name__ == '__main__':
     run(TerrainDemo)
