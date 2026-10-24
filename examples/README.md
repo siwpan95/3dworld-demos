@@ -83,8 +83,12 @@ python scripts\verify_demos.py --only boids,water  只验指定 demo
 | `sandward.py` | 交互 | **《沙垒 / Sandward》**（§18 **UV 投影规则演示场**）：程序化重建的 dust 风格**块状竞技场**（中庭 + 四角场 + 环线，零外部素材）——**每一面墙/箱/地的 UV 由 `engine/texproj` 的世界投影规则生成**（面主导轴 + 五档贴图密度 3.0/4.0/4.5/5.0/5.5 米 = CS2 实测档 ÷32 等比缩放）；材质走 `proctex` 程序化 5 格图集（片元 `fract` 格内平铺 + 半像素内缩防渗色）；**PBR 三通道图集**（albedo / normal+高度 / mr=ORM；GGX 直接光 + 半球环境 + 法线贴图，切线由投影同源导出）+ **POM 视差**（12 步陡峭视差，P/[ ] 开关调深）；**Tab 四显示模式**（PBR / 棋盘格 / 密度色阶 / 通道视图-C 循环）；5 检查点巡游 + 碰撞分轴滑动 + auto 回放 | `sandward_01..06.png` |
 | `pulsefall.py` | 交互 | **《落音 / Pulsefall》**（§16 **下落式音击**）：4 轨道（DFJK）+ 3 谱面（BPM 90/120/150，**种子复现**）+ 判定 3 档（PERFECT ±40ms / GOOD ±90ms / MISS）+ 血量与连击得分 + 结算（P/G/M + 准确率 + 最大连击）；音乐由 **audio 核按谱面程序化合成**（三层：低音/和弦/主旋律）；F4/F5 offset 校准、G 自动演奏 | `pulsefall_01..02.png` |
 | `director.py` | 工具 | **可视化导演台（③）**：把关键帧系统（`engine/shot.py` + `engine/timeline.py`）和 `TimelineUI` 串成"**编排 → 预览 → 导出 → 录制**"闭环。三个编辑目标用 `T` 循环：`$camera`（position/target/fov）、`$env`（sun_intensity/sun_dir/ibl_intensity，**真·灯光演出**，渲染器每帧 apply）、场景节点（TRS，键盘微调）。`K` 记帧 / `DEL` 删帧 / `[ ]` 选通道 / `I` 换插值 / `M` 加幕 / `F2` 导出演出 JSON / `O` 载入 / `R` 重载场景；右侧**关键帧检察器**显示每通道的插值与键刻度（可点行选中、点键 seek）；内置默认演出「绕祭坛闭环环绕 + 主体自转 + 太阳随相机扫过」，`--shot-json <path>` 可回放导出的运镜 | `director_a..d.png` |
+| `wardfall.py` | 交互 | **《城邦 / Wardfall》**（首个消费 `logic/town` 的 demo）：程序化中世纪城镇 —— Voronoi 街区**递归切分成联排**（`generate_town` 吐的是街区不是房子）+ da Vinci 式高度分布（教堂区高、贫民区矮）+ 城墙环重建（`wall['towers']` 去重 + 极角排序，平滑会打乱顶点序）+ **昼夜循环**（夜晚窗户按 per-face 哈希逐窗点亮、月光补光）+ 地平线无缝的天空渐变穹顶 | `wardfall_01/02.png` |
+| `cellward.py` | 交互 | **《胞格 / Cellward》**（`logic/ca` 全部 141 条规则活演示）：4 类规则（life / 连续 / 多态 / 复合）自动轮播 + **5 档网格**（XS~XL，重型规则自动限制档位）+ 4 套色板渐变 + `GL_NEAREST` 纹理直灌（**8-bit 通道要过 LUT 归一化**，否则活细胞全黑）+ 固定步长累加器保证 `--shot` 可复现 | `cellward_01/02.png` |
+| `lindenwood.py` | 交互 | **《林氏 / Lindenwood》**（首个消费 `logic/lsystem` 的 demo）：L-System 3D 植物 —— `Turtle3D` 线段**按端点重合还原父子树**，半径按 **da Vinci 定律** `r ∝ 叶片数^(1/2.4)` 反推 + 枝链扫变径管 + **风摆在顶点着色器**（位移 ∝ `pow(y/H, 1.6)`，根不动梢头摆）+ **四季**（只改叶色/落叶两个 uniform，落叶按 per-leaf 哈希整片掉）+ 5 物种（`1`~`5`） | `lindenwood_01/02.png` |
+| `collapseward.py` | 交互 | **《坍界 / Collapseward》**（`logic/wfc` 过程可视化）：用模块自己的 `_observe`/`_propagate` **逐步驱动求解**（`solve()` 只给终局），波函数压成 3D——候选越多柱子越矮越冷，传播把柱子"焐高烧红"，坍缩定格成路网地形 + **闪光零重建**（事件时刻写 `colors.a`、幅度写 `uvs.x`，片元里算余晖）+ 矛盾整局重启计数 + `check_adjacency` 终局校验 | `collapseward_01/02.png` |
 
-> 上表 39 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
+> 上表 43 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
 > `scripts/verify_demos.py` 逐项冒烟的对象；唯一不参与截图阶段的是
 > `scene_viewer.py`——它由 `--file` 驱动、没有固定剧照时刻。
 
@@ -120,6 +124,9 @@ python examples\scene_viewer.py --flag orbit        # 相机自转（自演示 /
 | `stop`（motion_blur） | 静止相机（对照：验证"相机不动就没有模糊"）——**别用于录成片** |
 | `auto` / `pace=N`（stillhall） | 循环重放点击序列（自演示/录成片；默认跑完 5 步就静止）/ `pace=` 改每次点击间隔（默认 0.45s） |
 | `orbit`（scene_viewer） | 相机自转 8°/s（自演示/录成片；不开则相机只跟鼠标走 ⇒ 录出来是一张静止的图） |
+| `autumn` / `still`（lindenwood） | 起手就是深秋（橙红叶色，落叶片可见）/ 关掉风（对照"风在顶点着色器里"） |
+| `hold`（collapseward） | 关掉"解完 5 秒自动换 seed 再来一局"（定格观察终局用） |
+| 物种名（lindenwood） | `--flag oak|shrub|willow|elm|sapling|bush` 指定起手物种 |
 
 常用按键（各 demo 底部有完整帮助行）：`SPACE` 暂停、`ESC` 退出是统一的；
 **方块世界** `N`/`P` 切幕、`←`/`→` 快退快进 5s、`C` 切电影/自由相机、`R` 重播；
@@ -220,3 +227,32 @@ python examples\voxel_terrain.py   --bench 5 --flag reseed        :: 渐进
   float，报 `Invalid data size for 'colors'`（地形渐进重建时踩过）。
 - **路径**：不许写死盘符，一律用 `platform.app.PROJECT_ROOT` / `DOCS_DIR`；
   控制台输出一律 ASCII（中文在 GBK 代码页的 cmd 里会变乱码）。
+- **索引网格要展开**（lindenwood）：`engine.geometry.tube` 返回**带索引**的
+  网格（顶点去重），直接拿 `positions` 当三角汤喂 `vertex_list` 会按
+  "每 3 个顶点一个三角形"重新配对，画出来一团乱麻 —— 必须按 `indices`
+  展开成无索引顶点流。
+- **uniform 被优化掉**（lindenwood）：片元着色器声明了 uniform 但**没用**，
+  GLSL 编译器会把它优化掉，之后 `prog['u_xxx'] = ...` 直接抛
+  `ShaderException: A Uniform with the name ... was not found` —— 声明的
+  每个 uniform 都要真用上。
+- **8-bit 纹理要过 LUT**（cellward）：把格值直接写进 `GL_R8` 纹理，采样时
+  GL 会归一化（1/255≈0.004），活细胞全黑、只剩拖尾在发光 —— 先用一张
+  256 项查找表把值乘到 0..255 再写 `bytes`。
+- **`town.generate_town` 的三个形状事实**（wardfall）：① `wards[].buildings`
+  是**街区（lot）**不是房子（宽度 p50≈4、p90≈26、max≈48 城镇单位），要自己
+  递归切分；② 缩放要按 `wall['radius']` 而不是包围盒 —— 包围盒含外郊、会
+  膨胀 4~8 倍把城缩成一个点；③ `wall['shape'].verts` 经平滑后**顶点序被打乱**
+  且有重复点，城墙环要按 `wall['towers']` 去重 + 极角排序重建。
+- **L-System 的 `F→FF` 是指数膨胀**（lindenwood）：`iters=6` 时公理里的一个
+  `F` 会变成 64 段直管 —— 文法里枝条长度由"剩余展开次数"决定，调文法前先
+  算清楚每层 `F` 的实际段数；树干分叉在原点的文法（如橡树）要补一段合成
+  主干，否则是"三脚架"。
+- **WFC 方向键错位（引擎已修）**：`logic/wfc._DIRS` 曾把右/左/上三个方向的
+  相容键写错位 —— 对称边瓦片（单色边）完全测不出来，道路这类不对称瓦片集
+  则步步矛盾、50 次重启全败。回归测试 `tests/test_wfc.py::
+  test_solve_asymmetric_edges` 已钉死。
+- **per-fragment discard 要 per-leaf 恒定随机数**（lindenwood）：用插值 uv
+  哈希出的随机数在一片叶子内**逐顶点不同**，`discard` 会把叶片啃成锯齿
+  碎块 —— 把每叶随机数写进 `colors.a`（没开混合，alpha 通道免费）随顶点
+  传下去才是整片掉。collapseward 的"事件闪光"也是同一招（a=事件时刻、
+  uv.x=幅度），网格只在状态变化时重建。

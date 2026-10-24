@@ -3,7 +3,7 @@
 > 仓库：<https://gitee.com/siwpan/3dworld-demos> ｜ 许可：MIT（见 [LICENSE](LICENSE)）
 > 引擎本体在独立仓 [siwpan/3dworld](https://gitee.com/siwpan/3dworld)（PyPI 包名 `3dworld`）。
 
-本仓是 **3dworld 三维引擎的演示程序集**：39 个单文件演示 + 两条主线演出入口
+本仓是 **3dworld 三维引擎的演示程序集**：43 个单文件演示 + 两条主线演出入口
 （48 秒五幕演出 / 150 秒六幕走廊漫游）+ 成片录制 / exe 打包 / 批量验收工具。
 
 2026-10-19 从引擎仓剥离：**演示所代表的能力全部保留在引擎内**（`world3d.logic` /
@@ -34,7 +34,7 @@ python kkrieger_demo.py                       150 秒六幕走廊漫游
 > 推导不出本仓路径（`--shot` 截图与 cordis 配置树都靠它们定位）。`env.bat` 一键设好。
 
 **依赖方式已于 2026-10-22 切换**：`examples/*.py` 里不再有任何 `sys.path` 引导
-（旧的那句指向演示仓父目录，剥离后已失效、会让 39 个 demo 全部
+（旧的那句指向演示仓父目录，剥离后已失效、会让 43 个 demo 全部
 `ModuleNotFoundError`），一律由 `pip install 3dworld` 提供。三份清单的分工、
 例外（`mountain.py` 复用兄弟模块的噪声原语）与验证证据见
 [docs/依赖与版本.md](docs/依赖与版本.md)。
@@ -42,7 +42,7 @@ python kkrieger_demo.py                       150 秒六幕走廊漫游
 ## 目录
 
 ```
-examples/        39 个单文件演示与工具（详见 examples/README.md：统一命令行 + 踩坑清单）
+examples/        43 个单文件演示与工具（详见 examples/README.md：统一命令行 + 踩坑清单）
 main.py          48 秒五幕演出入口（能力在引擎 presentation/app.py）
 kkrieger_demo.py 150 秒六幕走廊漫游入口（能力在引擎 presentation/kkrieger_app.py）
 pyglet_3d_demo*.py  历史 pyglet 1.x 兼容件（与 cocos2d 共存环境）
