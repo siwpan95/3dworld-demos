@@ -493,7 +493,7 @@ def build_plant(preset, seed, extra_iters=0):
     # 而且叶位沿整条线段随机取 —— 否则长枝中段光秃秃，
     # 冠层缩成枝头上的几团"绿爆米花"（垂柳第一批版本就栽在这）。
     leaf_count = 0
-    host_frac = 0.012
+    host_frac = 0.030
     hosts = [i for i in range(len(segs))
              if leaves[i] <= max(4.0, total_leaves * host_frac)]
     rng.shuffle(hosts)
@@ -508,7 +508,7 @@ def build_plant(preset, seed, extra_iters=0):
         tip = (a[0] + (bpt[0] - a[0]) * tt,
                a[1] + (bpt[1] - a[1]) * tt,
                a[2] + (bpt[2] - a[2]) * tt)
-        for _ in range(8):
+        for _ in range(12):
             s = lscale * (0.30 + 0.26 * rng.random())
             # 随机朝向的薄片：取一个随机法线，再在其平面内张开
             nx, ny, nz = (rng.gauss(0, 1), rng.gauss(0, 1), rng.gauss(0, 1))

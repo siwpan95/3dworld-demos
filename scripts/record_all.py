@@ -136,6 +136,23 @@ ENTRIES = [
     dict(name='sandward_50s',        mod='examples/sandward.py',     cls='SandwardApp',
          dur=50.0, size=DEMO_SIZE,
          flags='auto'),
+
+    # ---- 2026-10-25 新增 4 个 demo（town / ca / lsystem / wfc）----
+    # 时长都取"自演示循环周期"的整数倍，录满一轮才无缝：
+    dict(name='wardfall_48s',        mod='examples/wardfall.py',     cls=None,
+         dur=48.0, size=DEMO_SIZE),
+         # DAY_LEN=48：完整昼夜一轮（正午 → 黄昏 → 夜里逐窗点亮 → 日出）；
+         # 相机 5°/s 自转，48s 绕 240°
+    dict(name='cellward_40s',        mod='examples/cellward.py',     cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # CYCLE_SEC=8：默认自动轮播，40s 正好走过 5 条 showcase 规则
+    dict(name='lindenwood_52s',      mod='examples/lindenwood.py',   cls=None,
+         dur=52.0, size=DEMO_SIZE),
+         # SEASON_LEN=26：52s = 两轮四季（春→夏→秋→冬→落叶→回春）
+    dict(name='collapseward_40s',    mod='examples/collapseward.py', cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # 110 步/s ⇒ 一局（560 格）≈5.6s + 定格 5s ⇒ 约 10.6s/局，40s 录到 3~4 局
+         # 不同 seed。别加 `hold` —— 那是定格终局观察用的，加了只录得到一局
 ]
 
 #: 跨仓约定：本仓 = `<PROJECTS_ROOT>/3dworld`，兄弟仓直接按相对名找（铁律 5，不写死盘符）
@@ -268,7 +285,34 @@ def build_app(entry):
         app._capture_due = lambda: None
     if hasattr(app, 'shots'):
         app.shots = []
+    # 帧缓冲尺寸 = 回读尺寸，钉一次比不钉稳：本机桌面只有 960×600 时，
+    # pyglet 建 1280×720 窗口**可能**被系统裁到桌面装得下的档位（取决于窗口管理器）。
+    # `resizable=True` 的窗口大多会被拉回请求尺寸，但这不是保证 —— 录出来半尺寸
+    # 的片子看不出错，只能事后 ffprobe 核对。所以这里主动 set_size 并要求一致。
+    # 注意：它**只管窗口**，画面里的信箱留边（如 cellward 按网格宽高比留黑边）
+    # 是 demo 自己的布局，别看到黑边就以为尺寸错了（2026-10-25 就这么误判过一回）。
+    _force_framebuffer_size(app, *(entry['size'] or (None, None)))
     return app, cls
+
+
+def _force_framebuffer_size(app, w, h):
+    """把窗口/帧缓冲拉到录制尺寸；拿不到就如实报，别录出半尺寸的片子。"""
+    if not w or not h:
+        return
+    window = getattr(app, 'window', None)
+    if window is None:
+        win_holder = getattr(app, 'renderer', None)
+        window = getattr(win_holder, 'window', None)
+    if window is None:
+        return
+    window.switch_to()
+    try:
+        window.set_size(w, h)
+    except Exception as exc:                    # 窗口系统拒绝（全屏独占等）
+        print(f'  [warn] set_size({w},{h}) 失败：{exc}', flush=True)
+    if (window.width, window.height) != (w, h):
+        print(f'  [warn] 实际帧缓冲 {window.width}x{window.height}（期望 {w}x{h}）——'
+              f'成片尺寸会跟着变', flush=True)
 
 
 def app_duration(app, cls, fallback):

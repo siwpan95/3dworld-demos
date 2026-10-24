@@ -69,8 +69,14 @@ dist/            exe 与发行版包（本地产物，不入库）
 python scripts\verify_demos.py                全部演示冒烟 + 截图验收
 python scripts\verify_demos.py --bench 3       真实帧率（vsync 与重绘节流全关）
 python scripts\record_all.py --list            查看可录制条目
+python scripts\record_all.py --only wardfall_48s,cellward_40s,lindenwood_52s,collapseward_40s
+                                               只录新增的 4 个（town/ca/lsystem/wfc）
 python scripts\build_exe.py --pack             打包精选 6 个 + 组装发行版
 ```
+
+> 录制需要 ffmpeg：按 `WORLD3D_FFMPEG` 环境变量 → PATH → `<projects>/<兄弟仓>` 相对候选
+> 的顺序找**可跑通的**那一份（PATH 里可能出现坏壳）。Windows PowerShell 里设一次：
+> `$env:WORLD3D_FFMPEG = 'D:\musickit\radio\ffmpeg\ffmpeg.exe'`（换成你本机的路径）。
 
 分发（成片 / exe / Gitee release）的完整手册见 [docs/分发指南.md](docs/分发指南.md)。
 
