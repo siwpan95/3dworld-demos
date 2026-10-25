@@ -40,10 +40,11 @@ bounds / wall / streets / wards / citadel / plaza，确定性可复现（LCG 随
 import math
 import random
 
-from pyglet.gl import (GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, GL_DEPTH_TEST,
-                       GL_FILL, GL_FRONT_AND_BACK, GL_LINE, GL_TRIANGLES,
-                       glClear, glClearColor, glDisable, glEnable,
-                       glPolygonMode)
+from pyglet.gl import (GL_BLEND, GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT,
+                       GL_DEPTH_TEST, GL_FILL, GL_FRONT_AND_BACK, GL_LINE,
+                       GL_ONE_MINUS_SRC_ALPHA, GL_SRC_ALPHA, GL_TRIANGLES,
+                       glBlendFunc, glClear, glClearColor, glDepthMask,
+                       glDisable, glEnable, glPolygonMode)
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
 from pyglet.window import key
@@ -54,6 +55,21 @@ from world3d.logic.camera import OrbitCamera                        # noqa: E402
 from world3d.logic.town import generate_town                        # noqa: E402
 from world3d.platform.app import (DemoApp, make_fullscreen_quad,          # noqa: E402
                                   orbit_camera_input, run)
+
+# 本 demo 的诺德组件拆在私有模块里（仿 examples/_harness.py 约定）。
+# 加 examples/ 到 sys.path 是为了让 verify_demos / record_all 用
+# importlib 加载本文件时也能解析 `_wardfall_nordic`（仅加本目录，不碰引擎路径）。
+import os as _os
+import sys as _sys
+_HERE = _os.path.dirname(_os.path.abspath(__file__))
+if _HERE not in _sys.path:
+    _sys.path.insert(0, _HERE)
+from _wardfall_nordic import (                                       # noqa: E402
+    terrain_height, build_terrain, segment_box_terrain,
+    build_pine_forest, build_longhouse, build_rune_wall,
+    build_citadel, build_plaza, build_gatehouses,
+    dragon_body_mesh, dragon_wing_mesh, dragon_eye_mesh,
+    dragon_fire_mesh, dragon_city_pose, SnowField, nordic_ost)
 
 VERTEX_SRC = '''#version 330 core
 in vec3 position;
@@ -104,6 +120,20 @@ uniform vec3 u_fog_col;
 uniform float u_fog_density;
 uniform vec3 u_eye;
 
+uniform float u_snow;          // 0 = 盛夏, 1 = 深冬
+uniform float u_rune;         // 龙语墙/龙眼 辉光强度
+uniform float u_fade;         // 龙/龙焰 透明淡入（城市绘制前复位 1.0）
+// 4 盏点光：pyglet 不支持向量数组 uniform（vec3[4]/vec4[4] 都被当成标量数组），
+// 故拆成 4 组独立 vec4：xyz 位置 / 颜色 + w 半径（颜色 w 预留）。
+uniform vec4 u_pl0;   // 火塘
+uniform vec4 u_pl1;   // 龙语墙辉
+uniform vec4 u_pl2;   // 月华冷光
+uniform vec4 u_pl3;   // 龙焰（跟着龙）
+uniform vec4 u_plc0;
+uniform vec4 u_plc1;
+uniform vec4 u_plc2;
+uniform vec4 u_plc3;
+
 out vec4 final_colors;
 
 float hash21(vec2 p) {
@@ -119,6 +149,14 @@ float vnoise(vec2 p) {
     float a = hash21(i), b = hash21(i + vec2(1.0, 0.0));
     float c = hash21(i + vec2(0.0, 1.0)), d = hash21(i + vec2(1.0, 1.0));
     return mix(mix(a, b, f.x), mix(c, d, f.x), f.y);
+}
+
+// 单盏点光（距离平方衰减，半径越大约束光晕范围）；pyglet 不支持向量数组 uniform，
+// 故 4 盏灯走 4 组独立 vec4，这里用函数避免重复四遍。
+vec3 point_light(vec4 p, vec4 c, vec3 w) {
+    vec3 dd = p.xyz - w;
+    float dist2 = dot(dd, dd);
+    return c.rgb * (p.w / (1.0 + dist2 * 0.04));
 }
 
 void main() {
@@ -170,11 +208,50 @@ void main() {
     float fog = 1.0 - exp(-pow(d * u_fog_density, 2.0));
     lit = mix(lit, u_fog_col, clamp(fog, 0.0, 0.94));
 
+    // --- 积雪：朝上的表面深冬被雪覆盖（地面/屋顶/墙/木/石/广场）---
+    float upf = smoothstep(0.5, 0.92, n.y);
+    float snow = u_snow * upf;
+    if (v_kind < 0.5 || (v_kind > 3.5 && v_kind < 4.5)
+        || (v_kind > 4.5 && v_kind < 10.5)
+        || (v_kind > 11.5 && v_kind < 12.5)) {
+        vec3 sc = mix(vec3(0.86, 0.89, 0.95), vec3(0.70, 0.78, 0.92),
+                      clamp(v_world.y * 0.02, 0.0, 1.0));
+        lit = mix(lit, sc, snow * 0.9);
+    }
+
+    // --- 龙语墙 / 龙眼：emissive 由 u_rune 驱动 ---
+    if (v_kind > 10.5 && v_kind < 11.5) {
+        lit += u_rune * vec3(0.95, 1.02, 1.12);
+    }
+
+    // --- 火塘：暖光自发 ---
+    if (v_kind > 13.5 && v_kind < 14.5) {
+        lit += vec3(1.6, 0.7, 0.2) * 1.4;
+    }
+
+    // --- 龙家族：自发光 + 透明淡入（u_fade 由调用方在画龙前设置）---
+    if (v_kind > 19.5) {
+        vec3 emis = vec3(0.0);
+        if (v_kind < 20.5)      emis = vec3(0.25, 0.22, 0.20) * 0.6;
+        else if (v_kind < 21.5) emis = vec3(0.20, 0.18, 0.16) * 0.5;
+        else if (v_kind < 22.5) emis = vec3(2.2, 1.7, 0.4);
+        else                    emis = vec3(2.4, 1.1, 0.3);
+        lit = lit * 0.4 + emis;
+    }
+
+    // --- 4 盏点光（火塘 / 龙语墙辉 / 月华 / 龙焰）---
+    lit += point_light(u_pl0, u_plc0, v_world);
+    lit += point_light(u_pl1, u_plc1, v_world);
+    lit += point_light(u_pl2, u_plc2, v_world);
+    lit += point_light(u_pl3, u_plc3, v_world);
+
     // Reinhard 软肩：正午直射会把屋顶打到 0.7 以上纯白，陡坡全糊成纸片
     lit *= 1.30;
     lit = lit / (lit + vec3(0.95));
     lit = pow(max(lit, 0.0), vec3(1.02));
-    final_colors = vec4(lit, v_alpha);
+    float a = v_alpha;
+    if (v_kind > 19.5 && v_kind < 23.5) { a = u_fade; }
+    final_colors = vec4(lit, a);
 }'''
 
 SKY_VERT = '''#version 330 core
@@ -199,6 +276,7 @@ uniform vec3 u_zenith;
 uniform vec3 u_glow;
 uniform float u_ty;       // tan(fovy/2)
 uniform float u_aspect;
+uniform float u_snow;      // 深冬：天色偏冷、太阳盘减弱
 
 void main() {
     // 由屏幕坐标反推视线方向（相机基向量已在 CPU 侧算好）。
@@ -208,12 +286,83 @@ void main() {
     vec3 ray = normalize(u_right * (p.x * u_ty * u_aspect)
                        + u_up * (p.y * u_ty) + u_fwd);
     vec3 c = mix(u_horizon, u_zenith, smoothstep(-0.05, 0.62, ray.y));
+    // 深冬：天色整体往冷蓝偏
+    c = mix(c, mix(c, vec3(0.32, 0.40, 0.58), 0.6), u_snow * 0.6);
 
     // 太阳：核心 + 两层光晕（角度距离，与相机朝向无关）
     float d = max(dot(ray, u_sun), 0.0);
-    c += u_glow * (pow(d, 1200.0) * 8.0 + pow(d, 32.0) * 0.28);
+    c += u_glow * (pow(d, 1200.0) * 8.0 + pow(d, 32.0) * 0.28)
+              * (1.0 - 0.5 * u_snow);
     final_colors = vec4(c, 1.0);
 }'''
+
+
+# 飘雪：极简 billboard shader（只吃 WindowBlock 的投影/视图，直写 position 缓冲）。
+# u_alpha 由季节驱动：盛夏(snow→0)雪场淡出为不可见。
+SNOW_VERT = '''#version 330 core
+in vec3 position;
+uniform WindowBlock {
+    mat4 projection;
+    mat4 view;
+} window;
+void main() {
+    gl_Position = window.projection * window.view * vec4(position, 1.0);
+}'''
+
+SNOW_FRAG = '''#version 330 core
+out vec4 final_colors;
+uniform float u_alpha;
+void main() {
+    final_colors = vec4(0.90, 0.94, 1.00, 0.85 * u_alpha);
+}'''
+
+
+def _md_vlist(program, md, kind_val, color=None):
+    """把 world3d.engine.geometry 产出的（已非索引）MeshData 立成独立 vertex_list。
+
+    geometry 的 tube/box/sphere/lathe/merge_meshes **不写 kind 字段**，这里补一个
+    常数 kind（龙家族用 20~23，让片元着色器走自发光 + u_fade 透明分支）。
+    颜色若为空（几何体没带 color）就给一个冷灰默认，避免黑块。
+    """
+    n = md.vertex_count
+    kind_arr = [float(kind_val)] * n
+    if md.colors:
+        cols = md.colors
+    else:
+        c = color if color else (0.85, 0.85, 0.90, 1.0)
+        cols = list(c) * n
+    return program.vertex_list(
+        n, GL_TRIANGLES,
+        position=('f', md.positions),
+        normals=('f', md.normals),
+        uvs=('f', md.uvs),
+        colors=('f', cols),
+        kind=('f', kind_arr))
+
+
+def _upload_point_lights(prog, pl_pos, pl_col, pl_rad):
+    """把 4 盏点光（每盏 xyz + 半径 / rgb）写到 8 个独立 vec4 uniform。
+
+    pyglet 不支持向量数组 uniform（vec3[4]/vec4[4] 都被当成标量数组），
+    所以拆成 u_pl{i} = (x,y,z,半径) 与 u_plc{i} = (r,g,b,1)。
+    """
+    prog['u_pl0'] = (pl_pos[0], pl_pos[1], pl_pos[2], pl_rad[0])
+    prog['u_plc0'] = (pl_col[0], pl_col[1], pl_col[2], 1.0)
+    prog['u_pl1'] = (pl_pos[3], pl_pos[4], pl_pos[5], pl_rad[1])
+    prog['u_plc1'] = (pl_col[3], pl_col[4], pl_col[5], 1.0)
+    prog['u_pl2'] = (pl_pos[6], pl_pos[7], pl_pos[8], pl_rad[2])
+    prog['u_plc2'] = (pl_col[6], pl_col[7], pl_col[8], 1.0)
+    prog['u_pl3'] = (pl_pos[9], pl_pos[10], pl_pos[11], pl_rad[3])
+    prog['u_plc3'] = (pl_col[9], pl_col[10], pl_col[11], 1.0)
+
+
+# 龙在局部坐标系里的尺寸太小（脊线约 8 单位），相对半径 ~70 的城显得像只麻雀。
+# 整体放大 5 倍后翼展约 40 单位，绕城飞才够分量。
+DRAGON_SCALE = 5.0
+# 龙眼/龙焰相对龙躯的局部偏移（脊线 +z 朝前、原点为肩）。
+_DRAGON_EYE_L = (-0.18, 0.42, 3.05)
+_DRAGON_EYE_R = (0.18, 0.42, 3.05)
+_DRAGON_FIRE_T = [1, 0, 0, 0, 0, 1, 0, 0, 0, 0, 1, 0, 0, 0.40, 3.00, 1]
 
 
 # --------------------------------------------------------------------- 几何 --
@@ -461,6 +610,10 @@ def disc(mb, cx, cz, r, y0, y1, col, kind, segs=14):
 WARD_HEIGHT = {
     'Cathedral': 1.55, 'Administration': 1.05, 'Patriciate': 0.88,
     'Merchant': 0.72, 'Market': 0.62, 'Craftsmen': 0.50, 'Slum': 0.34,
+    # 补全 town 模块其余 ward 类型（ citadel=Castle / plaza=Market 已由专用件接管，
+    # 这里覆盖 Military / Park / Common / Farm / GateWard 等）
+    'Military': 0.70, 'Park': 0.30, 'Castle': 1.60, 'Common': 0.50,
+    'Farm': 0.35, 'GateWard': 0.55,
 }
 TARGET_R = 70.0          # 城墙半径映射到的世界半径（决定整城的视觉尺度）
 LOT_MAX_WIDTH = 5.5      # 街区切分阈值（城镇单位）：超过就沿最长轴对半切
@@ -473,12 +626,16 @@ ROOF_TILE = ((0.38, 0.24, 0.20), (0.30, 0.31, 0.36), (0.42, 0.31, 0.24),
 
 
 def build_city_mesh(seed, n_wards):
-    """``generate_town`` → (MeshBuilder, town, 建筑数, 塔楼数)。
+    """``generate_town`` → (MeshBuilder, town, 建筑数, 塔楼数, info)。
 
     **缩放基准是城墙半径，不是 ``bounds``**（这里踩过一个坑）：
     ``bounds`` 把城墙外的郊区也框进去了，而郊区能把包围盒撑到城墙半径的 4~8 倍；
     按 bounds 归一化会让全城缩成一小撮、城墙变成中心的一圈白线（第一版就是这样）。
     墙内的 ``radius`` 才是"这座城"的真实尺度，墙外部分当郊区，交给雾去淡出。
+
+    地面/路面/建筑/城墙的 base 全部采样 ``terrain_height`` —— 于是全城依**三级
+    台地**而建（白漫城式：内城最高、外墙相隔），不再是一块平盘。诺德组件（松林、
+    长屋、龙语墙、城堡、广场、城门楼）也并入同一个 mb，保持全城单 draw call。
     """
     town = generate_town(seed=seed, n_wards=n_wards, walled=True, scale_to=900)
     wl = town['wall']
@@ -491,30 +648,24 @@ def build_city_mesh(seed, n_wards):
     def P(pt):                            # town (x, y) → world (x, z)
         return ((pt.x - cx) * S, (pt.y - cy) * S)
 
-    def poly_of(gon):
-        return ensure_ccw([P(v) for v in gon.verts])
-
     mb = MeshBuilder()
+    mbn = MeshBuilder()      # 诺德专属叠加层（长屋 + 龙语墙），可单键 G 显隐
 
-    # --- 地面盘（远超郊区，边缘在雾里消失） ---
-    R_world = 2400.0
-    mb.quad((-R_world, -0.04, -R_world), (R_world, -0.04, -R_world),
-            (R_world, -0.04, R_world), (-R_world, -0.04, R_world),
-            (0.0, 1.0, 0.0), (0.26, 0.30, 0.19, 1.0),
-            ((0, 0), (1, 0), (1, 1), (0, 1)), 0.0)
+    # --- 地形：三级台地（原平盘被细分地形网格取代，边缘在雾里消失）---
+    build_terrain(mb, 900.0, 12.0)
 
     # 注：不画 ward 地块色板。原版是 2D 俯视渲染，色板是"分区着色"；搬到 3D 里
     # 它就变成一片片压平的大三角面片，把街道和屋顶全盖住（实测画面像一堆彩色纸片）。
     # 分区信息改由**立面色的轻微色偏**承担（见下面 hue 那一行）。
 
-    # --- 路面：碎石路的暖灰；抬到地块之上避免共面 z-fighting ---
+    # --- 路面：碎石路暖灰；沿折线细分、逐顶点贴地（否则跨台地会穿地/悬空）---
     road_col = (0.44, 0.41, 0.36, 1.0)
     for line in town['streets']:
         for i in range(len(line) - 1):
-            segment_box(mb, P(line[i]), P(line[i + 1]), max(1.6, 3.4 * S),
-                        0.04, 0.16, road_col, 1.0)
+            segment_box_terrain(mb, P(line[i]), P(line[i + 1]),
+                                max(1.6, 3.4 * S), road_col, 1.0)
 
-    # --- 建筑（街区 → 递归切分成联排小屋） ---
+    # --- 建筑（街区 → 递归切分成联排小屋），base 落在地形上 ---
     buildings = 0
     for ward in town['wards']:
         wr, wg, wb = ward['color']
@@ -549,16 +700,17 @@ def build_city_mesh(seed, n_wards):
                 rt = ROOF_TILE[rng.randrange(len(ROOF_TILE))]
                 roofc = (rt[0], rt[1], rt[2], 1.0)
 
-                extrude(mb, poly, 0.16, h, roofc, wall, 4.0, 3.0)
+                by = terrain_height(*centroid_z(poly)) + 0.16
+                extrude(mb, poly, by, by + h, roofc, wall, 4.0, 3.0)
                 if foot < 12.0 and is_convex(poly) and rng.random() < 0.72:
                     # 屋顶要**陡**：早先给 foot*0.22 的浅坡，从空中看就是一整块
                     # 被太阳打平的浅色三角面片（实测整城像撒了一地纸片）。
                     # 陡坡（≈0.5 倍进深）才出得了中世纪那种尖屋顶的天际线。
-                    pyramid_roof(mb, poly, h, h + min(foot * 0.34, 2.0),
+                    pyramid_roof(mb, poly, by + h, by + h + min(foot * 0.34, 2.0),
                                  roofc, 4.0)
                 buildings += 1
 
-    # --- 城墙 ---
+    # --- 城墙（base 落在地形上）---
     towers = 0
     if wl:
         wall_col = (0.66, 0.64, 0.58, 1.0)
@@ -588,22 +740,86 @@ def build_city_mesh(seed, n_wards):
             for ln, i in spans:
                 if i in open_gates or ln <= 1e-6:
                     continue
-                segment_box(mb, ring[i], ring[(i + 1) % n], th,
-                            -0.2, wall_h, wall_col, 5.0)
+                p0, p1 = ring[i], ring[(i + 1) % n]
+                yb = (terrain_height(p0[0], p0[1]) + terrain_height(p1[0], p1[1])) \
+                    * 0.5 - 0.3
+                segment_box(mb, p0, p1, th, yb, yb + wall_h, wall_col, 5.0)
         for p in wl.get('towers', []):
             q = P(p)
-            disc(mb, q[0], q[1], max(0.5, 0.85 * S), -0.2, wall_h * 1.40,
+            tb = terrain_height(q[0], q[1]) - 0.3
+            disc(mb, q[0], q[1], max(0.5, 0.85 * S), tb, tb + wall_h * 1.40,
                  tower_col, 6.0)
         towers = len(wl.get('towers', []))
 
-    return mb, town, buildings, towers
+    # --- 诺德组件 ---
+    # 松林 / 城堡 / 广场 / 城门楼并入主 mesh（mb，仍单 draw call）；
+    # 长屋 + 龙语墙这两个最具诺德辨识度的件单独放进 mbn，可被 G 键整体显隐。
+    info = {'forest': 0, 'longhouse': 0, 'rune': 0, 'gate': 0,
+            'citadel': False, 'plaza': False,
+            'hearth': [], 'rune_pos': (0.0, 0.0, 0.0),
+            'longhouse_pos': []}
+    # 松林：城墙外环
+    info['forest'] = build_pine_forest(mb, seed, inner=TARGET_R + 8.0,
+                                       outer=TARGET_R + 150.0, count=260)
+    # 长屋（船形屋顶）：一座近城堡/城心，一座在中环
+    lh_a = 2.2
+    if town['citadel']:
+        ccx = sum(P(v)[0] for v in town['citadel'].shape.verts) \
+            / len(town['citadel'].shape.verts)
+        ccz = sum(P(v)[1] for v in town['citadel'].shape.verts) \
+            / len(town['citadel'].shape.verts)
+        lh0 = (ccx + 7.0, ccz + 4.0, 0.5)
+    else:
+        lh0 = (9.0, 11.0, 0.4)
+    lh1 = (math.cos(lh_a) * 30.0, math.sin(lh_a) * 30.0, lh_a + 1.2)
+    for (x, z, yaw) in (lh0, lh1):
+        hp = build_longhouse(mbn, x, z, yaw)
+        info['longhouse'] += 1
+        info['hearth'].append(hp)
+        info['longhouse_pos'].append((x, z))
+    # 龙语墙：城外山坡，面朝城心
+    ra = lh_a + math.pi
+    rrad = TARGET_R + 30.0
+    rx, rz = math.cos(ra) * rrad, math.sin(ra) * rrad
+    info['rune_pos'] = build_rune_wall(mbn, rx, rz, ra + math.pi / 2.0)
+    info['rune'] = 1
+    # 城堡（云顶区主堡）
+    if town['citadel']:
+        info['citadel'] = True
+        build_citadel(mb, *_citadel_center(town, P))
+    # 广场（中央石板；Market ward 已产出市集建筑，这里补一块铺地）
+    if town['plaza']:
+        info['plaza'] = True
+        pcx = sum(P(v)[0] for v in town['plaza'].shape.verts) \
+            / len(town['plaza'].shape.verts)
+        pcz = sum(P(v)[1] for v in town['plaza'].shape.verts) \
+            / len(town['plaza'].shape.verts)
+        build_plaza(mb, pcx, pcz, R=10.0)
+    # 城门楼（用 wall['gates']）
+    if wl and wl.get('gates'):
+        gate_pts = [P(g) for g in wl['gates']]
+        info['gate'] = build_gatehouses(mb, gate_pts)
+
+    return mb, mbn, town, buildings, towers, info
+
+
+def _citadel_center(town, P):
+    """城堡 patch 的质心（世界坐标）。"""
+    vs = town['citadel'].shape.verts
+    cxw = sum(P(v)[0] for v in vs) / len(vs)
+    czw = sum(P(v)[1] for v in vs) / len(vs)
+    return cxw, czw
 
 
 class Wardfall(DemoApp):
-    TITLE = 'WARDfall - procedural medieval city (logic/town)'
-    HELP = 'N city  D day/night  W wire  1/2/3 size  C auto cam  SPACE pause  ESC'
+    TITLE = 'WARDfall - procedural Nordic city-state (logic/town + nordic_saga)'
+    HELP = ('N 换城  D 昼夜  W 线框  1/2/3 规模  C 自动机位  S 季节  '
+            'F 龙  L 龙语辉光  G 诺德层  M 静音  SPACE 暂停  ESC')
     DURATION = None
-    SHOTS = ((3.0, 'docs/wardfall_01.png'), (26.0, 'docs/wardfall_02.png'))
+    SHOTS = ((3.0, 'docs/wardfall_01.png'),
+             (26.0, 'docs/wardfall_02.png'),
+             (34.0, 'docs/wardfall_03_winter_dragon.png'),
+             (50.0, 'docs/wardfall_04_summer.png'))
 
     SIZES = (24, 40, 64)
     DAY_LEN = 48.0
@@ -616,6 +832,9 @@ class Wardfall(DemoApp):
         self.sky_prog = ShaderProgram(Shader(SKY_VERT, 'vertex'),
                                       Shader(SKY_FRAG, 'fragment'))
         self.sky_quad = make_fullscreen_quad(self.sky_prog)
+        # 飘雪用独立极简 shader（只吃 WindowBlock，不碰城市 uniform）
+        self.snow_prog = ShaderProgram(Shader(SNOW_VERT, 'vertex'),
+                                      Shader(SNOW_FRAG, 'fragment'))
         seed = 20261024
         size_i = 1
         for f in self.args.flags:
@@ -630,6 +849,9 @@ class Wardfall(DemoApp):
                 size_i = 0
         self.seed = seed
         self.size_i = size_i
+        self.snow_field = SnowField(self.snow_prog, count=1500,
+                                    half=(160.0, 75.0, 160.0), size=0.55,
+                                    speed=7.0, seed=seed)
         self.auto_cam = 'auto' in self.args.flags
         self.day_cycle = True
         self.wire = False
@@ -639,22 +861,55 @@ class Wardfall(DemoApp):
                                dist_range=(20.0, 700.0))
         orbit_camera_input(self, self.cam)
         self.model = Mat4()
+
+        # --- 龙：5 个独立 vertex_list（躯体 / 右翼 / 左翼 / 眼 / 焰）---
+        self.dragon_body = _md_vlist(self.program, dragon_body_mesh(), 20)
+        self.dragon_wing_r = _md_vlist(self.program, dragon_wing_mesh(1.0), 21)
+        self.dragon_wing_l = _md_vlist(self.program, dragon_wing_mesh(-1.0), 21)
+        self.dragon_eye = _md_vlist(self.program, dragon_eye_mesh(), 22)
+        fm = dragon_fire_mesh()
+        fm.transform(_DRAGON_FIRE_T)              # 挪到龙嘴前
+        self.dragon_fire = _md_vlist(self.program, fm, 23)
+
+        # --- 状态机 ---
+        self.snow = 1.0            # 当前积雪强度（季节插值）
+        self.snow_target = 1.0     # S 键：1 深冬 / 0 盛夏
+        self._auto_season = True   # 录制时自动由深冬过渡到盛夏（手动按 S 即取消）
+        self.show_dragon = True    # F 键
+        self.show_nordic = True    # G 键：长屋 + 龙语墙层
+        self.rune_on = True        # L 键：龙语墙辉光
+        self.muted = False         # M 键：静音
+        self.audio = nordic_ost(duration=60.0)
+        if self.audio is not None:
+            try:
+                self.audio.play()
+            except Exception as e:                      # noqa: BLE001
+                print(f'[audio] play failed: {e}')
+
         self.rebuild()
 
     # ------------------------------------------------------------ 重建 --
     def rebuild(self):
-        mb, town, n_b, n_t = build_city_mesh(self.seed, self.SIZES[self.size_i])
+        mb, mbn, town, n_b, n_t, info = build_city_mesh(
+            self.seed, self.SIZES[self.size_i])
         self.city = self.program.vertex_list(
             mb.vertex_count, GL_TRIANGLES,
             position=('f', mb.pos), normals=('f', mb.nrm),
             uvs=('f', mb.uv), colors=('f', mb.col), kind=('f', mb.kind))
+        self.nordic = self.program.vertex_list(
+            mbn.vertex_count, GL_TRIANGLES,
+            position=('f', mbn.pos), normals=('f', mbn.nrm),
+            uvs=('f', mbn.uv), colors=('f', mbn.col), kind=('f', mbn.kind))
+        self.info = info
         self.n_buildings = n_b
         self.n_wards = len(town['wards'])
         self.n_streets = len(town['streets'])
         self.n_towers = n_t
-        self.n_tris = mb.vertex_count // 3
+        self.n_tris = (mb.vertex_count + mbn.vertex_count) // 3
         print(f'[wardfall] seed={self.seed} wards={self.SIZES[self.size_i]} '
-              f'buildings={n_b} towers={n_t} tris={self.n_tris}')
+              f'buildings={n_b} towers={n_t} forest={info["forest"]} '
+              f'longhouse={info["longhouse"]} rune={info["rune"]} '
+              f'gate={info["gate"]} tris={self.n_tris}')
 
     # ------------------------------------------------------------ 交互 --
     def on_key(self, symbol, modifiers):
@@ -671,6 +926,25 @@ class Wardfall(DemoApp):
             self.wire = not self.wire
         elif symbol == k.C:
             self.auto_cam = not self.auto_cam
+        elif symbol == k.S:
+            self._auto_season = False
+            self.snow_target = 0.0 if self.snow_target > 0.5 else 1.0
+        elif symbol == k.F:
+            self.show_dragon = not self.show_dragon
+        elif symbol == k.L:
+            self.rune_on = not self.rune_on
+        elif symbol == k.G:
+            self.show_nordic = not self.show_nordic
+        elif symbol == k.M:
+            self.muted = not self.muted
+            if self.audio is not None:
+                try:
+                    if self.muted:
+                        self.audio.pause()
+                    else:
+                        self.audio.play()
+                except Exception:                      # noqa: BLE001
+                    pass
 
     # ------------------------------------------------------------ 昼夜 --
     def env_colors(self):
@@ -702,6 +976,15 @@ class Wardfall(DemoApp):
             self.cam.yaw += dt * 5.0
             self.cam.pitch = 15.0 + 5.0 * math.sin(self.time * 0.11)
             self.cam.dist = 190.0 + 24.0 * math.sin(self.time * 0.07)
+        # 季节插值：S 键切换 snow_target，雪量平滑过渡（盛夏↔深冬）
+        if self._auto_season and self.time > 38.0:
+            self.snow_target = 0.0          # 录制中段自动由深冬转入盛夏
+            self._auto_season = False
+        self.snow += (self.snow_target - self.snow) * min(1.0, dt * 1.5)
+        # 飘雪跟随相机 XZ 更新（CPU 直写顶点缓冲）
+        eye = self.cam.eye
+        fwd = (self.cam.target - eye).normalize()
+        self.snow_field.update(dt, eye, fwd)
 
     # ------------------------------------------------------------ 渲染 --
     def render(self):
@@ -752,16 +1035,112 @@ class Wardfall(DemoApp):
         prog['u_fog_density'] = 0.0017
         eye = self.cam.eye
         prog['u_eye'] = (eye.x, eye.y, eye.z)
+        # --- 季节 / 龙语辉光 / 4 盏点光（pyglet 不支持向量数组 uniform，
+        #     故拆成 8 个 vec4：u_pl{i} = (x,y,z,半径) / u_plc{i} = (r,g,b,1)）---
+        prog['u_snow'] = self.snow
+        prog['u_rune'] = 1.0 if self.rune_on else 0.0
+        prog['u_fade'] = 1.0
+        pl_pos = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        pl_col = [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0]
+        pl_rad = [0.0, 0.0, 0.0, 0.0]
+        if self.info['hearth']:
+            hx, hy, hz = self.info['hearth'][0]
+            pl_pos[0:3] = [hx, hy, hz]
+            pl_col[0:3] = [1.6, 0.7, 0.25]
+            pl_rad[0] = 26.0
+        rx, ry, rz = self.info['rune_pos']
+        pl_pos[3:6] = [rx, ry, rz]
+        pl_col[3:6] = [0.5, 1.4, 1.8] if self.rune_on else [0, 0, 0]
+        pl_rad[1] = 44.0
+        pl_pos[6:9] = [0.0, 45.0, 0.0]            # 月华冷光（高空补光）
+        pl_col[6:9] = [0.25, 0.32, 0.55]
+        pl_rad[2] = 130.0
+        _upload_point_lights(prog, pl_pos, pl_col, pl_rad)
+
+        # --- 城市 + 诺德叠加层（同 program，单 draw call 各一）---
+        if self.wire:
+            glPolygonMode(GL_FRONT_AND_BACK, GL_LINE)
         self.city.draw(GL_TRIANGLES)
+        if self.show_nordic:
+            self.nordic.draw(GL_TRIANGLES)
         glPolygonMode(GL_FRONT_AND_BACK, GL_FILL)
+
+        # --- 龙：绕城圆形轨迹，5 段各自带模型矩阵 ---
+        if self.show_dragon:
+            pos, yaw, wing, alpha = dragon_city_pose(self.time)
+            M = (Mat4.from_translation(Vec3(*pos))
+                 @ Mat4.from_rotation(yaw, Vec3(0, 1, 0))
+                 @ Mat4.from_scale(Vec3(DRAGON_SCALE, DRAGON_SCALE,
+                                         DRAGON_SCALE)))
+            Rw = Mat4.from_rotation(wing, Vec3(0, 0, 1))
+            wing_r_mat = M @ Rw
+            wing_l_mat = M @ Mat4.from_rotation(-wing, Vec3(0, 0, 1))
+            eye_l_mat = M @ Mat4.from_translation(Vec3(*_DRAGON_EYE_L))
+            eye_r_mat = M @ Mat4.from_translation(Vec3(*_DRAGON_EYE_R))
+            pl_pos[9:12] = [pos[0], pos[1], pos[2]]   # 龙焰点光跟着龙
+            pl_col[9:12] = [2.4, 1.1, 0.3]
+            pl_rad[3] = 30.0
+            _upload_point_lights(prog, pl_pos, pl_col, pl_rad)
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+            glDepthMask(False)
+            prog['u_fade'] = alpha
+            prog['u_model'] = M
+            self.dragon_body.draw(GL_TRIANGLES)
+            prog['u_model'] = eye_l_mat
+            self.dragon_eye.draw(GL_TRIANGLES)
+            prog['u_model'] = eye_r_mat
+            self.dragon_eye.draw(GL_TRIANGLES)
+            prog['u_model'] = wing_r_mat
+            self.dragon_wing_r.draw(GL_TRIANGLES)
+            prog['u_model'] = wing_l_mat
+            self.dragon_wing_l.draw(GL_TRIANGLES)
+            prog['u_model'] = M
+            self.dragon_fire.draw(GL_TRIANGLES)
+            glDepthMask(True)
+            glDisable(GL_BLEND)
+            prog['u_fade'] = 1.0
+        else:
+            _upload_point_lights(prog, pl_pos, pl_col, pl_rad)
+
+        # --- 飘雪（独立极简 shader，跟相机 XZ，深冬才可见）---
+        if self.snow > 0.01:
+            glEnable(GL_BLEND)
+            glBlendFunc(GL_SRC_ALPHA, GL_ONE_MINUS_SRC_ALPHA)
+            glDepthMask(False)
+            sn = self.snow_prog
+            sn.use()
+            sn['u_alpha'] = self.snow
+            self.snow_field.vlist.draw(GL_TRIANGLES)
+            glDepthMask(True)
+            glDisable(GL_BLEND)
+            prog.use()
+
         self.window.projection = self.perspective
 
     def status_text(self):
         hh = (self.day_phase * 24.0) % 24.0
+        flags = ''
+        flags += '❄' if self.snow_target > 0.5 else '☀'
+        flags += 'D' if self.show_dragon else '-'
+        flags += 'R' if self.rune_on else '-'
+        flags += 'N' if self.show_nordic else '-'
+        flags += ('M' if self.muted else '♪')
         return (f'seed {self.seed}  {self.SIZES[self.size_i]} wards  '
                 f'{self.n_buildings} buildings  {self.n_streets} streets  '
                 f'{self.n_towers} towers  {self.n_tris} tris  {hh:4.1f}h  '
-                f'{self.fps:5.1f} fps{"  [PAUSED]" if self.paused else ""}')
+                f'{flags}  {self.fps:5.1f} fps'
+                f'{"  [PAUSED]" if self.paused else ""}')
+
+    def close(self):
+        # TimelineAudio.close() 会 pause() + delete() 播放器，确保 pyglet.app.run()
+        # 在窗口关闭后能正常返回（否则 loop=True 的 Player 会拽住事件循环、进程不退）。
+        if self.audio is not None:
+            try:
+                self.audio.close()
+            except Exception:                      # noqa: BLE001
+                pass
+        self.audio = None
 
 
 if __name__ == '__main__':
