@@ -582,3 +582,17 @@ def nordic_ost(duration=60.0):
     except Exception as e:                       # noqa: BLE001
         print(f'[audio] nordic_ost init failed: {e}')
         return None
+
+
+def wardfall_ost(duration=60.0):
+    """Wardfall 多段情绪配乐：冬境(ambient) → 巨龙(eerie) → 城邦(band) →
+    盛夏(ambient)。直接复用融合系统的情绪段（fusion_audio.build_mood_ost），
+    失败则回退到 nordic_ost。"""
+    try:
+        from world3d.logic.fusion_audio import ensure_wardfall_ost
+        from world3d.engine.audio import TimelineAudio
+        wav = ensure_wardfall_ost(duration=duration)
+        return TimelineAudio(wav, loop=True, volume=0.8)
+    except Exception as e:                       # noqa: BLE001
+        print(f'[audio] wardfall_ost failed, fallback nordic_ost: {e}')
+        return nordic_ost(duration)

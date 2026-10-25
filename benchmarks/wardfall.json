@@ -1,0 +1,68 @@
+{
+  "meta": {
+    "generated_by": "scripts/bench_wardfall.py",
+    "engine": "world3d (editable install)",
+    "seed": 20261024,
+    "note": "build_ms/tris/counts 为本机实测几何基线；fps_* 需在有显示的 GPU 机器上跑 `python scripts/bench_wardfall.py --bench-run` 填充。",
+    "command_full": "python scripts/bench_wardfall.py --bench-run"
+  },
+  "sizes": [
+    {
+      "label": "small",
+      "flag": "small",
+      "wards": 24,
+      "tris": 64828,
+      "buildings": 464,
+      "towers": 21,
+      "forest": 260,
+      "longhouse": 2,
+      "rune": 1,
+      "gate": 28,
+      "streets": 26,
+      "build_ms": 357.8,
+      "fps_mean": null,
+      "fps_median": null,
+      "fps_p1": null,
+      "worst_frame_ms": null,
+      "jank_pct": null
+    },
+    {
+      "label": "default",
+      "flag": null,
+      "wards": 40,
+      "tris": 72914,
+      "buildings": 962,
+      "towers": 30,
+      "forest": 260,
+      "longhouse": 2,
+      "rune": 1,
+      "gate": 28,
+      "streets": 27,
+      "build_ms": 452.8,
+      "fps_mean": null,
+      "fps_median": null,
+      "fps_p1": null,
+      "worst_frame_ms": null,
+      "jank_pct": null
+    },
+    {
+      "label": "big",
+      "flag": "big",
+      "wards": 64,
+      "tris": 86703,
+      "buildings": 2006,
+      "towers": 17,
+      "forest": 260,
+      "longhouse": 2,
+      "rune": 1,
+      "gate": 28,
+      "streets": 27,
+      "build_ms": 652.4,
+      "fps_mean": null,
+      "fps_median": null,
+      "fps_p1": null,
+      "worst_frame_ms": null,
+      "jank_pct": null
+    }
+  ]
+}

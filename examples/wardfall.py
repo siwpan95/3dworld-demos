@@ -69,7 +69,8 @@ from _wardfall_nordic import (                                       # noqa: E40
     build_pine_forest, build_longhouse, build_rune_wall,
     build_citadel, build_plaza, build_gatehouses,
     dragon_body_mesh, dragon_wing_mesh, dragon_eye_mesh,
-    dragon_fire_mesh, dragon_city_pose, SnowField, nordic_ost)
+    dragon_fire_mesh, dragon_city_pose, SnowField, nordic_ost,
+    wardfall_ost)
 
 VERTEX_SRC = '''#version 330 core
 in vec3 position;
@@ -879,7 +880,7 @@ class Wardfall(DemoApp):
         self.show_nordic = True    # G 键：长屋 + 龙语墙层
         self.rune_on = True        # L 键：龙语墙辉光
         self.muted = False         # M 键：静音
-        self.audio = nordic_ost(duration=60.0)
+        self.audio = wardfall_ost(duration=60.0)   # 多段情绪 OST（回退 nordic_ost）
         if self.audio is not None:
             try:
                 self.audio.play()
