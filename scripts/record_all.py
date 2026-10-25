@@ -141,7 +141,7 @@ ENTRIES = [
     # 时长都取"自演示循环周期"的整数倍，录满一轮才无缝：
     dict(name='wardfall_48s',        mod='examples/wardfall.py',     cls=None,
          dur=48.0, size=DEMO_SIZE,
-         audio='assets/wardfall_ost_60s.wav',
+         audio='assets/nordic_saga_ost_60s.wav',
          ost_fn='world3d.logic.nordic_audio:ensure_ost'),
          # 程序化北欧 OST（与 nordic_saga 同源的 ensure_ost）。
          # 内容：三级台地城邦 + 松林 + 船形屋顶长屋(火塘) + 龙语墙 + 城堡 + 广场 +
@@ -149,7 +149,7 @@ ENTRIES = [
          # 同时拿到雪国与绿城两种气质。DAY_LEN=48：完整昼夜一轮。
     dict(name='wardfall_nordic_60s',  mod='examples/wardfall.py',     cls=None,
          dur=60.0, size=DEMO_SIZE, flags='auto',
-         audio='assets/wardfall_ost_60s.wav',
+         audio='assets/nordic_saga_ost_60s.wav',
          ost_fn='world3d.logic.nordic_audio:ensure_ost'),
          # `auto` = 电影机位绕城巡游（录龙绕飞最稳的视角）；60s 把龙的多圈绕飞、
          # 扑翼与淡入都录满一个完整节奏。
