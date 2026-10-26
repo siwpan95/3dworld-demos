@@ -260,3 +260,47 @@ python examples\voxel_terrain.py   --bench 5 --flag reseed        :: 渐进
   碎块 —— 把每叶随机数写进 `colors.a`（没开混合，alpha 通道免费）随顶点
   传下去才是整片掉。collapseward 的"事件闪光"也是同一招（a=事件时刻、
   uv.x=幅度），网格只在状态变化时重建。
+
+### 2026-10-26 ~ 10-27 这轮新踩的坑（dungeonward / rigidward / cdlod_terrain / crowdward）
+
+- **`verify_demos.py` 必须注入 `WORLD3D_PROJECT_ROOT` / `WORLD3D_CONFIGS`**
+  （2026-10-26 修）：批量验收启动子进程时原本没设这两个变量，13 个依赖 cordis
+  配置树的 demo 集体 FAIL（手工跑因执行过 `env.bat` 而全过）。另外要跳过下划线
+  开头的内部模块（`_wardfall_nordic` 被当成演示跑必然 FAIL，是噪声不是缺陷）。
+- **`3dworld` 的版本上限曾把引擎锁死在 0.3.0**：`requirements.txt` 写
+  `>=0.3.0,<0.4` 时 pip 只能拿到 0.3.x，而 0.3.x 的 wheel **没有**
+  `world3d/physics`、`anim`、`engine/terrain_lod`、`engine/terrain_clipmap`，
+  于是依赖这些模块的 demo 全表现为"引擎没发布这个能力"。实测 **PyPI 的 0.4.1
+  wheel 全部带齐**，2026-10-26 已抬到 `>=0.4.1,<0.5`。
+  ⇒ 看到"引擎没这个模块"时，**先怀疑自己的版本上限，别急着怪上游**。
+- **`numpy` 不在 `3dworld` 的 `install_requires` 里**（0.4.1 的 Requires-Dist
+  只有 pyglet/PyYAML/watchdog），但 `physics`/`anim`/`engine/terrain_lod` 都
+  `import numpy` —— 干净 venv 装完引擎直接 import 就炸。演示仓 `requirements.txt`
+  已显式列出 numpy（引擎下次发版应把它收进去）。
+- **`world3d.logic.noise_vec` 还没发布**：它在引擎仓里是未跟踪（`??`）的新文件，
+  wheel 0.4.1 里没有。demo 别依赖它 —— `cdlod_terrain` 第一版就撞了（本地源码树
+  环境全过，换真实 wheel 直接 `ModuleNotFoundError`）。改用 `logic/noise.heightmap`。
+- **venv 里装的可能不是 PyPI 版（最阴的一条）**：`pip install` 源码树装出来的
+  版本号也是 0.4.1；之后再 `pip install 3dworld==0.4.1` 会因版本号已满足而
+  **直接跳过**，venv 里留的还是源码树那份（可能旧于 wheel）。本地验证"看起来全过"、
+  用户 pip 装的环境却炸。⇒ 模拟用户环境必须 `pip install --force-reinstall
+  --no-deps 3dworld==<ver>`，换环境后重跑一遍全量验收。判据看文件行数/函数是否
+  存在，别看 `pip show` 的版本号。
+- **覆盖 `DemoApp.close()` 必须 `super().close()`**（wardfall 踩过）：基类
+  `close()` 才是 `self.window.close()`；wardfall 为了关音频覆盖了 `close()` 却只关
+  音频不关窗口 ⇒ `pyglet.app.run()` 永不返回 ⇒ `--smoke` 跑完逻辑后进程不退、批量
+  验收一路等到超时（rc=-9）。交互式点 ✕ 看不出来，只有程序化关闭才暴露。
+  对照 `nordic_saga.py` 的同款 `close()` 带了 `super().close()`。
+- **`behavior_tree.Cooldown` 只有 `ticks`（帧计数）没有 `seconds`**：传 `seconds=`
+  直接 `TypeError`；而且**绝不要把它套在 Selector 里较低优先级的 Sequence 上**——
+  cooldown 期间整支返回 FAILURE，会被更低优先级分支（如 wander）劫持，agent 在
+  "去干活"和"乱逛"间每 N 帧抽搐。节流改由业务层（如 `retarget` 的"目标格变了才重算"）
+  承担更稳。`Repeater(name, child, times=1)` 的 `times=1` 语义是"每帧都 tick 子节点、
+  且恒报 SUCCESS"（不是只跑一次），想做持续动作传 `times=1` 即可。
+- **基类 `DemoApp._on_key_press` 已拦截 ESC（关窗）/ SPACE（暂停）**：子类覆盖
+  `on_key` 时**不必**调 `super()`，ESC/SPACE 仍生效；只有 HELP 文案要和实际接的键一致。
+- **jolt_lite 运行时能力边界（rigidward 实测）**：窄相只用解析流形，可靠组合仅
+  球-球 / 球-盒 / 轴对齐盒-盒；旋转盒、胶囊、宽扁砖长塔（≥6 层）、骑缝多支撑
+  （金字塔）**全都会穿透**；崩法很隐蔽——缓慢下沉→中心越过地面顶面→接触法线翻向→
+  继续下推沉到 -80~-145m；**±6mm 初始错位就能让整齐方塔 0.33s 塌穿**。判死活看
+  `min_y` 即可。runtime 选场景时绕开这些构型。
