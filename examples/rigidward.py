@@ -558,7 +558,7 @@ class Rigidward(DemoApp):
 if __name__ == '__main__':
     if not HAS_JOLT:
         raise SystemExit(
-            '[rigidward] 需要 3dworld>=0.3.1：world3d.physics.jolt_lite 尚未随 '
-            'wheel 发布（引擎源码树里已有，3dworld 0.3.0 的 wheel 没带上它）。\n'
-            '  解决：pip install -U "3dworld>=0.3.1"')
+            '[rigidward] 需要 3dworld>=0.4.1：world3d.physics.jolt_lite 在 0.3.x 的 '
+            'wheel 里没有，0.4.1 起才随包发布。\n'
+            '  解决：pip install -U "3dworld>=0.4.1"')
     run(Rigidward)

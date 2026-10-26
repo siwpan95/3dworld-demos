@@ -19,7 +19,14 @@
 
 # ① 引擎本体：发行名 3dworld，导入名 world3d（Python 不能以数字开头做包名）
 #    传递依赖自动带进来：pyglet==2.1.16、PyYAML>=6、watchdog>=4
-3dworld>=0.3.0,<0.4
+#
+# ⚠️ 2026-10-26 上限从 <0.4 抬到 <0.5（下限抬到 0.4.1）—— 这个上限曾经把引擎
+#    **锁死在 0.3.0**：pip 只能装到 0.3.0，而 0.3.0 的 wheel 里没有
+#    world3d/physics、anim、engine/terrain_lod、engine/terrain_clipmap，
+#    于是 rigidward / cdlod_terrain 这类演示全部 "引擎没发布这个模块"。
+#    实测 0.4.1 的 wheel **全部带齐**（含 wardfall 要的
+#    fusion_audio.ensure_wardfall_ost），引擎从来没欠过我们，是这条约束欠的。
+3dworld>=0.4.1,<0.5
 
 # ② 可选增强：examples/scene_walker.py 的马尔可夫演出变体（纯标准库实现）
 #    不装的话 scene_walker 只是没有发光变体，其余功能照常（ImportError 已兜住）
@@ -30,10 +37,10 @@ zhuangtaiji>=1.1.0,<2
 #    import numpy —— 但 numpy **不在 3dworld 的 install_requires 里**
 #    （2026-10-26 实测：干净 venv 里 pip install 3dworld 之后
 #     `from world3d.physics.jolt_lite import World` 直接 ModuleNotFoundError）。
-#    引擎发 0.3.1 时应把 numpy 收进它自己的依赖；在那之前由本仓显式兜住。
+#    引擎 0.4.1 也没声明它（Requires-Dist 里只有 pyglet/PyYAML/watchdog），
+#    所以由本仓显式兜住；引擎下次发版时应把 numpy 收进它自己的依赖。
 numpy>=1.24
 
-# ⚠️ rigidward 的额外版本要求（2026-10-26 记录）
-#     examples/rigidward.py 需要含 world3d.physics 的引擎版本（约定为 0.3.1）。
-#     上面的 3dworld>=0.3.0 拿到的是 0.3.0 时它会给出明确提示并退出，
-#     而不是丢一个裸 ModuleNotFoundError。**引擎发布新版前它跑不起来。**
+# ℹ️ examples/rigidward.py 需要含 world3d.physics 的版本 —— 0.4.1 起就带齐了，
+#    下限 0.4.1 已经把它兜住。万一拿到旧版，它会给出明确提示后退出，
+#    而不是丢一个裸 ModuleNotFoundError。
