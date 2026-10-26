@@ -90,8 +90,9 @@ python scripts\verify_demos.py --only boids,water  只验指定 demo
 | `cdlod_terrain.py` | 引擎 | **《远景 / CDLOD Terrain》**（首个消费 `engine/terrain_lod` 与 `engine/terrain_clipmap` 的 demo）：同一片 fBm 地形上两条 LOD 路线可切换 —— **CDLOD**（四叉树选层 + 单张模板 + 顶点 morph 消缝，**高度只存在一张 R32F 纹理里**，顶点着色器采样做位移与差分法线，每节点只改 4 个 uniform）vs **几何 clipmap**（嵌套 ring + 外层挖洞 + 中心按最细格距刚性吸附）。`L` 层染色 / `M` 关 morph（立刻看得见裂缝）/ `C` 换路线 / `R` 换种子 / 自动巡航；HUD 常驻 `coverage_report()` 的 cov min/max（正常 = 1/1，即单测里那条"无缝无重叠"断言）与 clipmap 的 rebuild/reuse 计数（刚性吸附省下的重建次数） | `cdlod_terrain_01/02.png` |
 | `rigidward.py` | 交互 | **《刚境 / Rigidward》**（首个消费 `physics/jolt_lite` 的 demo）：刚体物理实验场 —— 方塔 / 球堆 / 台球开球 / 回弹对比 / 阶梯瀑布五场景 + 固定步长累加器 + `G` 换重力（地球/月球/木星）+ `I` 换迭代次数 + HUD 直读 `world.last_stats`（宽相候选 / 接触数 / 岛数 / sleep / 单步耗时） + **出界回收**兜底（`rescue` 计数，用来暴露 solver 的穿透边界） | `rigidward_01/02.png` |
 | `collapseward.py` | 交互 | **《坍界 / Collapseward》**（`logic/wfc` 过程可视化）：用模块自己的 `_observe`/`_propagate` **逐步驱动求解**（`solve()` 只给终局），波函数压成 3D——候选越多柱子越矮越冷，传播把柱子"焐高烧红"，坍缩定格成路网地形 + **闪光零重建**（事件时刻写 `colors.a`、幅度写 `uvs.x`，片元里算余晖）+ 矛盾整局重启计数 + `check_adjacency` 终局校验 | `collapseward_01/02.png` |
+| `crowdward.py` | 交互 | **《众径 / Crowdward》**（首个消费 `logic/behavior_tree` 与 `core/pathing_core` 的 demo）：AI 群体把「感知 → 行为树决策 → A* 求路 → 沿路移动 → 群体分离 → 循环」接成完整链路，每一步看得见 —— agent 颜色 = 当前行为分支（逃 / 休 / 采 / 送 / 逛），脚下折线 = A* 求出的路径；行为树每 agent 一棵（共享结构、各自 blackboard），优先级 Selector 自上而下（逃命压过搬砖），`Repeater` 把 flee 做成持续动作；A* 走引擎 `PathingService.find_path`（八向 + 对角 √2），`` `cordis.Context()` `` 即可建实例；求路由 `retarget` 的「目标格变了才重算」节流（逃命再加 2 格门槛），HUD 的 `astar` 计数即证据；`1-3` 场景 / `A` `Z` 增减群体 / `P` 路径线 / `R` 重置 / `W` 线框 | `crowdward_01/02.png` |
 
-> 上表 46 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
+> 上表 47 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
 > `scripts/verify_demos.py` 逐项冒烟的对象；唯一不参与截图阶段的是
 > `scene_viewer.py`——它由 `--file` 驱动、没有固定剧照时刻。
 
