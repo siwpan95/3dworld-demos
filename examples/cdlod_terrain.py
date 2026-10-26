@@ -74,10 +74,10 @@ from pyglet.window import key
 from world3d.engine.terrain_clipmap import (ClipmapConfig, build_clipmap,    # noqa: E402
                                             build_ring_mesh, clipmap_stats)
 from world3d.engine.terrain_lod import (LodConfig, TerrainLod)               # noqa: E402
-from world3d.logic.noise_vec import fbm                                      # noqa: E402
+from world3d.logic.noise import heightmap                                     # noqa: E402
 from world3d.platform.app import DemoApp, run                                # noqa: E402
 
-HM = 512                       # 高度图分辨率（每边）
+HM = 384                       # 高度图分辨率（每边）：384² 用纯 Python fBm 约 1.9s
 WORLD = 2048.0                 # 地形世界尺寸（米）
 HEIGHT_SCALE = 300.0
 # 一个高度纹素覆盖多少世界米 —— 顶点着色器用它当差分步长，保证法线尺度与视觉一致
@@ -91,11 +91,16 @@ LEVEL_COLS = ((1.00, 0.52, 0.34), (1.00, 0.72, 0.38), (0.86, 0.86, 0.52),
 
 # ------------------------------------------------------------- 高度场 --
 def make_heightmap(seed, octaves=5):
-    """fBm 高度场，值域归一化到 [0,1]（向量化噪声，512² 也是毫秒级）。"""
-    axis = np.linspace(-4.0, 4.0, HM, dtype=np.float64)
-    xs, ys = np.meshgrid(axis, axis)
-    h = fbm(xs, ys, octaves=octaves, lacunarity=2.03, gain=0.5, seed=seed)
-    h = np.asarray(h, dtype=np.float64)
+    """fBm 高度场，值域归一化到 [0,1]，再做一点岛屿化（中心高、边缘沉到水下）。
+
+    ⚠️ 这里用 ``logic/noise.heightmap`` 而不是 ``logic/noise_vec``：后者在引擎仓
+    里还是**未提交的新文件**（``git status`` 里是 ??），wheel 0.4.1 里没有它 ——
+    demo 依赖 wheel 里不存在的模块，等于在"引擎一律 pip 提供"的新规上开洞。
+    纯 Python 版 384² 约 1.9 秒，一次性开销，可以接受。
+    """
+    h = np.asarray(heightmap(HM, HM, scale=0.006, seed=seed, octaves=octaves),
+                   dtype=np.float64)
+    xs, ys = np.meshgrid(np.linspace(-1.0, 1.0, HM), np.linspace(-1.0, 1.0, HM))
     # 岛屿化：中心高、边缘沉到水下，这样有海岸线可看
     r = np.hypot(xs, ys) / 4.0
     h = h * 0.72 + (1.0 - np.clip(r, 0.0, 1.0)) * 0.42
