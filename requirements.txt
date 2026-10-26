@@ -25,3 +25,15 @@
 #    不装的话 scene_walker 只是没有发光变体，其余功能照常（ImportError 已兜住）
 #    —— 2026-10-22 起不再是环境变量 ZHUANGTAIJI_PATH + 目录探测那一套
 zhuangtaiji>=1.1.0,<2
+
+# ③ numpy：examples/rigidward.py 依赖 world3d.physics.jolt_lite，那个模块
+#    import numpy —— 但 numpy **不在 3dworld 的 install_requires 里**
+#    （2026-10-26 实测：干净 venv 里 pip install 3dworld 之后
+#     `from world3d.physics.jolt_lite import World` 直接 ModuleNotFoundError）。
+#    引擎发 0.3.1 时应把 numpy 收进它自己的依赖；在那之前由本仓显式兜住。
+numpy>=1.24
+
+# ⚠️ rigidward 的额外版本要求（2026-10-26 记录）
+#     examples/rigidward.py 需要含 world3d.physics 的引擎版本（约定为 0.3.1）。
+#     上面的 3dworld>=0.3.0 拿到的是 0.3.0 时它会给出明确提示并退出，
+#     而不是丢一个裸 ModuleNotFoundError。**引擎发布新版前它跑不起来。**

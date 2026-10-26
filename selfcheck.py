@@ -6,7 +6,7 @@
 --------------------
 本仓是 3dworld 引擎的演示集：`examples/*.py` 在 import 期就会拉 pyglet 2 的
 `pyglet.graphics.shader` / `pyglet.math.Vec3`，演示能力本体在同级引擎仓
-``G:\\repos\\3dworld`` 的 ``world3d.logic.*``。本机系统 Python 的 pyglet 是
+同级引擎仓（默认 ``../3dworld``）的 ``world3d.logic.*``。本机系统 Python 的 pyglet 是
 1.5.31，而 ``world3d/__init__.py`` 会 ``from world3d.engine import *``（引擎门面
 用到 pyglet 2 的 Quaternion），所以常规 ``import world3d.logic.terrain`` 在包入口
 就会炸，更别说无窗口运行。
@@ -37,7 +37,30 @@ except Exception:
     pass
 
 ROOT = Path(__file__).resolve().parent
-ENGINE_LOGIC = ROOT.parent / "3dworld" / "world3d" / "logic"
+
+
+def _locate_engine_logic() -> Path:
+    """定位 world3d 的 logic 目录：优先 pip 装好的引擎包，回退同级引擎源码树。
+
+    演示仓 3859c66 之后不再做 sys.path 引导，引擎一律由 pip 提供
+    （``pip install -r requirements.txt``）；只有本机同时 checkout 了引擎仓
+    （默认与演示仓同级）时才走源码树回退。
+
+    这里用 ``find_spec`` 只定位、**不导入**：``import world3d`` 会执行包入口
+    （拉起 pyglet 2 的 Quaternion），在 pyglet 1.x 环境里直接炸 —— 正是本自检
+    要绕开的那条路。
+    """
+    spec = importlib.util.find_spec("world3d")
+    if spec is not None and spec.submodule_search_locations:
+        for loc in spec.submodule_search_locations:
+            candidate = Path(loc).resolve() / "logic"
+            if candidate.is_dir():
+                return candidate
+    src = ROOT.parent / "3dworld" / "world3d" / "logic"
+    check(src.is_dir(),
+          f"找不到引擎逻辑目录：既没有已安装的 world3d，也没有 {src}"
+          "（先 pip install -r requirements.txt）")
+    return src
 
 
 class CheckError(RuntimeError):
@@ -47,6 +70,9 @@ class CheckError(RuntimeError):
 def check(condition, message):
     if not condition:
         raise CheckError(message)
+
+
+ENGINE_LOGIC = _locate_engine_logic()
 
 
 def load_logic(module_name: str, filename: str):

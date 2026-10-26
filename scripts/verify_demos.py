@@ -53,6 +53,25 @@ BENCH_RE = re.compile(r'fps mean=([\d.]+) median=([\d.]+) p1=([\d.]+) '
                       r'worst_frame_ms=([\d.]+)')
 
 
+def child_env():
+    """子进程环境：补上 WORLD3D_PROJECT_ROOT / WORLD3D_CONFIGS。
+
+    2026-10-26 实踩：43 个 demo 里有 13 个（boxward / brickward / godhand /
+    pulsefall / rayhold / scene_walker / skinned_creature / stillhall /
+    swarmward / tower_defense / voidward / wardfall / _wardfall_nordic）在
+    **批量验收里集体 FAIL，手工跑却全过** —— 差别只有一个：手工跑之前执行过
+    ``env.bat``。它们要加载 cordis 配置树，而 pip 装的引擎推导不出本仓路径
+    （README 与 env.bat 都写了"这两个变量是必须的"），缺了就
+    ``FileNotFoundError: 配置树不存在``。
+
+    所以批量验收必须自己补上：**已设置则尊重，未设置才回填本仓路径**。
+    """
+    env = os.environ.copy()
+    env.setdefault('WORLD3D_PROJECT_ROOT', ROOT)
+    env.setdefault('WORLD3D_CONFIGS', os.path.join(ROOT, 'configs'))
+    return env
+
+
 def discover():
     """返回 [(名字, 脚本路径, [(时刻, 输出路径), ...]), ...]（按名字排序）。
 
@@ -63,7 +82,10 @@ def discover():
     if _DISCOVERED is None:
         out = []
         for fn in sorted(os.listdir(EXAMPLES_DIR)):
-            if not fn.endswith('.py') or fn in SKIP:
+            # 下划线开头是"被其它演示 import 的内部模块"（_harness /
+            # _wardfall_nordic），它们没有冒烟入口，跑必然 FAIL —— 那是指标噪声，
+            # 不是缺陷，直接跳过。
+            if not fn.endswith('.py') or fn in SKIP or fn.startswith('_'):
                 continue
             path = os.path.join(EXAMPLES_DIR, fn)
             shots = _read_shots(path, fn[:-3])
@@ -121,6 +143,7 @@ def run_demo(name, path, extra, timeout=180.0):
     t0 = time.time()
     try:
         proc = subprocess.run([PYTHON, '-u', path] + extra, cwd=ROOT,
+                              env=child_env(),
                               capture_output=True, text=True, encoding='utf-8',
                               errors='replace', timeout=timeout)
     except subprocess.TimeoutExpired as e:
