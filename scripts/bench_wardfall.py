@@ -4,8 +4,10 @@
 两种信号分开测，因为决定帧率的是 GPU、决定"开城耗时"的是 CPU 几何：
 
 * **几何基线（无显示也能跑）**：直接 import ``build_city_mesh`` 计时，得到
-  tris / buildings / towers / 几何 build_ms。这部分随 ward 数线性增长，
-  是 ward 规模有意义的信号（单 draw call，GPU 顶点数差异对帧率影响很小）。
+  tris / vertices / vram_bytes / buildings / towers / 几何 build_ms。顶点数与
+  显存占用随 ward 数线性增长，是 ward 规模有意义的静态信号（单 draw call，
+  GPU 顶点数差异对帧率影响很小）。vram_bytes 按每顶点 13 个 float 估
+  （pos3 + nrm3 + uv2 + col4 + kind1 = 52 字节/顶点）。
 * **帧率基线（需要真实 GL 窗口）**：对每个规模跑 ``wardfall.py --bench``，
   解析 ``[bench] fps mean=…`` 行。本沙箱没有显示，跑这个会卡住，所以
   默认只出几何基线；在有 GPU 的机器上加 ``--bench-run`` 才会真的测帧率。
@@ -62,8 +64,13 @@ def geom_baseline(n_wards, seed=20261024):
     mb, mbn, town, nb, nt, info = wf.build_city_mesh(seed, n_wards)
     build_ms = (time.time() - t0) * 1000.0
     tris = (mb.vertex_count + mbn.vertex_count) // 3
+    vertices = mb.vertex_count + mbn.vertex_count
+    # 每顶点 13 个 float：pos3 + nrm3 + uv2 + col4 + kind1 = 52 字节
+    vram_bytes = vertices * 52
     return {
         'tris': tris,
+        'vertices': vertices,
+        'vram_bytes': vram_bytes,
         'buildings': nb,
         'towers': nt,
         'forest': info['forest'],
@@ -113,7 +120,8 @@ def main():
     for label, flag, n in SIZES:
         g = geom_baseline(n)
         row = {'label': label, 'flag': flag, 'wards': n, **g}
-        print(f'[{label}] wards={n} tris={g["tris"]} build_ms={g["build_ms"]}',
+        print(f'[{label}] wards={n} tris={g["tris"]} vtx={g["vertices"]} '
+              f'vram={g["vram_bytes"]/1024:.0f}KB build_ms={g["build_ms"]}',
               end='')
         if args.bench_run:
             b = bench_run(label, flag, args.bench_sec)
@@ -137,8 +145,9 @@ def main():
             'generated_by': 'scripts/bench_wardfall.py',
             'engine': 'world3d (editable install)',
             'seed': 20261024,
-            'note': ('build_ms/tris/counts 为本机实测几何基线；fps_* 需在有显示的 GPU '
-                     '机器上跑 `python scripts/bench_wardfall.py --bench-run` 填充。'),
+            'note': ('tris/vertices/vram_bytes/build_ms/counts 为本机实测几何基线；'
+                     'fps_* 需在有显示的 GPU 机器上跑 '
+                     '`python scripts/bench_wardfall.py --bench-run` 填充。'),
             'command_full': 'python scripts/bench_wardfall.py --bench-run',
         },
         'sizes': rows,
