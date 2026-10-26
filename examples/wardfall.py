@@ -1142,6 +1142,12 @@ class Wardfall(DemoApp):
             except Exception:                      # noqa: BLE001
                 pass
         self.audio = None
+        # ⚠️ 别漏了这行（2026-10-26 实测）：基类 DemoApp.close() 才是
+        # ``self.window.close()``。只关音频不关窗口 ⇒ pyglet.app.run() 永不返回
+        # ⇒ --smoke 挂到超时被杀（批量验收 rc=-9），而交互式运行因为点了
+        # 窗口的 ✕（pyglet 自己关窗口）看不出问题。
+        # 对照 nordic_saga.py 的同款 close：它就带了 super().close()。
+        super().close()
 
 
 if __name__ == '__main__':
