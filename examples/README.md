@@ -87,10 +87,11 @@ python scripts\verify_demos.py --only boids,water  只验指定 demo
 | `cellward.py` | 交互 | **《胞格 / Cellward》**（`logic/ca` 全部 141 条规则活演示）：4 类规则（life / 连续 / 多态 / 复合）自动轮播 + **5 档网格**（XS~XL，重型规则自动限制档位）+ 4 套色板渐变 + `GL_NEAREST` 纹理直灌（**8-bit 通道要过 LUT 归一化**，否则活细胞全黑）+ 固定步长累加器保证 `--shot` 可复现 | `cellward_01/02.png` |
 | `lindenwood.py` | 交互 | **《林氏 / Lindenwood》**（首个消费 `logic/lsystem` 的 demo）：L-System 3D 植物 —— `Turtle3D` 线段**按端点重合还原父子树**，半径按 **da Vinci 定律** `r ∝ 叶片数^(1/2.4)` 反推 + 枝链扫变径管 + **风摆在顶点着色器**（位移 ∝ `pow(y/H, 1.6)`，根不动梢头摆）+ **四季**（只改叶色/落叶两个 uniform，落叶按 per-leaf 哈希整片掉）+ 5 物种（`1`~`5`） | `lindenwood_01/02.png` |
 | `dungeonward.py` | 交互 | **《窟境 / Dungeonward》**（首个消费 `logic/dungeon` 的 demo）：三套生成器（随机房间+L 形走廊 / BSP 递归连通 / 元胞洞穴）实时切换，**墙只生成暴露面**（邻居是地板才出侧面，1536 格也不过几千三角）+ 房间按归属染色 + 自己再跑一遍**洪水填充**把「可达 / 总地板」两个数打到 HUD（不信任生成器的自述）+ 沿 BFS 最短路自动巡游的**火把光点**（暖光平方反比衰减）+ 轨道俯视 / **第一人称**（WASD + 拖拽转头，分轴碰撞贴墙滑行）双相机 | `dungeonward_01/02.png` |
+| `cdlod_terrain.py` | 引擎 | **《远景 / CDLOD Terrain》**（首个消费 `engine/terrain_lod` 与 `engine/terrain_clipmap` 的 demo）：同一片 fBm 地形上两条 LOD 路线可切换 —— **CDLOD**（四叉树选层 + 单张模板 + 顶点 morph 消缝，**高度只存在一张 R32F 纹理里**，顶点着色器采样做位移与差分法线，每节点只改 4 个 uniform）vs **几何 clipmap**（嵌套 ring + 外层挖洞 + 中心按最细格距刚性吸附）。`L` 层染色 / `M` 关 morph（立刻看得见裂缝）/ `C` 换路线 / `R` 换种子 / 自动巡航；HUD 常驻 `coverage_report()` 的 cov min/max（正常 = 1/1，即单测里那条"无缝无重叠"断言）与 clipmap 的 rebuild/reuse 计数（刚性吸附省下的重建次数） | `cdlod_terrain_01/02.png` |
 | `rigidward.py` | 交互 | **《刚境 / Rigidward》**（首个消费 `physics/jolt_lite` 的 demo）：刚体物理实验场 —— 方塔 / 球堆 / 台球开球 / 回弹对比 / 阶梯瀑布五场景 + 固定步长累加器 + `G` 换重力（地球/月球/木星）+ `I` 换迭代次数 + HUD 直读 `world.last_stats`（宽相候选 / 接触数 / 岛数 / sleep / 单步耗时） + **出界回收**兜底（`rescue` 计数，用来暴露 solver 的穿透边界） | `rigidward_01/02.png` |
 | `collapseward.py` | 交互 | **《坍界 / Collapseward》**（`logic/wfc` 过程可视化）：用模块自己的 `_observe`/`_propagate` **逐步驱动求解**（`solve()` 只给终局），波函数压成 3D——候选越多柱子越矮越冷，传播把柱子"焐高烧红"，坍缩定格成路网地形 + **闪光零重建**（事件时刻写 `colors.a`、幅度写 `uvs.x`，片元里算余晖）+ 矛盾整局重启计数 + `check_adjacency` 终局校验 | `collapseward_01/02.png` |
 
-> 上表 45 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
+> 上表 46 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
 > `scripts/verify_demos.py` 逐项冒烟的对象；唯一不参与截图阶段的是
 > `scene_viewer.py`——它由 `--file` 驱动、没有固定剧照时刻。
 
