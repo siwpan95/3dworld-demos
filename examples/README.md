@@ -108,7 +108,8 @@ python scripts\verify_demos.py --only boids,water  只验指定 demo
 | `computeward.py` | 引擎 | **《洪流 / Computeward》**（GPU 计算调度轮，消费引擎新模块 `engine/compute.py`）：百万粒子（默认 2²⁰）全程 GPU——SSBO ×2（pos+life / vel+seed），compute shader 内完成力场→积分→重生（`hash(index,u_time)`），每帧 CPU 只做 dispatch+uniforms（**零回读**）；同一块 buffer 既是 SSBO 又是顶点属性源，compute→draw 之间一次 barrier（GPU 模拟 + GPU 绘制零拷贝的经典三步）；三预设自动轮播（星系旋臂 / 湍流云 curl-noise / 喷泉），速度模长染色 + 加色混合；`engine.compute.detect()` 试编译探测（真实窗口报 GL 3.3 但 430 可用——**别看版本号**），无 compute 环境自动降级 CPU 3 万粒子（同预设语义）；bench 888 fps（vsync 关，jank 0%） | `computeward_01..03.png` |
 | `gltfward.py` | 引擎 | **《匣境 / Gltfward》**（AI 资产管线，消费 `engine/gltf` 真实 glTF 2.0 加载栈）：默认载入 Khronos Fox（`assets/gltfward_fox.glb`，CC0 / CC-BY 4.0 登记见文件头），`GLTF.load → build_scene_ex → make_skin_from_gltf → SkinnedMesh` 全链路，**驱动真实 glTF 动画**（3 clip：Survey/Walk/Run 各 21 通道，`Sampler.sample` → Node TRS → `update_world`）；数字键切 clip、R 重置、SPACE 暂停；**`--glb PATH` 灌任意外部 GLB**——TRELLIS.2 等 AI 生成资产（静态无 skin 自动回退 `Mesh`+`pbr`）直接进引擎渲染；相机按 AABB 自动取景 | `gltfward_01..04.png` |
 
-> 上表 63 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
+| `brogueward.py` | 游戏 | **《渊境 / Brogueward》**（用引擎复刻 Brogue——"最接近原版 Rogue 的现代传统类 Rogue"）：3D 方块地牢爬行，**26 层完整闭环**（26 层取 Amulet of Yendor 回地表才胜利）；物品驱动成长（无经验等级：血药/力药/生命药 + 附魔卷轴=技能点）、走进即交互（走进取物/下楼/攻击）、对角禁穿墙角、FOV 记忆三态渲染（火把衰减可见 / 记忆暗紫 / 未知纯黑）、饥饿压制、怪物周期刷新（清不空一层）、3 种陷阱 + 毒气扩散（元胞扩散场）+ 火焰蔓延（点燃草地）+ 水格减速、dragon/warden 远程、10 怪 15 物品全程序化（音效 numpy 合成 13 种）。机制参考 BrogueCE（AGPLv3）与官方 wiki，**未复制代码与数据表**（独立实现，数值重定）；消费 logic.dungeon / **logic.fov（本作新增反哺引擎）** / pathing_core A* / engine.audio.SfxPlayer；渲染为自建 unlit 顶点色管线（引擎 Mesh 不走顶点色，FOV 每格变色需要）；`--flag seed=N` 固定种子、`--flag play` 关闭演示 AI | `brogueward_01/02/03.png` |
+> 上表 64 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
 > `scripts/verify_demos.py` 逐项冒烟的对象；唯一不参与截图阶段的是
 > `scene_viewer.py`——它由 `--file` 驱动、没有固定剧照时刻。
 
@@ -330,6 +331,15 @@ python examples\voxel_terrain.py   --bench 5 --flag reseed        :: 渐进
   handler（返回 `None` 不阻断既有绘制），量 on_draw 链间隔并丢弃前 1.0s 预热
   （`pyglet.app.run(interval=0)` + `set_vsync(False)`，输出格式对齐
   `verify_demos.py` 的 `BENCH_RE` 即可进批量基准）。
+- **DynamicBatch 忘 begin() = 历史残影**（brogueward 实测）：每帧 CPU
+  重建的批次，`count` 与 `_pos` 若不每帧清零，旧帧实体会滞留数组被
+  一并上传——画面上出现"实体走过的轨迹"。`begin()` 必须在每帧 add
+  之前调用；pyglet attribute 赋值要求**等长**，所以批次容量恒等于
+  count、实体数变化才重建 vertex_list。
+- **引擎 Mesh 管线没有顶点色**：`MeshData.colors` 存在但 `Mesh._upload`
+  不上传（颜色在 Material uniform）——需要"每格变色"的场合（FOV 光照、
+  棋盘地形）要么自建 program.vertex_list 顶点色管线（brogueward 做法），
+  要么等引擎 Mesh 支持 colors 透传。
 - **pyglet 2.1 缓冲 API 三则**（reactward / flowward / audioward 实测）：
   ① `Texture` 没有 `.use(unit)`（3.0 才有）——绑纹理单元要手写
   `glActiveTexture(GL_TEXTURE0+u); glBindTexture(...)`；

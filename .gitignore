@@ -17,3 +17,7 @@ venv/
 # 系统
 Thumbs.db
 Desktop.ini
+
+# brogueward：SFX 为运行时合成物；BrogueCE 压缩包为外部参考资料
+assets/brogueward_sfx/
+BrogueCE-*.zip
