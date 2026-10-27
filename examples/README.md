@@ -100,8 +100,10 @@ python scripts\verify_demos.py --only boids,water  只验指定 demo
 | `particleward.py` | 引擎 | **《粒子境 / Particleward》**（首个消费 `engine/particles` 的 demo）：12000 颗粒子一次 draw，位置/大小/颜色 100% 在顶点着色器里由 `i_seed` + 累加相位 `u_time` 现推——CPU 每帧只写 5 个 uniform；`0` 星系漩涡（盘状 + 差速旋转 + 固定旋臂）`1` 喷泉烟花（抛物线 + 重力 + 寿命循环）`2` 湍流云（多频正弦位移）。**绘制层用裸 GL**：本机实测引擎 `ParticleSystem` 的 pyglet instanced/普通两条路径都会画出满屏巨大三角形（TF 捕获证明顶点阶段正常，问题在 domain/VAO 路径），docstring 里有完整排查记录——着色器源码与数据 API 仍 100% 来自引擎 | `particleward_01/02.png` |
 | `eventward.py` | 逻辑 | **《事境 / Eventward》**（首个消费 `logic/events` 的 demo）：22 个彩球在圆形竞技场里弹跳，全部行为由 `EventBus`（`register_event_type` + `push_handlers` + `dispatch_event` 同步派发）驱动——撞墙 emit `on_bounce`（涟漪 + 日志）、发射器emit `on_spawn`（新球入场的淡入）、鼠标点击 emit `on_click`（全场合唱变色）；`C` 开关 Responder 订阅者，直观展示退订后某类事件不再被处理；HUD 给发射总数 / 分类计数 / 订阅者与 handler 绑定数，左侧滚动最近 10 条事件日志 | `eventward_01/02.png` |
 | `ozzward.py` | 动画 | **《骨境 / Ozzward》**（首个消费 `anim/ozz_lite` 的 demo）：代码合成的 7 关节尾巴骨架 + 2.5 秒摆动 `Clip`，逐帧 `sample_clip` → `compute_skin_matrices` → 蒙皮 3360 顶点网格——关节沿链衰减摆动，网格平滑跟随（分段 HSL 着色让骨骼归属看得见）；`B` 叠加骨骼（关节球 + 骨连线）、`W` 线框、`SPACE` 暂停、`R` 重置时间；HUD 给 clip 名 / 当前时间 / 关节数 | `ozzward_01/02.png` |
+| `choreoward.py` | 引擎 | **《编境 / Choreoward》**（把根目录 `main.py` 的五幕演出拉进 examples 编制）：`logic/choreography` 官方宿主 `WorldApp` 的放映厅——48s 五幕无缝循环（升起 / 环形波 / 机械臂取放 / 螺旋 / 归位），机械臂三关节角度由两连杆**逆运动学**解出（余弦定理 + 方位角，`tests` 断言夹爪落点）、宝石由 `Skeleton` 夹爪世界矩阵按 `carry_weight` **真实携带**，相机走 17 帧电影运镜脚本；demo 本体只是 CLI 壳（`--smoke/--shot/--bench` + 模块级 `SHOTS`，bench 计时挂 `on_draw` 链），演出逻辑 100% 来自引擎 | `choreo_01..05.png` |
+| `kkriegerward.py` | 引擎 | **《殿境 / KKriegerward》**（把根目录 `kkrieger_demo.py` 拉进 examples 编制）：`presentation/kkrieger_app.KKApp` 的放映厅——150s 六幕程序化漫游（走廊 / 大厅 / 核心 / 撤离 / 突入 / 圣殿），**零素材**：金属板/舱门/管道/无人机等几何即时生成、哈希抖动模拟"程序化纹理"、圣殿的 lathe 凹槽柱 / torus 嵌环 / (2,3) torus_knot 反应堆 / tube 导管是新几何类型；配乐纯 Python 离线渲染（约 2.2 万音符事件，首渲 ~25s 后走缓存 `assets/kkrieger_ost_150s.wav`，曲式与动画共用时间常量）；舱门开闭时刻按镜头过门时刻反推（关早了镜头穿门板）。同样只是 CLI 壳 | `kk_01..07.png` |
 
-> 上表 56 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
+> 上表 58 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
 > `scripts/verify_demos.py` 逐项冒烟的对象；唯一不参与截图阶段的是
 > `scene_viewer.py`——它由 `--file` 驱动、没有固定剧照时刻。
 
@@ -313,3 +315,13 @@ python examples\voxel_terrain.py   --bench 5 --flag reseed        :: 渐进
   （金字塔）**全都会穿透**；崩法很隐蔽——缓慢下沉→中心越过地面顶面→接触法线翻向→
   继续下推沉到 -80~-145m；**±6mm 初始错位就能让整齐方塔 0.33s 塌穿**。判死活看
   `min_y` 即可。runtime 选场景时绕开这些构型。
+- **pyglet 2.1 的 `window.caption` / `window.vsync` 是只读 property**（choreoward /
+  kkriegerward 实测）：赋值直接 `AttributeError`，要走 `set_caption(...)` /
+  `set_vsync(...)` 方法。宿主是引擎自管窗口的 App（`WorldApp`/`KKApp`，窗口在
+  renderer 里建）时，改标题 / 关 vsync（`--bench`）都只能在拿到 window 后调
+  setter 方法，不能像 `DemoApp` 那样在建窗参数里指定。
+- **薄放映厅 demo 的 `--bench` 计时**：引擎宿主 App 没有 harness 的
+  `_sample_frame_time`，基准计时可以往 window 的 `on_draw` 链上再 push 一个
+  handler（返回 `None` 不阻断既有绘制），量 on_draw 链间隔并丢弃前 1.0s 预热
+  （`pyglet.app.run(interval=0)` + `set_vsync(False)`，输出格式对齐
+  `verify_demos.py` 的 `BENCH_RE` 即可进批量基准）。
