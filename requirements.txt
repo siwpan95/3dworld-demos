@@ -30,7 +30,10 @@
 #    world3d/engine/compute.py（GPU 计算调度核心）——computeward 的 GPU 主路径
 #    依赖它；旧 0.4.1 环境下该 demo 自动降级 CPU 路径仍可跑，但抬下限后
 #    「pip install -r requirements.txt」即得完整体验。
-3dworld>=0.5.0,<0.6
+# ⚠️ 2026-10-27（二）上限从 <0.6 抬到 <0.7（下限抬到 0.6.0）：0.6.0 的 wheel
+#    带来 world3d/logic/fov.py（recursive shadowcasting）——brogueward 的视野
+#    与怪物惊醒走引擎件（旧 0.5.0 下自动降级内置同款 shadowcasting）。
+3dworld>=0.6.0,<0.7
 
 # ② 可选增强：examples/scene_walker.py 的马尔可夫演出变体（纯标准库实现）
 #    不装的话 scene_walker 只是没有发光变体，其余功能照常（ImportError 已兜住）

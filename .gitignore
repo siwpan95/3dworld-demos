@@ -18,6 +18,7 @@ venv/
 Thumbs.db
 Desktop.ini
 
-# brogueward：SFX 为运行时合成物；BrogueCE 压缩包为外部参考资料
+# brogueward：SFX/录像为运行时合成物；BrogueCE 压缩包为外部参考资料
 assets/brogueward_sfx/
+assets/brogueward_runs/
 BrogueCE-*.zip

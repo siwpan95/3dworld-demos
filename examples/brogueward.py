@@ -27,10 +27,13 @@ Brogue（Brian Walker, 2009；Brogue: Community Edition, AGPLv3）被广泛认�
 - 渲染为自建 unlit 顶点色管线（地形每格变色的 FOV 光照无法走引擎
   Mesh 的 Material uniform，见 TerrainMesh 注释）。
 
-MVP 范围（刻意收窄，后置项见 README）
-    10 种怪物 / 15 种物品 / 3 种陷阱 / 火·毒气·水·草 / 饥饿 /
-    26 层 + Amulet 回地表胜利。不含：门/机关（machine）/vault、
-    友军魅惑、特殊武器攻击模式、录像回放、法杖戒指体系。
+玩法范围（26 层完整闭环）
+    10 种怪物 / 23 种物品 / 3 种陷阱 / 火·毒气·水·草 / 饥饿 /
+    门（挡视野、bump 开启、可烧毁）与机关宝藏室 vault（封门+守卫+稀有战利品）/
+    魅惑药剂 + 魅惑盟友 AI（友军自动接敌）/ 武器攻击模式（矛 reach 突刺 /
+    战斧 sweep 横扫）/ 法杖（充能制、自动索敌：火焰/闪电链/迟缓）+
+    戒指（被动：再生/潜行/防护）/ 录像回放（--flag record 记账，
+    --flag replay=PATH 确定性复演并对账终局）。
 """
 from __future__ import annotations
 
@@ -52,10 +55,33 @@ from pyglet.math import Mat4, Vec3
 # FOV 走引擎件（logic.fov，2026-10-27 新增反哺）；0.5.0 wheel 尚未携带，
 # 缺则用本文件内置的同款 shadowcasting（引擎 0.6.0 发版后自动切换）。
 try:
-    from world3d.logic.fov import compute_fov, light_level
+    from world3d.logic.fov import (compute_fov, light_level,
+                                   visible_through)
     _FOV_FROM_ENGINE = True
 except ImportError:                                 # pragma: no cover
     _FOV_FROM_ENGINE = False
+
+    def visible_through(opaque, x0, y0, x1, y1, max_dist=64):
+        """Bresenham 逐格视线判定（与引擎 logic.fov 同款语义）。"""
+        dx = abs(x1 - x0)
+        dy = abs(y1 - y0)
+        if dx + dy > max_dist:
+            return False
+        sx = 1 if x1 > x0 else -1
+        sy = 1 if y1 > y0 else -1
+        err = dx - dy
+        x, y = x0, y0
+        while (x, y) != (x1, y1):
+            e2 = err * 2
+            if e2 > -dy:
+                err -= dy
+                x += sx
+            if e2 < dx:
+                err += dx
+                y += sy
+            if (x, y) != (x1, y1) and opaque(x, y):
+                return False
+        return True
 
     def _cast_light(visible, opaque, cx, cy, row, start, end, radius_sq,
                     xx, xy, yx, yy):
@@ -129,6 +155,7 @@ DEMO_STEP = 0.38               # 演示模式每步间隔（秒）
 T_WALL, T_FLOOR, T_WATER, T_GRASS = 0, 1, 2, 3
 T_STAIRS_DOWN, T_STAIRS_UP = 4, 5
 T_RUBBLE = 6                   # 纯装饰
+T_DOOR_C, T_DOOR_O = 7, 8      # 关门（挡视野/bump 开/可烧）/ 开门
 
 # 陷阱 ID
 TRAP_NONE, TRAP_DART, TRAP_GAS, TRAP_PIT = 0, 1, 2, 3
@@ -154,6 +181,8 @@ TERRAIN_COLORS = {
     T_STAIRS_DOWN: (0.30, 0.85, 0.95),
     T_STAIRS_UP: (0.85, 0.85, 0.30),
     T_RUBBLE: (0.42, 0.40, 0.38),
+    T_DOOR_C: (0.55, 0.36, 0.18),
+    T_DOOR_O: (0.40, 0.28, 0.15),
 }
 
 # ============================================================= 数据表 ==
@@ -181,11 +210,19 @@ ITEMS = {
     'healing':   dict(kind='potion', name='healing potion',   color=(0.85, 0.20, 0.25), heal=25),
     'life':      dict(kind='potion', name='life potion',      color=(0.95, 0.30, 0.60), maxhp=10),
     'strength':  dict(kind='potion', name='strength potion',  color=(0.30, 0.45, 0.90), strength=1),
+    'charm':     dict(kind='potion', name='charm potion',     color=(0.95, 0.45, 0.75), charm=1),
     'enchant':   dict(kind='scroll', name='scroll of enchantment', color=(0.90, 0.88, 0.70), enchant=1),
     'teleport':  dict(kind='scroll', name='scroll of teleport',    color=(0.70, 0.70, 0.90), tele=True),
     'dagger':    dict(kind='weapon', name='dagger',           color=(0.75, 0.75, 0.80), dmg=(1, 3), acc=3, req=12),
     'sword':     dict(kind='weapon', name='short sword',      color=(0.82, 0.82, 0.88), dmg=(2, 5), acc=4, req=14),
-    'war axe':   dict(kind='weapon', name='war axe',          color=(0.70, 0.62, 0.55), dmg=(4, 9), acc=5, req=18),
+    'spear':     dict(kind='weapon', name='spear',            color=(0.65, 0.72, 0.55), dmg=(2, 6), acc=4, req=15, reach=2),
+    'war axe':   dict(kind='weapon', name='war axe',          color=(0.70, 0.62, 0.55), dmg=(4, 9), acc=5, req=18, sweep=1),
+    'fire staff':      dict(kind='staff', name='staff of fire',       color=(0.95, 0.45, 0.15), effect='fire', dmg=(8, 14),  srange=6),
+    'lightning staff': dict(kind='staff', name='staff of lightning',  color=(0.45, 0.65, 0.95), effect='bolt', dmg=(10, 16), srange=7),
+    'slowing staff':   dict(kind='staff', name='staff of slowing',    color=(0.60, 0.85, 0.60), effect='slow', dmg=(0, 0),   srange=6),
+    'regen ring':      dict(kind='ring', name='ring of regeneration', color=(0.95, 0.55, 0.60), effect='regen'),
+    'stealth ring':    dict(kind='ring', name='ring of stealth',      color=(0.55, 0.55, 0.70), effect='stealth'),
+    'protection ring': dict(kind='ring', name='ring of protection',   color=(0.85, 0.85, 0.90), effect='protect'),
     'leather':   dict(kind='armor',  name='leather armor',    color=(0.60, 0.42, 0.28), df=1, req=13),
     'scale':     dict(kind='armor',  name='scale armor',      color=(0.52, 0.55, 0.60), df=3, req=16),
     'plate':     dict(kind='armor',  name='plate armor',      color=(0.68, 0.70, 0.75), df=5, req=20),
@@ -195,10 +232,17 @@ ITEMS = {
 FLOOR_ITEMS = {                       # 深度 → 物品权重表
     'always': [('ration', 10), ('gold', 16), ('healing', 8), ('mango', 5)],
     'mid':    [('strength', 4), ('enchant', 6), ('dagger', 3), ('leather', 3),
-               ('teleport', 3)],
+               ('teleport', 3), ('spear', 2), ('charm', 3),
+               ('fire staff', 2), ('slowing staff', 2),
+               ('stealth ring', 1), ('protection ring', 1)],
     'deep':   [('sword', 3), ('scale', 3), ('life', 3), ('war axe', 2),
-               ('plate', 2)],
+               ('plate', 2), ('lightning staff', 2), ('regen ring', 1)],
 }
+
+# vault 宝藏室稀有战利品池（封门 + 守卫的回报）
+VAULT_LOOT = ['strength', 'life', 'enchant', 'plate', 'war axe', 'spear',
+              'fire staff', 'lightning staff', 'slowing staff',
+              'regen ring', 'stealth ring', 'protection ring']
 
 TRAP_NAMES = {TRAP_DART: 'dart trap', TRAP_GAS: 'poison gas trap',
               TRAP_PIT: 'trap door'}
@@ -334,6 +378,8 @@ class Level:
                 it['key'] = key
                 if it['kind'] == 'gold':
                     it['amount'] = self.rng.randint(*it['amount'])
+                if it['kind'] == 'staff':
+                    it['charges'] = self.rng.randint(3, 6)
                 self.items.setdefault(pos, []).append(it)
 
         # ---- 怪物 ----
@@ -351,6 +397,82 @@ class Level:
                 if pos:
                     self.trap[pos[1]][pos[0]] = self.rng.choice(
                         (TRAP_DART, TRAP_GAS, TRAP_PIT))
+
+        # ---- 门（房间咽喉点，挡视野、bump 开、可烧毁）----
+        self._place_doors(rooms)
+        # ---- 机关宝藏室 vault（封门 + 守卫 + 稀有战利品）----
+        self.vault_cells = set()
+        if depth >= 2:
+            self._place_vault(rooms)
+
+    def _door_candidates(self, room):
+        """房间外圈与走廊相接的咽喉格（两侧垂直方向是墙）。"""
+        out = []
+        for x in range(room['x'] - 1, room['x'] + room['w'] + 1):
+            for y in (room['y'] - 1, room['y'] + room['h']):
+                if 0 < x < MAP_W - 1 and 0 < y < MAP_H - 1 \
+                        and self.terrain[y][x] == T_FLOOR:
+                    out.append((x, y))
+        for y in range(room['y'] - 1, room['y'] + room['h'] + 1):
+            for x in (room['x'] - 1, room['x'] + room['w']):
+                if 0 < x < MAP_W - 1 and 0 < y < MAP_H - 1 \
+                        and self.terrain[y][x] == T_FLOOR:
+                    out.append((x, y))
+        res = []
+        for (x, y) in out:
+            # 真·1 宽咽喉：一轴两侧是墙 + 另一轴两侧通透（才能挡住视线）
+            ns = (not self.walkable(x, y - 1) and not self.walkable(x, y + 1)
+                  and self.walkable(x - 1, y) and self.walkable(x + 1, y))
+            ew = (not self.walkable(x - 1, y) and not self.walkable(x + 1, y)
+                  and self.walkable(x, y - 1) and self.walkable(x, y + 1))
+            if ns or ew:
+                res.append((x, y))
+        return res
+
+    def _place_doors(self, rooms):
+        """咽喉点概率放门（出生房不设，防开局堵死）。"""
+        n = 0
+        for ri, room in enumerate(rooms):
+            if ri == 0 or n >= 6:
+                continue
+            for (x, y) in self._door_candidates(room):
+                if self.terrain[y][x] == T_FLOOR and self.rng.random() < 0.5:
+                    self.terrain[y][x] = T_DOOR_C
+                    n += 1
+
+    def _place_vault(self, rooms):
+        """宝藏室：随机房间所有咽喉封门 + 两件稀有物 + 金 + 守卫。"""
+        def has(r, c):
+            return (r['x'] <= c[0] < r['x'] + r['w']
+                    and r['y'] <= c[1] < r['y'] + r['h'])
+        cands = [r for r in rooms[1:]
+                 if not has(r, self.down) and not has(r, self.up)]
+        if not cands:
+            return
+        room = self.rng.choice(cands)
+        for (x, y) in self._door_candidates(room):
+            self.terrain[y][x] = T_DOOR_C
+        cx, cy = room['x'] + room['w'] // 2, room['y'] + room['h'] // 2
+        for dy in range(-1, 2):
+            for dx in range(-1, 2):
+                if self.terrain[cy + dy][cx + dx] == T_FLOOR:
+                    self.vault_cells.add((cx + dx, cy + dy))
+        spots = [(cx - 1, cy - 1), (cx + 1, cy - 1), (cx - 1, cy + 1),
+                 (cx + 1, cy + 1), (cx, cy - 1), (cx, cy + 1)]
+        self.rng.shuffle(spots)
+        for key in self.rng.sample(VAULT_LOOT, k=2):
+            it = dict(ITEMS[key])
+            it['key'] = key
+            if it['kind'] == 'staff':
+                it['charges'] = self.rng.randint(4, 8)
+            self.items.setdefault(spots.pop(), []).append(it)
+        gd = dict(ITEMS['gold'])
+        gd['key'] = 'gold'
+        gd['amount'] = self.rng.randint(40, 130)
+        self.items.setdefault(spots.pop(), []).append(gd)
+        # 守卫：宝物旁必驻一只（当前深度池）
+        self.monsters.append(
+            Monster.spawn(monsters_for_depth(self.depth, self.rng), spots.pop()))
 
     def _patch(self, room, kind):
         """房间内随机小片水/草（Brogue 地形点缀）。"""
@@ -375,10 +497,21 @@ class Level:
     def walkable(self, x, y):
         if not (0 <= x < MAP_W and 0 <= y < MAP_H):
             return False
-        return self.terrain[y][x] != T_WALL
+        t = self.terrain[y][x]
+        return t != T_WALL and t != T_DOOR_C
 
     def transparent(self, x, y):
         return self.walkable(x, y)
+
+    def opaque(self, x, y):
+        """挡光语义（logic.fov 的 opaque 回调：True = 挡光）。"""
+        return not self.walkable(x, y)
+
+    def passable(self, x, y):
+        """寻路语义：关门可通过（bump 开门耗一步）。"""
+        if not (0 <= x < MAP_W and 0 <= y < MAP_H):
+            return False
+        return self.terrain[y][x] != T_WALL
 
     def move_cost(self, x, y):
         """回合消耗（水格双倍——Brogue 的水减速）。"""
@@ -395,6 +528,8 @@ class Monster:
         self.awake = False
         self.regen_tick = 0
         self.ranged_tick = 0
+        self.slow_t = 0                 # 迟缓法杖剩余回合
+        self.charm_t = 0                # 魅惑剩余回合（>0 = 友军）
         # 渲染插值
         self.rx, self.ry = float(pos[0]), float(pos[1])
         self.px, self.py = float(pos[0]), float(pos[1])
@@ -423,6 +558,8 @@ class Player:
         self.weapon_ench = 0
         self.armor = None
         self.armor_ench = 0
+        self.ring = None                # 已装备戒指（item dict）
+        self.staff_charges = {}         # key -> 剩余充能（聚合池）
         self.inventory = {}             # key -> count
         self.hunger = 1300
         self.gold = 0
@@ -452,7 +589,12 @@ class Player:
             df += self.armor['df'] + self.armor_ench
         if self.strength < (self.armor or {}).get('req', 0):
             df = max(0, df - 2)
+        if self.has_ring('protect'):
+            df += 2
         return df
+
+    def has_ring(self, effect):
+        return self.ring is not None and self.ring.get('effect') == effect
 
 
 # ================================================================ 游戏 ==
@@ -462,6 +604,9 @@ class Game:
     def __init__(self, seed=None):
         self.seed = seed if seed is not None else random.randrange(1 << 30)
         self.rng = random.Random(self.seed)
+        # 演示 AI 专用 RNG 流（独立于游戏 rng——回放不重跑 AI，
+        # 游戏状态只由"动作"消耗 rng，录像复演才可能逐位一致）
+        self.ai_rng = random.Random((self.seed * 31337 + 17) & 0x7fffffff)
         self.depth = 1
         self.level = Level(self.depth, self.seed)
         self.player = Player(self.level.player_start)
@@ -487,8 +632,16 @@ class Game:
     # ---------------------------------------------------------- FOV --
     def update_fov(self):
         lv = self.level
-        self.fov = compute_fov(lv.transparent, (self.player.x, self.player.y),
-                               int(FOV_RADIUS))
+        px, py = self.player.x, self.player.y
+        # ⚠ opaque 回调语义是「True = 挡光」——传 lv.opaque 而不是
+        # lv.transparent（MVP 轮曾传反：地板挡光、墙透光，视野缩成
+        # 贴身 9 格，直到门复检才现形）。
+        self.fov = compute_fov(lv.opaque, (px, py), int(FOV_RADIUS))
+        # 直线遮挡复检：slope 窗口 shadowcasting 会从墙角斜缝「绕射」，
+        # 把 T 字口正后方格（关门后 1 格）也标亮——Bresenham 复检剔除。
+        # 墙/门格自身是射线端点，仍保留（看得见墙、看不见墙后）。
+        self.fov = {(x, y): d for (x, y), d in self.fov.items()
+                    if visible_through(lv.opaque, px, py, x, y)}
         for (x, y) in self.fov:
             lv.explored[y][x] = True
 
@@ -503,17 +656,39 @@ class Game:
         lv = self.level
         nx, ny = p.x + dx, p.y + dy
         if dx and dy:                   # 对角穿墙角禁止（Brogue 规则）
-            if not (lv.walkable(p.x + dx, p.y) and lv.walkable(p.x, p.y + dy)):
+            if not (lv.passable(p.x + dx, p.y) and lv.passable(p.x, p.y + dy)):
                 self.msg('The way is blocked.')
                 return
-        target = next((m for m in lv.monsters if (m.x, m.y) == (nx, ny)), None)
+        target = next((m for m in lv.monsters if (m.x, m.y) == (nx, ny)
+                       and m.charm_t <= 0), None)
         if target:
             self.player_attack(target)
             self.end_turn()
             return
-        if not lv.walkable(nx, ny):
+        occupant = self.monster_at(nx, ny)
+        if occupant:
+            self.msg(f'Your charmed {occupant.name} is in the way.')
+            return
+        if lv.terrain[ny][nx] == T_DOOR_C:
+            lv.terrain[ny][nx] = T_DOOR_O
+            self.msg('You push the door open.', (0.75, 0.6, 0.4))
+            sfx('door')
+            self.end_turn()
+            return
+        if not lv.passable(nx, ny):
             self.msg('A stone wall bars the way.')
             return
+        # 矛的 reach：正交直线两格外有敌、中间通透 → 隔位突刺（不移动）
+        wp = p.weapon or {}
+        if wp.get('reach', 1) >= 2 and (dx == 0 or dy == 0):
+            mid_free = lv.transparent(nx, ny) and occupant is None
+            far = (next((m for m in lv.monsters
+                         if (m.x, m.y) == (p.x + dx * 2, p.y + dy * 2)
+                         and m.charm_t <= 0), None) if mid_free else None)
+            if far:
+                self.player_attack(far)
+                self.end_turn()
+                return
         depth_before = self.depth
         p.x, p.y = nx, ny
         self.on_enter_tile()
@@ -641,6 +816,22 @@ class Game:
             self.msg(f'You wear the {it["name"]}.', (0.9, 0.85, 0.6))
             sfx('pickup')
             return
+        if kind == 'staff':
+            p.staff_charges[it['key']] = p.staff_charges.get(it['key'], 0) \
+                + it.get('charges', 4)
+            p.inventory[it['key']] = p.inventory.get(it['key'], 0) + 1
+            self.msg(f'You take the {it["name"]}.', (0.7, 0.8, 0.95))
+            sfx('pickup')
+            return
+        if kind == 'ring':
+            if p.ring is None:
+                p.ring = it
+                self.msg(f'You slip on the {it["name"]}.', (0.85, 0.7, 0.95))
+            else:
+                p.inventory[it['key']] = p.inventory.get(it['key'], 0) + 1
+                self.msg(f'You stash the {it["name"]}.')
+            sfx('pickup')
+            return
         p.inventory[it['key']] = p.inventory.get(it['key'], 0) + 1
         self.msg(f'You found {it["name"]}.', (0.75, 0.85, 0.75))
         sfx('pickup')
@@ -679,6 +870,18 @@ class Game:
                 p.strength += it['strength']
                 self.msg('You feel mightier!', (0.5, 0.6, 1.0))
                 sfx('heal')
+            elif 'charm' in it:
+                self.charm_nearest()
+        elif kind == 'staff':
+            p.inventory[key] = p.inventory.get(key, 0) + 1      # 数量只随碎裂减少
+            self.fire_staff(key)
+        elif kind == 'ring':
+            old = p.ring
+            p.ring = it
+            if old is not None:
+                p.inventory[old['key']] = p.inventory.get(old['key'], 0) + 1
+            self.msg(f'You now wear the {it["name"]}.', (0.85, 0.7, 0.95))
+            sfx('magic')
         elif kind == 'scroll':
             if it.get('enchant'):
                 if p.weapon:
@@ -707,8 +910,99 @@ class Game:
                     sfx('magic')
         self.end_turn()
 
+    # ---------------------------------------------------- 施法/魅惑 --
+    def charm_nearest(self):
+        """魅惑药剂：视野内最近敌人倒戈 40 回合。"""
+        best, bd = None, 1 << 30
+        for m in self.level.monsters:
+            if m.charm_t > 0:
+                continue
+            d = self.fov.get((m.x, m.y))
+            if d is not None and d <= 64 and d < bd:
+                best, bd = m, d
+        if best:
+            best.charm_t = 40
+            best.awake = True
+            self.msg(f'The {best.name} falls under your charm!', (0.95, 0.55, 0.85))
+            sfx('charm')
+        else:
+            self.msg('You feel a wave of misplaced benevolence.', (0.9, 0.6, 0.8))
+
+    def fire_staff(self, key=None):
+        """法杖自动索敌：视野内最近的敌人（Z = 第一把有充能的法杖）。
+
+        充能语义统一在这里：命中目标才扣 1 充能（空放不扣），
+        扣到 0 法杖碎裂、移出背包。use_slot 与 Z 键都走本入口。
+        """
+        p = self.player
+        if key is None:
+            key = next((k for k, n in p.inventory.items()
+                        if n > 0 and ITEMS[k]['kind'] == 'staff'
+                        and p.staff_charges.get(k, 0) > 0), None)
+            if key is None:
+                self.msg('You have no charged staff.')
+                return
+        if p.staff_charges.get(key, 0) <= 0:
+            self.msg('The staff is out of charge.')
+            return
+        tpl = ITEMS[key]
+        rng_sq = tpl['srange'] ** 2
+        best, bd = None, 1 << 30
+        for m in self.level.monsters:
+            if m.charm_t > 0:
+                continue
+            d = self.fov.get((m.x, m.y))
+            if d is not None and d <= rng_sq and d < bd:
+                best, bd = m, d
+        if best is None:
+            self.msg('No target in sight for the staff.')
+            return
+        # ---- 命中即扣充能 ----
+        p.staff_charges[key] -= 1
+        crumbled = p.staff_charges[key] <= 0
+        if crumbled:
+            p.inventory.pop(key, None)
+            self.msg(f'The {tpl["name"]} crumbles to dust.', (0.6, 0.6, 0.6))
+        eff = tpl['effect']
+        best.awake = True
+        second = None
+        if eff == 'slow':
+            best.slow_t = 20
+            self.msg(f'The {best.name} slows to a crawl.', (0.6, 0.9, 0.6))
+            sfx('zap')
+        else:
+            dmg = self.rng.randint(*tpl['dmg'])
+            best.hp -= dmg
+            if eff == 'fire':
+                lv = self.level
+                lv.fire[best.y][best.x] = max(lv.fire[best.y][best.x], 3)
+                self.msg(f'A gout of flame sears the {best.name} for {dmg}!',
+                         (1.0, 0.55, 0.25))
+                sfx('ranged')
+            else:                           # bolt：闪电 + 链式跳一个
+                self.msg(f'Lightning arcs into the {best.name} for {dmg}!',
+                         (0.6, 0.8, 1.0))
+                sfx('zap')
+                sd = 1 << 30
+                for m in self.level.monsters:
+                    if m is best or m.charm_t > 0:
+                        continue
+                    d2 = (m.x - best.x) ** 2 + (m.y - best.y) ** 2
+                    if 0 < d2 <= 16 and self.visible(m.x, m.y) and d2 < sd:
+                        second, sd = m, d2
+                if second:
+                    half = max(1, dmg // 2)
+                    second.hp -= half
+                    second.awake = True
+                    self.msg(f'The arc jumps to the {second.name} for {half}!',
+                             (0.6, 0.8, 1.0))
+        if best.hp <= 0:
+            self.kill_monster(best)
+        if second is not None and second.hp <= 0:
+            self.kill_monster(second)
+
     # ---------------------------------------------------------- 战斗 --
-    def player_attack(self, m):
+    def player_attack(self, m, primary=True):
         p = self.player
         hit = self.rng.randint(0, 20) + p.attack_acc() > 10 + self.level_rnd_def(m)
         p.bump = 1.0
@@ -723,6 +1017,13 @@ class Game:
                 self.kill_monster(m)
         else:
             self.msg(f'You miss the {m.name}.', (0.6, 0.62, 0.68))
+        # 战斧横扫：主目标之外，正交相邻的敌人各再判一刀
+        if primary and (p.weapon or {}).get('sweep'):
+            for o in list(self.level.monsters):
+                if o is m or o.charm_t > 0:
+                    continue
+                if abs(o.x - p.x) + abs(o.y - p.y) == 1:
+                    self.player_attack(o, primary=False)
 
     def level_rnd_def(self, m):
         return m.tpl['df']
@@ -777,17 +1078,51 @@ class Game:
         lv = self.level
         p = self.player
         for m in list(lv.monsters):
+            if m.hp <= 0:               # 本回合内已被友军/环境击杀
+                continue
             spd = m.tpl['spd']
+            if m.slow_t > 0:
+                m.slow_t -= 1
+                spd = 50
             moves = 2 if spd >= 150 else (1 if spd >= 100 else (self.turn % 2 == 0))
             if not moves:
                 continue
             if not m.awake:
-                # 惊醒判定：距离 + 视线（Brogue 的听觉/视觉醒）
+                # 惊醒判定：距离 + 视线（潜行戒压缩察觉半径 7→4）
                 d2 = (m.x - p.x) ** 2 + (m.y - p.y) ** 2
-                if d2 <= 49 and compute_fov(lv.transparent, (m.x, m.y), 7).get((p.x, p.y)) is not None:
+                if d2 <= (16 if p.has_ring('stealth') else 49) and \
+                        compute_fov(lv.opaque, (m.x, m.y), 7).get((p.x, p.y)) is not None:
                     m.awake = True
                     if self.visible(m.x, m.y):
                         self.msg(f'The {m.name} notices you!', (0.95, 0.75, 0.5))
+                continue
+            if m.charm_t > 0:
+                # 魅惑盟友：扑向最近的敌对怪物；到期倒戈回敌营
+                m.charm_t -= 1
+                if m.charm_t <= 0:
+                    m.awake = True
+                    if self.visible(m.x, m.y):
+                        self.msg(f'The {m.name} shakes off your charm!', (0.95, 0.6, 0.6))
+                    continue
+                foes = [o for o in lv.monsters if o is not m and o.charm_t <= 0]
+                if foes:
+                    tgt = min(foes, key=lambda o: (o.x - m.x) ** 2 + (o.y - m.y) ** 2)
+                    if (tgt.x - m.x) ** 2 + (tgt.y - m.y) ** 2 <= 2:
+                        hit = self.rng.randint(0, 20) + m.tpl['ac'] > 10 + tgt.tpl['df']
+                        m.bump = 1.0
+                        if hit:
+                            dmg = self.rng.randint(*m.tpl['dmg'])
+                            tgt.hp -= dmg
+                            tgt.awake = True
+                            if self.visible(m.x, m.y):
+                                self.msg(f'Your {m.name} hits the {tgt.name} for {dmg}.',
+                                         (0.95, 0.8, 0.5))
+                            if tgt.hp <= 0:
+                                self.kill_monster(tgt)
+                        elif self.visible(m.x, m.y):
+                            self.msg(f'Your {m.name} misses the {tgt.name}.')
+                    else:
+                        self.chase_toward(m, (tgt.x, tgt.y))
                 continue
             dist2 = (m.x - p.x) ** 2 + (m.y - p.y) ** 2
             if dist2 == 1:
@@ -811,26 +1146,33 @@ class Game:
                         return
                     continue
             # A* 追击
-            self.chase(m)
+            self.chase_toward(m, (p.x, p.y))
 
-    def chase(self, m):
+    def chase_toward(self, m, goal):
+        """A* 追向 goal；关门按可通过寻路，下一格是门则先开门（耗此回合）。"""
         lv = self.level
-        p = self.player
-        path = self._pather.find_path((m.x, m.y), (p.x, p.y), lv.walkable)
+        path = self._pather.find_path((m.x, m.y), goal, lv.passable)
         if path and len(path) >= 2:
             nx, ny = path[1]
-            if (nx, ny) != (p.x, p.y) and not any(
+            if lv.terrain[ny][nx] == T_DOOR_C:
+                lv.terrain[ny][nx] = T_DOOR_O
+                if self.visible(nx, ny):
+                    self.msg(f'The {m.name} pushes the door open.', (0.7, 0.6, 0.45))
+                    sfx('door')
+                return
+            if goal != (nx, ny) and not any(
                     (o.x, o.y) == (nx, ny) for o in lv.monsters):
                 m.px, m.py = float(m.x), float(m.y)
                 m.x, m.y = nx, ny
                 m.anim_t = 0.0
                 return
-        # A* 不可达 → 贪心逼近
-        dx = (p.x > m.x) - (p.x < m.x)
-        dy = (p.y > m.y) - (p.y < m.y)
+        # A* 不可达 → 贪心逼近（不可踩上 goal 本格）
+        gx, gy = goal
+        dx = (gx > m.x) - (gx < m.x)
+        dy = (gy > m.y) - (gy < m.y)
         for ndx, ndy in ((dx, dy), (dx, 0), (0, dy)):
             nx, ny = m.x + ndx, m.y + ndy
-            if lv.walkable(nx, ny) and not any(
+            if (nx, ny) != goal and lv.walkable(nx, ny) and not any(
                     (o.x, o.y) == (nx, ny) for o in lv.monsters):
                 m.px, m.py = float(m.x), float(m.y)
                 m.x, m.y = nx, ny
@@ -878,9 +1220,14 @@ class Game:
             lv.fire[y][x] -= 1
             if lv.fire[y][x] <= 0:
                 continue
-            # 引燃邻居（草易燃、水不可燃）
+            # 引燃邻居（草易燃、水不可燃、门板可烧穿）
             for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1)):
                 nx, ny = x + dx, y + dy
+                if lv.terrain[ny][nx] in (T_DOOR_C, T_DOOR_O) \
+                        and self.rng.random() < 0.5:
+                    lv.terrain[ny][nx] = T_FLOOR
+                    if self.visible(nx, ny):
+                        self.msg('A door burns through!', (1.0, 0.6, 0.3))
                 if (lv.terrain[ny][nx] == T_GRASS and lv.fire[ny][nx] == 0
                         and self.rng.random() < 0.45):
                     lv.fire[ny][nx] = 3
@@ -930,10 +1277,10 @@ class Game:
                 p.hp -= 1
                 self.check_death()
         else:
-            # 自然回复
+            # 自然回复（再生戒：间隔 24 → 12）
             if p.hp < p.max_hp:
                 p.regen_tick += 1
-                if p.regen_tick >= 24:
+                if p.regen_tick >= (12 if p.has_ring('regen') else 24):
                     p.regen_tick = 0
                     p.hp += 1
 
@@ -983,6 +1330,9 @@ SFX_SPECS = {
     'gas':    lambda: _tone(0.45, 90, 60, decay=5, noise=0.8),
     'ranged': lambda: _tone(0.25, 500, 150, decay=10, noise=0.3),
     'eat':    lambda: _tone(0.18, 180, 140, decay=9, noise=0.5),
+    'door':   lambda: _tone(0.18, 90, 140, decay=8, noise=0.25),
+    'zap':    lambda: _tone(0.16, 900, 200, decay=14, noise=0.6),
+    'charm':  lambda: _tone(0.30, 500, 750, decay=6, noise=0.05),
     'death':  lambda: _tone(0.9, 220, 40, decay=3, noise=0.4),
     'win':    lambda: _tone(0.8, 440, 880, decay=3),
 }
@@ -1098,6 +1448,22 @@ class TerrainMesh:
                         quad((wx + TILE, 0.0, wz + TILE), (wx + TILE, 0.0, wz),
                              (wx + TILE, 0.7, wz), (wx + TILE, 0.7, wz + TILE),
                              tuple(min(1.0, c * 2.2) for c in base))
+                elif t == T_DOOR_C:
+                    # 关门：半高门板（顶面注册进光照格，侧沿画在四周）
+                    ch = 0.5
+                    top = (wx + TILE, ch, wz + TILE)
+                    s = quad((wx, ch, wz), (wx, ch, wz + TILE), top,
+                             (wx + TILE, ch, wz), base)
+                    self.cell_verts[(x, y)] = (s, 4)
+                    lo_side = tuple(min(1.0, c * 2.6) for c in base)
+                    quad((wx, 0.0, wz + TILE), (wx + TILE, 0.0, wz + TILE),
+                         (wx + TILE, ch, wz + TILE), (wx, ch, wz + TILE), lo_side)
+                    quad((wx + TILE, 0.0, wz), (wx, 0.0, wz),
+                         (wx, ch, wz), (wx + TILE, ch, wz), lo_side)
+                    quad((wx, 0.0, wz), (wx, 0.0, wz + TILE),
+                         (wx, ch, wz + TILE), (wx, ch, wz), lo_side)
+                    quad((wx + TILE, 0.0, wz + TILE), (wx + TILE, 0.0, wz),
+                         (wx + TILE, ch, wz), (wx + TILE, ch, wz + TILE), lo_side)
                 else:
                     h = 0.16 if t == T_WATER else 0.0
                     c = base
@@ -1124,6 +1490,9 @@ class TerrainMesh:
         for (x, y), (start, n) in self.cell_verts.items():
             t = lv.terrain[y][x]
             base = TERRAIN_COLORS[t]
+            if (x, y) in lv.vault_cells:    # 宝藏室地板金染
+                base = (min(1.0, base[0] + 0.25), min(1.0, base[1] + 0.16),
+                        min(1.0, base[2] * 0.5 + 0.05))
             if (x, y) in fov:
                 d = fov[(x, y)]
                 lit = 0.32 + 0.68 * light_level(math.sqrt(d), FOV_RADIUS)
@@ -1265,6 +1634,8 @@ ITEM_SHAPE = {
     'scroll': (0.16, 0.10, 0.12, 0.03),
     'weapon': (0.05, 0.12, 0.05, 0.30),
     'armor':  (0.20, 0.12, 0.16, 0.14),
+    'staff':  (0.05, 0.14, 0.05, 0.36),
+    'ring':   (0.08, 0.12, 0.08, 0.05),
     'gold':   (0.09, 0.14, 0.09, 0.06),
     'amulet': (0.16, 0.30, 0.16, 0.20),
 }
@@ -1302,8 +1673,8 @@ class GameHud:
 
     def layout(self, w, h):
         # ⚠ shapes.Rectangle.position 只接受 (x, y)（text.Label 才收三元组）
-        self.panel.position = (10, h - 196)
-        self.panel.width, self.panel.height = 250, 160
+        self.panel.position = (10, h - 226)
+        self.panel.width, self.panel.height = 250, 192
         self.stat.position = (18, h - 42, 0)
         self.msg_bg.position = (0, 88)
         self.msg_bg.width, self.msg_bg.height = w, 92
@@ -1317,11 +1688,18 @@ class GameHud:
                 if p.weapon else 'bare hands')
         arm = (p.armor['name'] + (f' +{p.armor_ench}' if p.armor_ench else '')
                if p.armor else 'no armor')
+        staffs = '  '.join(
+            f'{ITEMS[k]["name"].replace("staff of ", "st.")} '
+            f'x{p.staff_charges.get(k, 0)}'
+            for k, n in p.inventory.items()
+            if n > 0 and ITEMS[k]['kind'] == 'staff')
+        ring = p.ring['name'] if p.ring else 'no ring'
         am = '  ★Amulet' if p.has_amulet else ''
         self.stat.text = (f'HP  {max(0, p.hp)}/{p.max_hp}\n'
                           f'Str {p.strength}   Depth {game.depth}/{DEPTH_MAX}\n'
                           f'Hunger {hunger}   Gold {p.gold}\n'
-                          f'{weap}\n{arm}{am}')
+                          f'{weap}\n{arm}{am}\n'
+                          f'{staffs if staffs else "no staff"}\nRing: {ring}')
         for i, lab in enumerate(self.msgs):
             idx = len(game.messages) - 4 + i
             if 0 <= idx < len(game.messages):
@@ -1347,8 +1725,9 @@ class GameHud:
 # ================================================================ App ==
 class BroguewardApp(DemoApp):
     TITLE = 'brogueward · 《渊境》——3dworld 复刻 Brogue（26 层取 Amulet 回地表）'
-    HELP = ('移动 HJKLYUBN/方向键/小键盘   1-8 使用物品   SPACE 等待   '
-            'R 重开   拖拽旋转   滚轮缩放   ESC 退出')
+    HELP = ('移动 HJKLYUBN/方向键/小键盘   1-8 使用物品   Z 施法   SPACE 等待   '
+            'R 重开   拖拽旋转   滚轮缩放   ESC 退出'
+            '   （--flag record 录像 / replay=PATH 回放）')
     SHOTS = ((3.0, 'docs/brogueward_01.png'),
              (14.0, 'docs/brogueward_02.png'),
              (26.0, 'docs/brogueward_03.png'))
@@ -1356,12 +1735,20 @@ class BroguewardApp(DemoApp):
     def __init__(self, width=1280, height=720, args=None):
         self._seed = None
         self._demo = True                   # smoke/shot/bench 下自动演示
+        self._record = False
+        self._replay = None                 # 回放文件内容（dict）
         if args is not None:
             for f in args.flags:
                 if f.startswith('seed='):
                     self._seed = int(f.split('=', 1)[1])
                 if f == 'play':
                     self._demo = False
+                if f == 'record':
+                    self._record = True
+                if f.startswith('replay='):
+                    import json
+                    with open(f.split('=', 1)[1], 'r', encoding='utf-8') as fh:
+                        self._replay = json.load(fh)
         self.game = None
         self.cam_yaw = 180.0
         self.cam_pitch = 72.0               # 高俯角（Brogue 的 top-down 口味）
@@ -1379,6 +1766,17 @@ class BroguewardApp(DemoApp):
         self.batch_fx = DynamicBatch(self.program)
         self.hud_game = GameHud()
         self.hud_game.layout(self.window.width, self.window.height)
+        # 录像/回放状态（在 HUD 就绪后初始化）
+        self._rec_runs = []
+        self._rec_run = None
+        if self._record:
+            self._rec_start(self.game.seed)
+        if self._replay is not None:
+            self._demo = False
+            self._rp = {'runs': list(self._replay.get('runs', [])), 'idx': -1,
+                        'pos': 0, 'actions': [], 'expected': None,
+                        'report': [], 'done': False}
+            self._replay_next_run()
 
     def new_run(self, seed=None):
         if hasattr(self, 'terrain') and self.terrain is not None:
@@ -1388,6 +1786,98 @@ class BroguewardApp(DemoApp):
         self.terrain = TerrainMesh(self.program, self.game)
         wx, wz = _world(self.game.player.x, self.game.player.y)
         self.cam_target = (wx, 0.5, wz)
+
+    # ------------------------------------------------------- 录像/回放 --
+    def _rec_start(self, seed):
+        self._rec_run = {'seed': seed, 'actions': []}
+
+    def _rec_close(self):
+        if self._rec_run is not None:
+            g = self.game
+            if g.state != 'play':
+                self._rec_run['result'] = {
+                    'state': g.state, 'turn': g.turn, 'depth': g.depth,
+                    'hp': max(0, g.player.hp), 'score': g.score,
+                    'gold': g.player.gold}
+            self._rec_runs.append(self._rec_run)
+            self._rec_run = None
+
+    def _rec_save(self):
+        if not self._record:
+            return
+        import json
+        d = os.path.join(PROJECT_ROOT, 'assets', 'brogueward_runs')
+        os.makedirs(d, exist_ok=True)
+        runs = list(self._rec_runs) + ([self._rec_run] if self._rec_run else [])
+        path = os.path.join(d, f'record_{self.game.seed}.json')
+        with open(path, 'w', encoding='utf-8') as fh:
+            json.dump({'runs': runs}, fh, ensure_ascii=False)
+        print(f'[record] saved {path} ({len(runs)} run(s))', flush=True)
+
+    def do(self, act):
+        """统一动作入口：键盘 / 演示 AI / 回放全部从这里走（录像在此记账）。"""
+        g = self.game
+        kind = act[0]
+        if kind == 'new':
+            self.new_run(act[1] if len(act) > 1 else None)
+            if self._record:
+                self._rec_close()
+                self._rec_start(self.game.seed)
+        elif kind == 'move':
+            g.try_move(act[1], act[2])
+        elif kind == 'wait':
+            g.wait()
+        elif kind == 'use':
+            g.use_slot(act[1])
+        elif kind == 'fire':
+            g.fire_staff()
+        if self._record and kind != 'new' and self._rec_run is not None:
+            self._rec_run['actions'].append(act)
+        self._after_turn()
+        if self._record and g.state != 'play' and self._rec_run is not None:
+            self._rec_close()
+            self._rec_save()
+
+    def _replay_next_run(self):
+        rp = self._rp
+        rp['idx'] += 1
+        if rp['idx'] >= len(rp['runs']):
+            rp['done'] = True
+            for idx, verdict in rp['report']:
+                print(f'[replay] run#{idx}: {verdict}', flush=True)
+            n_ok = sum(1 for _, v in rp['report'] if v == 'MATCH')
+            print(f'[replay] {n_ok}/{len(rp["report"])} runs match', flush=True)
+            return
+        run = rp['runs'][rp['idx']]
+        rp['actions'] = run.get('actions', [])
+        rp['pos'] = 0
+        rp['expected'] = run.get('result')
+        self.do(['new', run.get('seed')])
+
+    def _replay_step(self):
+        """回放节拍：按 DEMO_STEP 逐动作复演，终局对账后进下一 run。"""
+        rp = self._rp
+        if rp['pos'] < len(rp['actions']):
+            act = rp['actions'][rp['pos']]
+            rp['pos'] += 1
+            self.do(act)
+            if self.game.state != 'play':
+                g = self.game
+                got = {'state': g.state, 'turn': g.turn, 'depth': g.depth,
+                       'hp': max(0, g.player.hp), 'score': g.score,
+                       'gold': g.player.gold}
+                exp = rp.get('expected')
+                if exp is None:
+                    rp['report'].append((rp['idx'], 'n/a (no recorded result)'))
+                else:
+                    ok = all(got.get(k) == v for k, v in exp.items())
+                    rp['report'].append(
+                        (rp['idx'], 'MATCH' if ok else f'MISMATCH {got} != {exp}'))
+                self._replay_next_run()
+        else:
+            # 动作耗尽仍未终局（录制端中途退出的残局）
+            rp['report'].append((rp['idx'], 'n/a (actions exhausted)'))
+            self._replay_next_run()
 
     def _rebuild_terrain(self):
         """换层回调：删旧地形网格、按新 level 重建（光照/几何同步）。"""
@@ -1402,37 +1892,8 @@ class BroguewardApp(DemoApp):
         self.hud_game.update(self.game)
 
     def _demo_step(self):
-        """演示 AI：每层先随机游走几步（探索），再贪心向目标（下楼/上表）。"""
-        g = self.game
-        if g.state != 'play':
-            self.new_run()                      # 无限循环演示
-            self._after_turn()
-            return
-        p = g.player
-        lv = g.level
-        adj = next((m for m in lv.monsters
-                    if abs(m.x - p.x) <= 1 and abs(m.y - p.y) <= 1), None)
-        if adj:
-            g.try_move(*_toward(p, adj))
-            self._after_turn()
-            return
-        if lv.turns < 10 and lv.depth < DEPTH_MAX:
-            # 探索期：随机走（可走方向里挑一个）
-            opts = [(dx, dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1)
-                    if (dx or dy) and lv.walkable(p.x + dx, p.y + dy)
-                    and not (dx and dy
-                             and not (lv.walkable(p.x + dx, p.y)
-                                      and lv.walkable(p.x, p.y + dy)))]
-            if opts:
-                dx, dy = g.rng.choice(opts)
-                g.try_move(dx, dy)
-                self._after_turn()
-                return
-        goal = lv.down if not p.has_amulet else lv.up
-        nxt = _bfs_next(lv, (p.x, p.y), goal)
-        if nxt:
-            g.try_move(nxt[0] - p.x, nxt[1] - p.y)
-            self._after_turn()
+        """演示 AI：逻辑在模块级 demo_action()（纯函数，回放共用同一套）。"""
+        self.do(demo_action(self.game))
 
     # ------------------------------------------------------------ update --
     def update(self, dt):
@@ -1451,8 +1912,14 @@ class BroguewardApp(DemoApp):
         # 相机跟随
         wx, wz = _world(p.x, p.y)
         self.cam_target = (wx, 0.5, wz)
-        # 演示步进
-        if self._demo:
+        # 演示步进 / 回放步进
+        if self._replay is not None:
+            if not self._rp['done']:
+                self._demo_clock += dt
+                if self._demo_clock >= DEMO_STEP:
+                    self._demo_clock = 0.0
+                    self._replay_step()
+        elif self._demo:
             self._demo_clock += dt
             if self._demo_clock >= DEMO_STEP:
                 self._demo_clock = 0.0
@@ -1536,6 +2003,9 @@ class BroguewardApp(DemoApp):
                                       alpha=0.95 if opaque else 0.8)
                 else:
                     batch.add_cube(ex, 0.0, ez, sx, sy, sz, col)
+                if m.charm_t > 0:       # 魅惑盟友：头顶金色小锥
+                    batch.add_pyramid(ex, sy + 0.28 + 0.05 * math.sin(t * 4),
+                                      ez, 0.09, 0.09, 0.09, (1.0, 0.85, 0.3))
         else:
             # ---- 火 ----
             for y in range(MAP_H):
@@ -1564,23 +2034,21 @@ class BroguewardApp(DemoApp):
     def _on_key_press(self, symbol, modifiers):
         if symbol == pyglet.window.key.SPACE:
             # 回合制语义：SPACE = 等待一回合（覆盖基类"暂停"）
-            self.game.wait()
-            self._after_turn()
+            self.do(['wait'])
             return pyglet.event.EVENT_HANDLED
         return super()._on_key_press(symbol, modifiers)
 
     def on_key(self, symbol, modifiers):
         k = pyglet.window.key
         g = self.game
+        if self._replay is not None:        # 回放模式不接玩家输入
+            return
         if symbol == k.R:
-            self._seed = None
-            self.new_run()
-            self._after_turn()
+            self.do(['new', None])
             return
         if g.state != 'play':
-            if symbol in (k.ENTER, k.R):
-                self.new_run()
-                self._after_turn()
+            if symbol == k.ENTER:
+                self.do(['new', None])
             return
         moves = {
             k.H: (-1, 0), k.J: (0, 1), k.K: (0, -1), k.L: (1, 0),
@@ -1593,17 +2061,18 @@ class BroguewardApp(DemoApp):
         if symbol in moves:
             dx, dy = moves[symbol]
             if (dx, dy) == (0, 0):
-                g.wait()
+                self.do(['wait'])
             else:
-                g.try_move(dx, dy)
-            self._after_turn()
+                self.do(['move', dx, dy])
+            return
+        if symbol == k.Z:
+            self.do(['fire'])
             return
         # 数字键（主键盘）使用背包
         slot = {k._1: 0, k._2: 1, k._3: 2, k._4: 3, k._5: 4,
                 k._6: 5, k._7: 6, k._8: 7}.get(symbol)
         if slot is not None:
-            g.use_slot(slot)
-            self._after_turn()
+            self.do(['use', slot])
 
     def on_mouse_drag(self, x, y, dx, dy, buttons, modifiers):
         self.cam_yaw -= dx * 0.4
@@ -1628,11 +2097,59 @@ class BroguewardApp(DemoApp):
 
     def status_text(self):
         g = self.game
-        mode = 'demo' if self._demo else 'play'
+        if self._replay is not None:
+            mode = 'replay'
+        else:
+            mode = 'demo' if self._demo else 'play'
         st = {'play': '', 'dead': '  [DEAD - R to restart]',
               'won': '  [VICTORY!]'}.get(g.state, '')
         return (f'depth {g.depth}/{DEPTH_MAX}  turn {g.turn}  {mode}{st}   '
                 f'{self.fps:5.1f} fps')
+
+
+def demo_action(g):
+    """演示 AI 的下一个动作（纯函数：只依赖 game 状态与 g.rng）。
+
+    键盘、演示、回放共用同一动作词汇表（move/wait/use/fire/new），
+    录像把动作序列记账成 JSON，回放按序复演即可逐帧对上。
+    """
+    if g.state != 'play':
+        return ['new', None]
+    p = g.player
+    lv = g.level
+    adj = next((m for m in lv.monsters
+                if abs(m.x - p.x) <= 1 and abs(m.y - p.y) <= 1), None)
+    if adj:
+        if adj.charm_t > 0:
+            return ['wait']                 # 友军挡路：等它打完
+        dx, dy = _toward(p, adj)
+        return ['move', dx, dy]
+    # 有充能的法杖 + 视野内有敌人 → 概率施法（AI 用独立 ai_rng 流，
+    # 不消耗游戏 rng——回放时不重跑 AI，两种子流互不干扰）
+    if g.ai_rng.random() < 0.3:
+        key = next((k for k, n in p.inventory.items()
+                    if n > 0 and ITEMS[k]['kind'] == 'staff'
+                    and p.staff_charges.get(k, 0) > 0), None)
+        if key:
+            rsq = ITEMS[key]['srange'] ** 2
+            if any(m.charm_t <= 0 and g.fov.get((m.x, m.y), 1 << 30) <= rsq
+                   for m in lv.monsters):
+                return ['fire']
+    if lv.turns < 10 and lv.depth < DEPTH_MAX:
+        # 探索期：随机走（可走方向里挑一个）
+        opts = [(dx, dy) for dx in (-1, 0, 1) for dy in (-1, 0, 1)
+                if (dx or dy) and lv.walkable(p.x + dx, p.y + dy)
+                and not (dx and dy
+                         and not (lv.walkable(p.x + dx, p.y)
+                                  and lv.walkable(p.x, p.y + dy)))]
+        if opts:
+            dx, dy = g.ai_rng.choice(opts)
+            return ['move', dx, dy]
+    goal = lv.down if not p.has_amulet else lv.up
+    nxt = _bfs_next(lv, (p.x, p.y), goal)
+    if nxt:
+        return ['move', nxt[0] - p.x, nxt[1] - p.y]
+    return ['wait']
 
 
 def _toward(p, m):
@@ -1656,7 +2173,7 @@ def _bfs_next(lv, start, goal):
         for dx, dy in ((1, 0), (-1, 0), (0, 1), (0, -1),
                        (1, 1), (1, -1), (-1, 1), (-1, -1)):
             nx, ny = cur[0] + dx, cur[1] + dy
-            if (nx, ny) in prev or not lv.walkable(nx, ny):
+            if (nx, ny) in prev or not lv.passable(nx, ny):
                 continue
             if dx and dy:                       # 同款对角穿角禁止
                 if not (lv.walkable(cur[0] + dx, cur[1])

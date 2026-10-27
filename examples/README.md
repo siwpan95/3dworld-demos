@@ -108,7 +108,7 @@ python scripts\verify_demos.py --only boids,water  只验指定 demo
 | `computeward.py` | 引擎 | **《洪流 / Computeward》**（GPU 计算调度轮，消费引擎新模块 `engine/compute.py`）：百万粒子（默认 2²⁰）全程 GPU——SSBO ×2（pos+life / vel+seed），compute shader 内完成力场→积分→重生（`hash(index,u_time)`），每帧 CPU 只做 dispatch+uniforms（**零回读**）；同一块 buffer 既是 SSBO 又是顶点属性源，compute→draw 之间一次 barrier（GPU 模拟 + GPU 绘制零拷贝的经典三步）；三预设自动轮播（星系旋臂 / 湍流云 curl-noise / 喷泉），速度模长染色 + 加色混合；`engine.compute.detect()` 试编译探测（真实窗口报 GL 3.3 但 430 可用——**别看版本号**），无 compute 环境自动降级 CPU 3 万粒子（同预设语义）；bench 888 fps（vsync 关，jank 0%） | `computeward_01..03.png` |
 | `gltfward.py` | 引擎 | **《匣境 / Gltfward》**（AI 资产管线，消费 `engine/gltf` 真实 glTF 2.0 加载栈）：默认载入 Khronos Fox（`assets/gltfward_fox.glb`，CC0 / CC-BY 4.0 登记见文件头），`GLTF.load → build_scene_ex → make_skin_from_gltf → SkinnedMesh` 全链路，**驱动真实 glTF 动画**（3 clip：Survey/Walk/Run 各 21 通道，`Sampler.sample` → Node TRS → `update_world`）；数字键切 clip、R 重置、SPACE 暂停；**`--glb PATH` 灌任意外部 GLB**——TRELLIS.2 等 AI 生成资产（静态无 skin 自动回退 `Mesh`+`pbr`）直接进引擎渲染；相机按 AABB 自动取景 | `gltfward_01..04.png` |
 
-| `brogueward.py` | 游戏 | **《渊境 / Brogueward》**（用引擎复刻 Brogue——"最接近原版 Rogue 的现代传统类 Rogue"）：3D 方块地牢爬行，**26 层完整闭环**（26 层取 Amulet of Yendor 回地表才胜利）；物品驱动成长（无经验等级：血药/力药/生命药 + 附魔卷轴=技能点）、走进即交互（走进取物/下楼/攻击）、对角禁穿墙角、FOV 记忆三态渲染（火把衰减可见 / 记忆暗紫 / 未知纯黑）、饥饿压制、怪物周期刷新（清不空一层）、3 种陷阱 + 毒气扩散（元胞扩散场）+ 火焰蔓延（点燃草地）+ 水格减速、dragon/warden 远程、10 怪 15 物品全程序化（音效 numpy 合成 13 种）。机制参考 BrogueCE（AGPLv3）与官方 wiki，**未复制代码与数据表**（独立实现，数值重定）；消费 logic.dungeon / **logic.fov（本作新增反哺引擎）** / pathing_core A* / engine.audio.SfxPlayer；渲染为自建 unlit 顶点色管线（引擎 Mesh 不走顶点色，FOV 每格变色需要）；`--flag seed=N` 固定种子、`--flag play` 关闭演示 AI | `brogueward_01/02/03.png` |
+| `brogueward.py` | 游戏 | **《渊境 / Brogueward》**（用引擎复刻 Brogue——"最接近原版 Rogue 的现代传统类 Rogue"）：3D 方块地牢爬行，**26 层完整闭环**（26 层取 Amulet of Yendor 回地表才胜利）；物品驱动成长（无经验等级：血药/力药/生命药 + 附魔卷轴=技能点）、走进即交互（走进取物/下楼/攻击）、对角禁穿墙角、FOV 记忆三态渲染（火把衰减可见 / 记忆暗紫 / 未知纯黑）、饥饿压制、怪物周期刷新（清不空一层）、3 种陷阱 + 毒气扩散（元胞扩散场）+ 火焰蔓延（点燃草地/烧穿门板）+ 水格减速、dragon/warden 远程、23 种物品 10 怪全程序化（音效 numpy 合成 16 种）。**后置清单五件套已补齐**：①门（1 宽咽喉点关门——挡视野、bump 开启、可烧毁）与机关宝藏室 vault（整间封门+守卫+稀有战利品+地板金染）；②魅惑药剂+魅惑盟友 AI（倒戈 40 回合、自动接敌、到期反水）；③武器攻击模式（矛 reach 隔位突刺 / 战斧 sweep 横扫全部正交邻敌）；④法杖（充能制、自动索敌：火焰点燃/闪电链跳/迟缓，命中才扣充能、耗尽碎裂）+ 戒指（被动：再生/潜行缩警觉半径/防护）；⑤录像回放（`--flag record` 记账成 JSON，`--flag replay=PATH` 按 DEMO_STEP 复演并**对账终局逐位一致**——演示 AI 用独立 `ai_rng` 流、游戏状态只由动作消耗 `rng`，复演才可能闭合）。机制参考 BrogueCE（AGPLv3）与官方 wiki，**未复制代码与数据表**（独立实现，数值重定）；消费 logic.dungeon / **logic.fov（本作新增反哺引擎，0.6.0 发版，视野/惊醒走引擎件+直线遮挡复检）** / pathing_core A* / engine.audio.SfxPlayer；渲染为自建 unlit 顶点色管线（引擎 Mesh 不走顶点色，FOV 每格变色需要）；`--flag seed=N` 固定种子、`--flag play` 关闭演示 AI | `brogueward_01/02/03.png` |
 > 上表 64 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
 > `scripts/verify_demos.py` 逐项冒烟的对象；唯一不参与截图阶段的是
 > `scene_viewer.py`——它由 `--file` 驱动、没有固定剧照时刻。
@@ -336,6 +336,21 @@ python examples\voxel_terrain.py   --bench 5 --flag reseed        :: 渐进
   一并上传——画面上出现"实体走过的轨迹"。`begin()` 必须在每帧 add
   之前调用；pyglet attribute 赋值要求**等长**，所以批次容量恒等于
   count、实体数变化才重建 vertex_list。
+- **FOV 的 opaque 回调语义传反了会"看起来还行"**（brogueward 实测，
+  MVP 轮埋雷、门系统才炸出来）：`logic.fov.compute_fov(opaque, ...)`
+  的约定是 **True = 挡光**。一直传 `lv.transparent`（True=透明）时
+  地板挡光、墙透光——视野缩成贴身 9 格，三态渲染依然"正常"，没人
+  肉眼对比过就发现不了。直到给门做"关门挡视线"复检才现形。教训：
+  回调语义类 API 接线时，先跑一个直线走廊断言（墙后不可见）。
+- **slope 窗口 shadowcasting 会从墙角斜缝"绕射"**（brogueward 实测）：
+  T 字口正后方 1 格（关门后）会被斜向 beam 标亮——这是此类算法的
+  固有保守泄漏，引擎版与内置 fallback 都有。解法：FOV 后置
+  `visible_through`（Bresenham 逐格复检）剔除；墙/门格自身是射线
+  端点仍保留（看得见墙、看不见墙后）。
+- **回放确定性要求 AI 与游戏分 RNG 流**（brogueward 实测）：演示 AI
+  直接消耗 `game.rng` 时，复演端不重跑 AI → rng 流错位、终局必然
+  分叉。给 AI 单开 `ai_rng`（独立种子派生），游戏状态只由**录下的
+  动作**消耗 `rng`，录像复演才能逐位闭合（含 result 对账）。
 - **引擎 Mesh 管线没有顶点色**：`MeshData.colors` 存在但 `Mesh._upload`
   不上传（颜色在 Material uniform）——需要"每格变色"的场合（FOV 光照、
   棋盘地形）要么自建 program.vertex_list 顶点色管线（brogueward 做法），
