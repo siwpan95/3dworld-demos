@@ -105,8 +105,10 @@ python scripts\verify_demos.py --only boids,water  只验指定 demo
 | `reactward.py` | 逻辑 | **《噬纹 / Reactward》**（creative coding 补位①：图灵斑图）：Gray-Scott 反应扩散——U+2V→3V / U→P 两行方程长出珊瑚/迷宫/蠕虫/泡沫/孤子全部斑图（F/k 是 Pearson 参数域实测点，5 预设自动轮播）；**GPU ping-pong** 用引擎 `engine.targets.RenderTarget`（RGBA16F，每帧 12 子步 fragment 3×3 拉普拉斯，边界 REPEAT 无限平铺）；初始场由初始化着色器现算（零素材），IQ cosine palette 调色，鼠标注入 V 可看斑图"绕开/吞掉"扰动 | `reactward_01/02.png` |
 | `flowward.py` | 逻辑 | **《涡语 / Flowward》**（creative coding 补位②：无散度流）：curl-noise 流场——对标量流函数 ψ 取 2D curl 得速度场，**任何 ψ 都自动合法且无散度**（粒子永不堆积/抽空）；numpy 全程向量化值噪声 fBm（3 octave 非整数倍频破网格）+ 中心差分 + RK2，5000 粒子按速度 HSV 染色；拖拽注入衰减涡看它被流场撕开 | `flowward_01/02.png` |
 | `audioward.py` | 引擎 | **《振响 / Audioward》**（creative coding 补位③：看得到的声音）：程序合成 24s 循环乐段（`engine.audio.Track`，A 小调 120BPM）→ **离线 FFT**（rfft 帧能量 → 64 对数频桶 + bass/mid/treble，双向指数平滑 + 95 分位归一化）→ 视觉只按 playhead 查表（**零运行时依赖**，无声卡也能跑）；64 柱对数频谱环（GL_LINES additive）+ bass 核心脉冲 + kick 冲击波环——**kick 时刻直接来自乐谱常量**（"编译期对齐"，非 onset 检测），画面与鼓点严格同帧、同 playhead 同画面（确定性） | `audioward_01/02.png` |
+| `computeward.py` | 引擎 | **《洪流 / Computeward》**（GPU 计算调度轮，消费引擎新模块 `engine/compute.py`）：百万粒子（默认 2²⁰）全程 GPU——SSBO ×2（pos+life / vel+seed），compute shader 内完成力场→积分→重生（`hash(index,u_time)`），每帧 CPU 只做 dispatch+uniforms（**零回读**）；同一块 buffer 既是 SSBO 又是顶点属性源，compute→draw 之间一次 barrier（GPU 模拟 + GPU 绘制零拷贝的经典三步）；三预设自动轮播（星系旋臂 / 湍流云 curl-noise / 喷泉），速度模长染色 + 加色混合；`engine.compute.detect()` 试编译探测（真实窗口报 GL 3.3 但 430 可用——**别看版本号**），无 compute 环境自动降级 CPU 3 万粒子（同预设语义）；bench 888 fps（vsync 关，jank 0%） | `computeward_01..03.png` |
+| `gltfward.py` | 引擎 | **《匣境 / Gltfward》**（AI 资产管线，消费 `engine/gltf` 真实 glTF 2.0 加载栈）：默认载入 Khronos Fox（`assets/gltfward_fox.glb`，CC0 / CC-BY 4.0 登记见文件头），`GLTF.load → build_scene_ex → make_skin_from_gltf → SkinnedMesh` 全链路，**驱动真实 glTF 动画**（3 clip：Survey/Walk/Run 各 21 通道，`Sampler.sample` → Node TRS → `update_world`）；数字键切 clip、R 重置、SPACE 暂停；**`--glb PATH` 灌任意外部 GLB**——TRELLIS.2 等 AI 生成资产（静态无 skin 自动回退 `Mesh`+`pbr`）直接进引擎渲染；相机按 AABB 自动取景 | `gltfward_01..04.png` |
 
-> 上表 61 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
+> 上表 63 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
 > `scripts/verify_demos.py` 逐项冒烟的对象；唯一不参与截图阶段的是
 > `scene_viewer.py`——它由 `--file` 驱动、没有固定剧照时刻。
 
@@ -338,3 +340,17 @@ python examples\voxel_terrain.py   --bench 5 --flag reseed        :: 渐进
 - **手工跑 demo 记得先设 `WORLD3D_PROJECT_ROOT`**（否则 `--shot` 的相对剧照
   路径会落到 site-packages/docs/ 下——verify 的 `child_env()` 会设，手工跑
   忘了就"明明跑成功图却不见了"）。`assets/` 相对路径同理（kkrieger OST 缓存）。
+- **glTF 动画的四元数序（gltfward 实测）**：`engine/gltf.py` 的
+  `animations()` 走 `_as_value`，rotation 采样值**已经是引擎 wxyz 序**（载入
+  时从 glTF 的 xyzw 转过一次）——消费端别再转（二次转换会静默旋错方向）；
+  静态 bind pose（`node_trs()`）同样返回 wxyz。
+- **同块 buffer 的 SSBO↔顶点属性复用（computeward 实测）**：glGenBuffers 建
+  的 buffer 目标无关——compute 里 `glBindBufferBase(GL_SHADER_STORAGE_BUFFER)`
+  写、draw 里 `glVertexAttribPointer` 读，中间一次 `glMemoryBarrier`
+  （`engine.compute.barrier()`）即可，百万级模拟零回读。能力探测必须**试编译**
+  （`engine.compute.detect()`）：本机真实窗口上下文报 GL 3.3（shadow context
+  才报 4.6），驱动放宽 430 可用但规范不保证——看版本号会误判。
+- **verify_demos.py 硬编码 `.venv`**：依赖「未发版引擎模块」的 demo 在旧
+  wheel 环境会 import 失败——computeward 的做法是把新模块 import 包
+  try/except **自动降级 CPU 路径**（verify 走降级路径通过，GPU 主路径用
+  源码树 venv 单独验证）；引擎发版后 wheel 里的模块自动接管。
