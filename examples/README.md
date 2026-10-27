@@ -102,8 +102,11 @@ python scripts\verify_demos.py --only boids,water  只验指定 demo
 | `ozzward.py` | 动画 | **《骨境 / Ozzward》**（首个消费 `anim/ozz_lite` 的 demo）：代码合成的 7 关节尾巴骨架 + 2.5 秒摆动 `Clip`，逐帧 `sample_clip` → `compute_skin_matrices` → 蒙皮 3360 顶点网格——关节沿链衰减摆动，网格平滑跟随（分段 HSL 着色让骨骼归属看得见）；`B` 叠加骨骼（关节球 + 骨连线）、`W` 线框、`SPACE` 暂停、`R` 重置时间；HUD 给 clip 名 / 当前时间 / 关节数 | `ozzward_01/02.png` |
 | `choreoward.py` | 引擎 | **《编境 / Choreoward》**（把根目录 `main.py` 的五幕演出拉进 examples 编制）：`logic/choreography` 官方宿主 `WorldApp` 的放映厅——48s 五幕无缝循环（升起 / 环形波 / 机械臂取放 / 螺旋 / 归位），机械臂三关节角度由两连杆**逆运动学**解出（余弦定理 + 方位角，`tests` 断言夹爪落点）、宝石由 `Skeleton` 夹爪世界矩阵按 `carry_weight` **真实携带**，相机走 17 帧电影运镜脚本；demo 本体只是 CLI 壳（`--smoke/--shot/--bench` + 模块级 `SHOTS`，bench 计时挂 `on_draw` 链），演出逻辑 100% 来自引擎 | `choreo_01..05.png` |
 | `kkriegerward.py` | 引擎 | **《殿境 / KKriegerward》**（把根目录 `kkrieger_demo.py` 拉进 examples 编制）：`presentation/kkrieger_app.KKApp` 的放映厅——150s 六幕程序化漫游（走廊 / 大厅 / 核心 / 撤离 / 突入 / 圣殿），**零素材**：金属板/舱门/管道/无人机等几何即时生成、哈希抖动模拟"程序化纹理"、圣殿的 lathe 凹槽柱 / torus 嵌环 / (2,3) torus_knot 反应堆 / tube 导管是新几何类型；配乐纯 Python 离线渲染（约 2.2 万音符事件，首渲 ~25s 后走缓存 `assets/kkrieger_ost_150s.wav`，曲式与动画共用时间常量）；舱门开闭时刻按镜头过门时刻反推（关早了镜头穿门板）。同样只是 CLI 壳 | `kk_01..07.png` |
+| `reactward.py` | 逻辑 | **《噬纹 / Reactward》**（creative coding 补位①：图灵斑图）：Gray-Scott 反应扩散——U+2V→3V / U→P 两行方程长出珊瑚/迷宫/蠕虫/泡沫/孤子全部斑图（F/k 是 Pearson 参数域实测点，5 预设自动轮播）；**GPU ping-pong** 用引擎 `engine.targets.RenderTarget`（RGBA16F，每帧 12 子步 fragment 3×3 拉普拉斯，边界 REPEAT 无限平铺）；初始场由初始化着色器现算（零素材），IQ cosine palette 调色，鼠标注入 V 可看斑图"绕开/吞掉"扰动 | `reactward_01/02.png` |
+| `flowward.py` | 逻辑 | **《涡语 / Flowward》**（creative coding 补位②：无散度流）：curl-noise 流场——对标量流函数 ψ 取 2D curl 得速度场，**任何 ψ 都自动合法且无散度**（粒子永不堆积/抽空）；numpy 全程向量化值噪声 fBm（3 octave 非整数倍频破网格）+ 中心差分 + RK2，5000 粒子按速度 HSV 染色；拖拽注入衰减涡看它被流场撕开 | `flowward_01/02.png` |
+| `audioward.py` | 引擎 | **《振响 / Audioward》**（creative coding 补位③：看得到的声音）：程序合成 24s 循环乐段（`engine.audio.Track`，A 小调 120BPM）→ **离线 FFT**（rfft 帧能量 → 64 对数频桶 + bass/mid/treble，双向指数平滑 + 95 分位归一化）→ 视觉只按 playhead 查表（**零运行时依赖**，无声卡也能跑）；64 柱对数频谱环（GL_LINES additive）+ bass 核心脉冲 + kick 冲击波环——**kick 时刻直接来自乐谱常量**（"编译期对齐"，非 onset 检测），画面与鼓点严格同帧、同 playhead 同画面（确定性） | `audioward_01/02.png` |
 
-> 上表 58 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
+> 上表 61 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
 > `scripts/verify_demos.py` 逐项冒烟的对象；唯一不参与截图阶段的是
 > `scene_viewer.py`——它由 `--file` 驱动、没有固定剧照时刻。
 
@@ -325,3 +328,13 @@ python examples\voxel_terrain.py   --bench 5 --flag reseed        :: 渐进
   handler（返回 `None` 不阻断既有绘制），量 on_draw 链间隔并丢弃前 1.0s 预热
   （`pyglet.app.run(interval=0)` + `set_vsync(False)`，输出格式对齐
   `verify_demos.py` 的 `BENCH_RE` 即可进批量基准）。
+- **pyglet 2.1 缓冲 API 三则**（reactward / flowward / audioward 实测）：
+  ① `Texture` 没有 `.use(unit)`（3.0 才有）——绑纹理单元要手写
+  `glActiveTexture(GL_TEXTURE0+u); glBindTexture(...)`；
+  ② `vertex_list` 的 attribute（如 `vl.position`）**读回是 list 不是 ndarray**，
+  别在它上面调 numpy 方法，自建数组再 `[:] = arr.ravel()` 赋回去；
+  ③ 创建与赋值都只收**扁平 1D** 数组——2D ndarray 直接传会被 `len()` 当成
+  顶点数（`(24,3)` 报 "Expected 72, got 24"），一律先 `.ravel()`。
+- **手工跑 demo 记得先设 `WORLD3D_PROJECT_ROOT`**（否则 `--shot` 的相对剧照
+  路径会落到 site-packages/docs/ 下——verify 的 `child_env()` 会设，手工跑
+  忘了就"明明跑成功图却不见了"）。`assets/` 相对路径同理（kkrieger OST 缓存）。
