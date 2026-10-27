@@ -96,8 +96,12 @@ python scripts\verify_demos.py --only boids,water  只验指定 demo
 | `fsmward.py` | 引擎 | **《机枢 / FSMward》**（首个消费 `engine/fsm` 的 demo）：有限状态机驱动一群守卫 —— 每台实体一台 `Machine`（`idle`/`patrol`/`chase`/`attack`/`flee` 五态，挂 `on_enter`/`on_exit` 与距离/计时器驱动的 `transition`，颜色 = 当前状态），另用 `machine_from_keys` 时间轴驱动一台「导演机」演化 `calm→alert→panic` 改变危险半径；`R` 重置 / `1` 点选猎物 / `W` 线框；HUD 给相位、危险半径、**各状态分布**与最近一次切换 | `fsmward_01/02.png` |
 | `box2dward.py` | 引擎 | **《箱境 / Box2Dward》**（首个消费 `physics/box2d_lite` 的 demo）：2D 刚体沙盒画成侧视 3D —— `World(gravity)` + 固定步长 `world.step(1/60)`，方块/圆从顶部掉落、堆叠、碰撞、滚动；到上限后把最上层已休眠的刚体回收到顶部续落（不删体，规避休眠悬空）；鼠标点地面制造爆裂冲量、`R` 重置 / `SPACE` 暂停 / `W` 线框 / `C` 接触点；HUD 读 `world._arbiters` 给刚体数 / 休眠数 / 接触对数 | `box2dward_01/02.png` |
 | `replayward.py` | 引擎 | **《回响 / Replayward》**（首个消费 `logic/replay` 的 demo）：确定性录制 / 回放 / 自检 —— 一个固定种子 + 固定步长的粒子云先整段跑一遍，把每帧**状态**写进 `Replay.events`、每帧**输入**写进 `Replay.actions`；用 `verify_determinism` 证明仿真本身确定性，用 `Replay.from_dict(to_dict())` 的 JSON 往返证明回放精确复现（误差 0）；`T` 切 实时 / 回放 / 对照分屏、`R` 换种子重录、`SPACE` 暂停；HUD 给模式 / 帧号 / `DET=PASS` / 往返误差 / live-vs-replay 误差 | `replayward_01/02.png` |
+| `terrainward.py` | 逻辑 | **《地纹 / Terrainward》**（首个消费 `logic/terrain` 的 demo）：纯逻辑层的高度场 + 烘焙着色——`height_at(wx, wz, seed)` 在 128² 网格上现算高度，`terrain_color` 按高度/坡度/光照给顶点上色（低地草绿 → 岩壁灰 → 雪顶白，蓝色为洼地水面）；与 `cdlod_terrain`（LOD 渲染路线）互补：这里展示的是**地形逻辑与着色层**。`R` 换种子 / `W` 线框 / `L` 切 SHADE/FLAT | `terrainward_01/02.png` |
+| `particleward.py` | 引擎 | **《粒子境 / Particleward》**（首个消费 `engine/particles` 的 demo）：12000 颗粒子一次 draw，位置/大小/颜色 100% 在顶点着色器里由 `i_seed` + 累加相位 `u_time` 现推——CPU 每帧只写 5 个 uniform；`0` 星系漩涡（盘状 + 差速旋转 + 固定旋臂）`1` 喷泉烟花（抛物线 + 重力 + 寿命循环）`2` 湍流云（多频正弦位移）。**绘制层用裸 GL**：本机实测引擎 `ParticleSystem` 的 pyglet instanced/普通两条路径都会画出满屏巨大三角形（TF 捕获证明顶点阶段正常，问题在 domain/VAO 路径），docstring 里有完整排查记录——着色器源码与数据 API 仍 100% 来自引擎 | `particleward_01/02.png` |
+| `eventward.py` | 逻辑 | **《事境 / Eventward》**（首个消费 `logic/events` 的 demo）：22 个彩球在圆形竞技场里弹跳，全部行为由 `EventBus`（`register_event_type` + `push_handlers` + `dispatch_event` 同步派发）驱动——撞墙 emit `on_bounce`（涟漪 + 日志）、发射器emit `on_spawn`（新球入场的淡入）、鼠标点击 emit `on_click`（全场合唱变色）；`C` 开关 Responder 订阅者，直观展示退订后某类事件不再被处理；HUD 给发射总数 / 分类计数 / 订阅者与 handler 绑定数，左侧滚动最近 10 条事件日志 | `eventward_01/02.png` |
+| `ozzward.py` | 动画 | **《骨境 / Ozzward》**（首个消费 `anim/ozz_lite` 的 demo）：代码合成的 7 关节尾巴骨架 + 2.5 秒摆动 `Clip`，逐帧 `sample_clip` → `compute_skin_matrices` → 蒙皮 3360 顶点网格——关节沿链衰减摆动，网格平滑跟随（分段 HSL 着色让骨骼归属看得见）；`B` 叠加骨骼（关节球 + 骨连线）、`W` 线框、`SPACE` 暂停、`R` 重置时间；HUD 给 clip 名 / 当前时间 / 关节数 | `ozzward_01/02.png` |
 
-> 上表 52 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
+> 上表 56 项与 `examples/*.py`（不含 `_harness.py` 兼容层）一一对应，也是
 > `scripts/verify_demos.py` 逐项冒烟的对象；唯一不参与截图阶段的是
 > `scene_viewer.py`——它由 `--file` 驱动、没有固定剧照时刻。
 
