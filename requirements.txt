@@ -26,7 +26,11 @@
 #    于是 rigidward / cdlod_terrain 这类演示全部 "引擎没发布这个模块"。
 #    实测 0.4.1 的 wheel **全部带齐**（含 wardfall 要的
 #    fusion_audio.ensure_wardfall_ost），引擎从来没欠过我们，是这条约束欠的。
-3dworld>=0.4.1,<0.5
+# ⚠️ 2026-10-27 上限从 <0.5 抬到 <0.6（下限抬到 0.5.0）：0.5.0 的 wheel 带来了
+#    world3d/engine/compute.py（GPU 计算调度核心）——computeward 的 GPU 主路径
+#    依赖它；旧 0.4.1 环境下该 demo 自动降级 CPU 路径仍可跑，但抬下限后
+#    「pip install -r requirements.txt」即得完整体验。
+3dworld>=0.5.0,<0.6
 
 # ② 可选增强：examples/scene_walker.py 的马尔可夫演出变体（纯标准库实现）
 #    不装的话 scene_walker 只是没有发光变体，其余功能照常（ImportError 已兜住）
