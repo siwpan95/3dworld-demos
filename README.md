@@ -10,7 +10,7 @@
 > 仓库：<https://gitee.com/siwpan/3dworld-demos> ｜ 许可：MIT（见 [LICENSE](LICENSE)）
 > 引擎本体在独立仓 [siwpan/3dworld](https://gitee.com/siwpan/3dworld)（PyPI 包名 `3dworld`）。
 
-本仓是 **3dworld 三维引擎的演示程序集**：64 个单文件演示 + 两条主线演出入口
+本仓是 **3dworld 三维引擎的演示程序集**：65 个单文件演示 + 两条主线演出入口
 （48 秒五幕演出 / 150 秒六幕走廊漫游）+ 成片录制 / exe 打包 / 批量验收工具。
 
 2026-10-19 从引擎仓剥离：**演示所代表的能力全部保留在引擎内**（`world3d.logic` /
@@ -49,13 +49,14 @@ python kkrieger_demo.py                       150 秒六幕走廊漫游
 ## 目录
 
 ```
-examples/        64 个单文件演示与工具（详见 examples/README.md：统一命令行 + 踩坑清单）
+examples/        65 个单文件演示与工具（详见 examples/README.md：统一命令行 + 踩坑清单）
 main.py          48 秒五幕演出入口（能力在引擎 presentation/app.py）
 kkrieger_demo.py 150 秒六幕走廊漫游入口（能力在引擎 presentation/kkrieger_app.py）
 pyglet_3d_demo*.py  历史 pyglet 1.x 兼容件（与 cocos2d 共存环境）
 configs/         cordis 配置树（玩法内核的挂载声明，与引擎仓同源）
 assets/          演示素材（程序化 glTF / OST / SFX；生成物不入库）
 docs/            演示截图（--shot 产物）+ 场景样例 JSON + 依赖与版本 + 分发指南
+                 + crystalward 调研与致色机理记账（来源 / 公式 / 许可）
 experiments/     实验产物（bloodmusic OST 对照等）
 requirements.txt        运行依赖（3dworld 范围版本 + 可选 zhuangtaiji）
 requirements.lock.txt   精确锁版快照（截图对照 / 发版归档 / CI）
