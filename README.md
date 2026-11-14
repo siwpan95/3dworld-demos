@@ -90,7 +90,7 @@ python scripts\build_exe.py --pack             打包精选 6 个 + 组装发行
 
 ## 与引擎的版本关系
 
-演示对引擎版本**不锁死**：`requirements.txt` 里写 `3dworld>=0.3.0,<0.4`（0.3.x 都接受），
+演示对引擎版本**不锁死**：`requirements.txt` 里写 `3dworld>=0.7.3,<0.8`（0.7.x 都接受），
 需要逐位可复现时用 `requirements.lock.txt`。完整口径见
 [docs/依赖与版本.md](docs/依赖与版本.md)。
 其中 terrain / voxel / particles / 隧道 / SDF 五项演示保持**自包含**（其能力已上提
