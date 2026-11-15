@@ -163,6 +163,80 @@ ENTRIES = [
          dur=40.0, size=DEMO_SIZE),
          # 110 步/s ⇒ 一局（560 格）≈5.6s + 定格 5s ⇒ 约 10.6s/局，40s 录到 3~4 局
          # 不同 seed。别加 `hold` —— 那是定格终局观察用的，加了只录得到一局
+
+    # ---- 2026-11-15 全量补录（ward 系列 + creative coding 批次）----
+    # 判据（全部现场实测，非推算）：临时探测脚本按**连续步进 120 帧**取首末两帧
+    # 比对像素差，>0.5% 判「默认自演示」⇒ 画面在动，无需 --flag。
+    # 实测结论：20 条默认自演示；仅 crowdward 静止（群体 0.2%，行为树要玩家触发
+    # 目标才动）⇒ 排除出成片集（见下方说明）。
+    # 时长判据：能用 DURATION 的取 DURATION（crystalward 48 = ACT_LEN 6×8 幕、
+    # audioward 24 = LOOP 乐段、computeward 12 = 三预设轮播），其余按「一个完整
+    # 观察周期取整」定，并在注释里写明周期来源。
+    dict(name='crystalward_48s',     mod='examples/crystalward.py',   cls=None,
+         dur=48.0, size=DEMO_SIZE),
+         # DURATION = ACT_LEN(6.0) × len(ACTS)(8 幕) = 48s：8 幕晶体演出一轮。
+         # 不用 --flag hold（那是关自动演出手动把玩），默认自动演出即可。
+    dict(name='audioward_24s',       mod='examples/audioward.py',     cls=None,
+         dur=24.0, size=DEMO_SIZE),
+         # DURATION = LOOP(24.0) = 乐段时长（A 小调 120BPM 循环）：频谱环走完一整段
+    dict(name='computeward_12s',     mod='examples/computeward.py',   cls=None,
+         dur=12.0, size=DEMO_SIZE),
+         # DURATION = 12.0：三预设（星系旋臂 / 湍流云 / 喷泉）自动轮播一整轮
+    dict(name='brogueward_45s',      mod='examples/brogueward.py',    cls=None,
+         dur=45.0, size=DEMO_SIZE),
+         # 26 层地牢太长，45s 录到前几层的探索 + 拾取 + 战斗节奏；
+         # 默认 _demo=True（演示 AI 驱动），别加 --flag play（那是关掉演示 AI）
+    dict(name='dungeonward_40s',     mod='examples/dungeonward.py',   cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # 自动巡游 + 火把光点：40s 录完一次生成器切换 + BFS 路径巡游
+    dict(name='cdlod_terrain_40s',   mod='examples/cdlod_terrain.py', cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # 自动巡航 + CDLOD / clipmap 两路线对照，40s 够跑完一轮换线
+    dict(name='rigidward_40s',       mod='examples/rigidward.py',     cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # 物理五场景（方塔/球堆/台球/回弹/阶梯瀑布）：40s 录到瀑布与回弹对比
+    dict(name='box2dward_40s',       mod='examples/box2dward.py',     cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # 2D 刚体沙盒侧视 3D：刚体持续下落堆叠，40s 录到回收续落一轮
+    dict(name='boidward_40s',        mod='examples/boidward.py',      cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # 群集三力 + 原生实例化渲染：40s 录完预设循环与捕食者追逐
+    dict(name='fsmward_40s',         mod='examples/fsmward.py',       cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # 五态 FSM 守卫 + 导演机 calm→alert→panic 演化：40s 录到两轮相位切换
+    dict(name='curveward_30s',       mod='examples/curveward.py',     cls=None,
+         dur=30.0, size=DEMO_SIZE),
+         # 两条曲线对照 + 标记点弧长匀速行进：30s 录完一圈
+    dict(name='eventward_30s',       mod='examples/eventward.py',     cls=None,
+         dur=30.0, size=DEMO_SIZE),
+         # 22 彩球 EventBus 驱动弹跳：30s 录到 emit / 订阅者开关对照
+    dict(name='ozzward_30s',         mod='examples/ozzward.py',       cls=None,
+         dur=30.0, size=DEMO_SIZE),
+         # 7 关节骨架 + 2.5s 摆动 Clip：30s 录到 12 轮摆动（采样点颜色分段可见）
+    dict(name='particleward_40s',    mod='examples/particleward.py',  cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # 12000 颗粒子三预设（星系/喷泉/湍流）：40s 录完轮播
+    dict(name='reactward_40s',       mod='examples/reactward.py',     cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # Gray-Scott 反应扩散五预设轮播：40s 录到斑图长成 + 演化
+    dict(name='flowward_40s',        mod='examples/flowward.py',      cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # curl-noise 无散度流场 5000 粒子：40s 录到粒子绕流全程
+    dict(name='terrainward_40s',     mod='examples/terrainward.py',   cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # 128² 高度场 + 烘焙着色：40s 录到换种子与 SHADE/FLAT 对照
+    dict(name='replayward_40s',      mod='examples/replayward.py',    cls=None,
+         dur=40.0, size=DEMO_SIZE),
+         # 确定性录制/回放/自检：40s 录到 实时→回放→对照 三态切换
+    dict(name='gltfward_30s',        mod='examples/gltfward.py',      cls='GltfwardApp',
+         dur=30.0, size=DEMO_SIZE),
+         # EngineApp 宿主（必须显式给 size，否则收到 size=None 会得到坏参）。
+         # 30s 录完 3 个 clip（Survey/Walk/Run）各一段真实 glTF 动画
+    # ⚠ **不录** `choreoward` / `kkriegerward`：这两个是 `main.py` /
+    # `kkrieger_demo.py` 的同一演出换壳（同一个 WorldApp / KKApp 类），
+    # 成片与已有的 `main_48s` / `kkrieger_150s` **完全重复** ⇒ 按冗余三查排除，
+    # 不为「覆盖率高」而录重复片。`crowdward` 同样排除：实测群体像素差 0.2%
+    # （行为树要玩家先触发目标，agent 原地不动），录出来是静止画面。
 ]
 
 #: 跨仓约定：本仓 = `<PROJECTS_ROOT>/3dworld`，兄弟仓直接按相对名找（铁律 5，不写死盘符）

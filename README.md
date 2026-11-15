@@ -67,7 +67,7 @@ scripts/
   build_exe.py      PyInstaller 单文件打包
   gen_sfx.py        SFX 生成（bloodmusic 预设 → WAV）
   new_demo.py       新演示脚手架
-recordings/      成片 MP4（本地产物，不入库）
+recordings/      成片 MP4（本地产物，不入库）—— 65 条，与录制计划 65 条一一对应
 dist/            exe 与发行版包（本地产物，不入库）
 ```
 
