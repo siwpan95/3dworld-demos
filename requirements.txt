@@ -55,3 +55,12 @@ numpy>=1.24
 # ℹ️ examples/rigidward.py 需要含 world3d.physics 的版本 —— 0.4.1 起就带齐了，
 #    下限 0.4.1 已经把它兜住。万一拿到旧版，它会给出明确提示后退出，
 #    而不是丢一个裸 ModuleNotFoundError。
+
+# allin-repocheck-r6-fix (2026-11-15)
+sounddevice
+
+# allin-r6-local-dep (2026-11-15)
+-e ../bloodmusic
+
+# allin-r6-local (2026-11-15) 运行时注入的内部模块声明
+# r6-local: cordis
