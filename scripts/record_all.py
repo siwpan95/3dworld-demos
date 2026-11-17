@@ -485,15 +485,109 @@ def record(entry, out_dir, fps, crf, dur_override):
             pass
 
 
-def fusion(out_dir, fps, crf):
-    """融合总集篇：recordings/ 全部段落 xfade 交叉溶解串成一部片 + 程序化总配乐。
+#: 本仓融合段表（2026-11-16）：引擎仓 `logic/fusion_audio.FUSION_SEGMENTS`
+#: 只有 16 段老片，25 条新成片未纳入。按用户拍板「本仓扩展段表」——**不动引擎仓**，
+#: 在这里定义完整 41 段（16 老 + 25 新），按画面气质插入老段之间形成节奏起伏。
+#: 每项 = (成片名, 时长s, 情绪)，情绪取值只能是引擎 `_section()` 支持的 12 种：
+#: band / tech / minimal / chiptune / ambient / fluid / playful / sparkle /
+#: tense / eerie / pulse / None(植入 kkrieger 自带 OST)。
+#: ⚠ 引擎段表与本表必须保持「前 16 段逐字一致」——否则运行时重绑定后
+#: kkrieger 的 OST 植入偏移会错位（它靠 mood=None 那段的 offset 定位）。
+FUSION_SEGMENTS_LOCAL = (
+    # ---- 引擎原有 16 段（逐字照抄，勿改）----
+    ('main_48s',            48.0,  'band'),
+    ('kkrieger_150s',       150.0, None),
+    ('engine_showcase_24s', 24.0,  'tech'),
+    ('material_lab_30s',    30.0,  'minimal'),
+    ('minecraft_style_48s', 48.0,  'band'),
+    ('voxel_terrain_36s',   36.0,  'chiptune'),
+    ('terrain_flyover_48s', 48.0,  'ambient'),
+    ('water_waves_40s',     40.0,  'fluid'),
+    ('boids_45s',           45.0,  'playful'),
+    ('wardfall_48s',        48.0,  'band'),
+    ('wardfall_nordic_60s', 60.0,  'eerie'),
+    ('particles_gpu_30s',   30.0,  'sparkle'),
+    ('shadow_map_30s',      30.0,  'tense'),
+    ('solar_system_60s',    60.0,  'ambient'),
+    ('raymarch_sdf_32s',    32.0,  'eerie'),
+    ('demoscene_tunnel_24s', 24.0, 'pulse'),
+    # ---- 2026-11-15 全量补录新增 25 段（按气质穿插）----
+    ('crystalward_48s',     48.0,  'sparkle'),   # 晶体光谱：碎钻琶音
+    ('audioward_24s',       24.0,  'pulse'),     # 频谱环：鼓点驱动
+    ('computeward_12s',     12.0,  'tech'),      # GPU 百万粒子：脉冲贝斯
+    ('cellward_40s',        40.0,  'chiptune'),  # 元胞自动机：方波
+    ('lindenwood_52s',      52.0,  'ambient'),   # 四季林：长 pad
+    ('collapseward_40s',    40.0,  'tense'),     # WFC 塌缩：低音脉冲
+    ('cdlod_terrain_40s',   40.0,  'ambient'),   # LOD 地形：长 pad 航拍感
+    ('rigidward_40s',       40.0,  'tech'),      # 刚体物理：机械镲
+    ('box2dward_40s',       40.0,  'playful'),   # 2D 刚体沙盒：跳跃旋律
+    ('boidward_40s',        40.0,  'fluid'),     # 群集：流动琶音
+    ('fsmward_40s',         40.0,  'tense'),     # 状态机守卫：低音脉冲
+    ('curveward_30s',       30.0,  'minimal'),   # 曲线：稀疏单音
+    ('eventward_30s',       30.0,  'playful'),   # 事件总线彩球：轻底鼓
+    ('ozzward_30s',         30.0,  'minimal'),   # 骨骼摆动：稀疏 pad
+    ('particleward_40s',    40.0,  'sparkle'),   # 12000 粒子：碎钻
+    ('reactward_40s',       40.0,  'fluid'),     # 反应扩散：流动琶音
+    ('flowward_40s',        40.0,  'fluid'),     # 无散度流场：流动琶音
+    ('terrainward_40s',     40.0,  'ambient'),   # 高度场：长 pad
+    ('replayward_40s',      40.0,  'tech'),      # 确定性回放：机械节拍
+    ('gltfward_30s',        30.0,  'minimal'),   # glTF 狐狸：稀疏单音
+    ('brogueward_45s',      45.0,  'eerie'),     # 26 层地牢：失谐 drone
+    ('dungeonward_40s',     40.0,  'eerie'),     # 三套地牢生成：诡谲
+    ('liminall_130s',      130.0,  'eerie'),     # 阈廊后室：长 drone 弧线
+    ('pulsefall_45s',       45.0,  'pulse'),     # 已有但原段表未收：节奏音游
+    ('stillhall_40s',       40.0,  'minimal'),   # 已有但原段表未收：静止解谜
+    # ---- 2026-11-16 补齐：剩余 24 条老成片（原段表遗漏）----
+    # 全哥定：「fusion 总片覆盖 65 条」是删 release 重建的前提 ——
+    # 只有总片覆盖全部成片，删掉散片附件才不算资产损失。故此处不再排除任何条目。
+    ('mountain_100s',      100.0,  'ambient'),   # 山峦航拍：长 pad
+    ('tower_defense_60s',   60.0,  'band'),      # 塔防：全配器
+    ('godhand_30s',         30.0,  'tech'),      # 机械臂：脉冲贝斯
+    ('rayhold_25s',         25.0,  'tense'),     # 光线投射：低音脉冲
+    ('boxward_60s',         60.0,  'playful'),   # 方块解谜：跳跃旋律
+    ('swarmward_60s',       60.0,  'playful'),   # 闪避群：轻底鼓
+    ('brickward_60s',       60.0,  'chiptune'),  # 砖境：方波
+    ('nordic_saga_60s',     60.0,  'band'),      # 北欧叙事：全配器（自带 OST 已混入成片）
+    ('blockworld_30s',      30.0,  'playful'),   # 方块世界：跳跃旋律
+    ('kid_a_walker_3d_40s', 40.0,  'ambient'),   # KID-A 探索：长 pad
+    ('director_20s',        20.0,  'tech'),      # 导演台：脉冲贝斯
+    ('csm_shadow_40s',      40.0,  'tense'),     # 级联阴影：低音脉冲
+    ('volumetric_fog_60s',  60.0,  'ambient'),   # 体积雾：长 pad
+    ('dof_focus_24s',       24.0,  'minimal'),   # 景深扫焦：稀疏单音
+    ('motion_blur_40s',     40.0,  'fluid'),     # 动态模糊：流动琶音
+    ('frame_graph_36s',     36.0,  'tech'),      # 帧图调度：机械镲
+    ('scene_walker_40s',    40.0,  'ambient'),   # 自动漫步：长 pad
+    ('pointcloud_edl_30s',  30.0,  'sparkle'),   # 点云 EDL：碎钻琶音
+    ('wboit_demo_30s',      30.0,  'sparkle'),   # 加权混合 OIT：碎钻
+    ('skinned_creature_30s',30.0,  'minimal'),   # 蒙皮生物：稀疏 pad
+    ('gpu_cull_field_30s',  30.0,  'tech'),      # GPU 剔除：脉冲贝斯
+    ('voidward_60s',        60.0,  'eerie'),     # 虚空贸易：失谐 drone
+    ('scene_viewer_45s',    45.0,  'ambient'),   # 相机自转：长 pad
+    ('sandward_50s',        50.0,  'ambient'),   # 沙垒巡游：长 pad
+)
 
-    段落表（顺序/时长/情绪）在 ``logic/fusion_audio.FUSION_SEGMENTS``，
-    它同时驱动这里 ffmpeg 的 xfade 时间轴和配乐生成——音视频因此同源对齐。
+
+def fusion(out_dir, fps, crf):
+    """融合总集篇：本仓扩展段表 xfade 串成一部片 + 程序化总配乐。
+
+    段表用本仓 `FUSION_SEGMENTS_LOCAL`（41 段），运行时重绑定引擎配乐模块的
+    `FUSION_SEGMENTS` —— 让 ffmpeg 的 xfade 时间轴与配乐的段落偏移**同源**。
+    这是运行时注入，**不改引擎仓文件**（用户 2026-11-16 拍板）。
     缺失的段落会先自动录制补齐。
     """
-    from world3d.logic.fusion_audio import (FUSION_SEGMENTS, XFADE, build_fusion_ost,
-                                    segment_offsets)
+    import world3d.logic.fusion_audio as fa
+    from world3d.logic.fusion_audio import XFADE, build_fusion_ost, segment_offsets
+
+    # 前置自检：前 16 段必须与引擎段表逐字一致（kkrieger OST 偏移靠这段定位）
+    engine_segs = [tuple(s) for s in fa.FUSION_SEGMENTS]
+    if list(FUSION_SEGMENTS_LOCAL[:len(engine_segs)]) != engine_segs:
+        raise SystemExit('本仓扩展段表的前 16 段与引擎段表不一致——'
+                         'kkrieger OST 植入偏移会错位，拒绝继续')
+    # 运行时重绑定：配乐模块的 segment_offsets / total_duration / build_fusion_ost
+    # 都读模块级 FUSION_SEGMENTS，替换后三者同步生效。
+    fa.FUSION_SEGMENTS = FUSION_SEGMENTS_LOCAL
+    FUSION_SEGMENTS = FUSION_SEGMENTS_LOCAL
+
     # 1) 段落文件齐全？缺失的先录
     segs = []
     for name, _dur, _mood in FUSION_SEGMENTS:
@@ -506,7 +600,9 @@ def fusion(out_dir, fps, crf):
             record(entry, out_dir, fps, crf, None)
         segs.append(path)
     # 2) 总配乐（一次性渲染，之后走缓存）
-    wav = os.path.join(ROOT, 'assets', 'fusion_ost.wav')
+    # 缓存名带段数：旧版 16 段的 fusion_ost.wav 若被复用，音画会错配
+    # （新总片 41 段，配乐却只有 645s）—— 这是扩展段表最容易踩的坑。
+    wav = os.path.join(ROOT, 'assets', f'fusion_ost_{len(FUSION_SEGMENTS)}seg.wav')
     if not os.path.exists(wav):
         print('[fusion] 渲染总配乐（约 1~2 分钟）...', flush=True)
         build_fusion_ost(wav,

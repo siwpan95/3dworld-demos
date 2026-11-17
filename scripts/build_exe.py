@@ -43,6 +43,12 @@ ENTRIES = [
     ('shadow_map',      'examples/shadow_map.py',          '3dworld_shadow_map.exe', False, []),
     ('terrain_flyover', 'examples/terrain_flyover.py',     '3dworld_terrain.exe',    False, []),
     ('voxel_terrain',   'examples/voxel_terrain.py',       '3dworld_voxel.exe',      False, []),
+    # 2026-11-16 增量：从 20 个新演示里挑 2 个「纯程序化、零外部资产、零配置树
+    # 依赖」的代表作入发行包（现场核对：crystalward / computeward 均无
+    # config_path / assets / .glb / .wav 依赖；gltfward 需随带 GLB、brogueward
+    # 代码路径复杂，本轮不纳入以免打包体积与故障面失控）。
+    ('crystalward',     'examples/crystalward.py',         '3dworld_crystalward.exe', True, []),
+    ('computeward',     'examples/computeward.py',         '3dworld_computeward.exe', True, []),
 ]
 
 PACK_DESC = {
@@ -52,12 +58,14 @@ PACK_DESC = {
     '3dworld_solar_system.exe': '太阳系（层级变换 + 轨道力学 + 实例化小行星带）',
     '3dworld_water_waves.exe': '水面（Gerstner 波顶点位移 + 菲涅尔天空）',
     '3dworld_tunnel.exe': '无限隧道（纯片元着色器 demoscene）',
+    '3dworld_crystalward.exe': '晶极（晶体光谱渲染：8 晶习 × 8 致色机理，按波长积分）',
+    '3dworld_computeward.exe': '洪流（GPU compute shader 百万粒子，三预设自动轮播）',
 }
 
 README_TXT = """3dworld demo pack —— 程序化 3D 演示合集（Windows 独立版）
 ================================================================
 
-来源：https://gitee.com/siwpan/3dworld （MIT 许可，零外部素材、全程序化生成）
+来源：https://gitee.com/siwpan/3dworld-demos （MIT 许可，零外部素材、全程序化生成）
 运行：双击任意 exe 即可（无需安装 Python）。首次启动需数秒解包，属正常现象。
 
 内含：

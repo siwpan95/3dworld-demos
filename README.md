@@ -79,7 +79,8 @@ python scripts\verify_demos.py --bench 3       真实帧率（vsync 与重绘节
 python scripts\record_all.py --list            查看可录制条目
 python scripts\record_all.py --only wardfall_48s,cellward_40s,lindenwood_52s,collapseward_40s
                                                只录新增的 4 个（town/ca/lsystem/wfc）
-python scripts\build_exe.py --pack             打包精选 6 个 + 组装发行版
+python scripts\build_exe.py --pack             打包精选 8 个 + 组装发行版
+python scripts\record_all.py --fusion          65 段串成 46.6 分钟融合总片（详见分发指南 §3.3）
 ```
 
 > 录制需要 ffmpeg：按 `WORLD3D_FFMPEG` 环境变量 → PATH → `<projects>/<兄弟仓>` 相对候选
