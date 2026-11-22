@@ -23,8 +23,8 @@
    "duration": 66.0,
    "scene": "scenes/02_terrain.scene.json",
    "shot": "shots/02_terrain.shot.json",
-   "status": "built",
-   "notes": "fBm 四叉树地形 + CDLOD + Gerstner 水体 + 高度雾 + 地形隆起"
+   "status": "wip",
+   "notes": "地形几何成立；相机路径仍是关键帧+样条，会穿进地形（黑缝）且末帧空白。待改为程序化路径（沿谷底等距采样+逐点抬升）"
   },
   {
    "id": "03_city",

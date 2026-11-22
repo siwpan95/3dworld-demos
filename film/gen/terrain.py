@@ -106,6 +106,18 @@ def build_heights():
     return [[round(v, 4) for v in r] for r in rows]
 
 
+def ground_at(hm, x, z):
+    """世界坐标 (x, z) → 地形高度（米）。超出地形范围返回 y_base。"""
+    half = TERRAIN_SIZE / 2.0
+    if abs(x) > half or abs(z) > half:
+        return -4.0
+    c = int(round((x / half + 1.0) / 2.0 * (GRID - 1)))
+    r = int(round((z / half + 1.0) / 2.0 * (GRID - 1)))
+    c = max(0, min(GRID - 1, c))
+    r = max(0, min(GRID - 1, r))
+    return -4.0 + hm[r][c] * TERRAIN_HEIGHT
+
+
 def build_scene(hm):
     """声明式场景：地形 + 环境（黄昏侧逆光，给第 II 幕一个"初开天"的调子）。"""
     return {
@@ -125,7 +137,7 @@ def build_scene(hm):
             'children': [
                 {
                     'name': 'terrain',
-                    'translation': [0.0, -52.0, 0.0],   # 起始位置在地平线下（升起动画）
+                    'translation': [0.0, -80.0, 0.0],   # 起始位置在地平线下（升起动画）
                     'mesh': {
                         'builder': 'heightfield',
                         'args': {
@@ -149,8 +161,34 @@ def build_scene(hm):
     }
 
 
-def build_shot():
+def _path(hm):
+    """相机关键点：沿峡谷自南向北，y 取 ground_at + 10（末段收在谷底附近）。"""
+    pts = [(0.0, 128.0), (0.0, 72.0), (3.0, 32.0), (1.0, 2.0), (-1.5, -34.0)]
+    lift = [40.0, 26.0, 9.0, 6.0, 8.0]        # 起手在云上，随后**低空穿谷**（5-9m）
+    out = []
+    for (x, z), add in zip(pts, lift):
+        g = ground_at(hm, x, z) if hm is not None else 0.0
+        out.append([x, max(g + add, g + 3.5), z])   # 保底离地 3.5m，防穿模
+    return out
+
+
+def _targets(hm):
+    """注视点：铺在谷底上方 2m，保证相机是"看着地面飞"而不是抬头。"""
+    pts = [(0.0, 0.0), (0.0, -6.0), (0.0, -18.0), (0.0, -44.0), (0.0, -72.0)]
+    out = []
+    for (tx, tz) in pts:
+        g = ground_at(hm, tx, tz) if hm is not None else 0.0
+        out.append([tx, g + 2.0, tz])
+    return out
+
+
+def build_shot(hm=None):
     """演出：地形整体升起（0→16s）+ 相机从高空俯冲到掠地（全 66s）。
+
+    ⚠️ 2026-11-23 教训：相机高度**按地形算**，不能凭感觉填。
+    第一版手填 y=13，而该点地形 mean=27.9m —— 整条路径都在山体内部，
+    成片里出现黑色裂缝与黑椭圆（背面剔除 + 穿模）。现在每个关键点取
+    ``ground_at + 10``，保证永远在表面之上。
 
     地形升起用**节点 translation 通道**（ShotPlayer 支持普通节点的 translation），
     而不是顶点级改写 —— 第 II 幕要的是"大地从虚无中浮出"，整体位移就够，
@@ -173,24 +211,24 @@ def build_shot():
             {
                 'node': 'terrain', 'prop': 'translation', 'interpolation': 'CUBICSPLINE',
                 'times': [0.0, 16.0, 66.0],
-                'values': [[0.0, -52.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]],
+                'values': [[0.0, -80.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]],
             },
             {
                 'node': '$camera', 'prop': 'position', 'interpolation': 'CUBICSPLINE',
                 'times': [0.0, 16.0, 34.0, 52.0, 66.0],
-                'values': [[0.0, 78.0, 128.0], [0.0, 28.0, 72.0],
-                           [3.0, 13.0, 32.0], [1.0, 6.0, 2.0], [-1.5, 7.5, -34.0]],
+                'values': _path(hm),
             },
             {
                 'node': '$camera', 'prop': 'target', 'interpolation': 'CUBICSPLINE',
                 'times': [0.0, 16.0, 34.0, 52.0, 66.0],
-                'values': [[0.0, 0.0, 0.0], [0.0, 5.0, -6.0],
-                           [0.0, 4.0, -18.0], [0.0, 3.5, -44.0], [0.0, 6.0, -72.0]],
+                # target 高度也按地形算（2026-11-23）：手填 3.5 比远处地面（-3）
+                # 还高 ⇒ 相机实际在"抬头看天"，地形只剩右下角。
+                'values': _targets(hm),
             },
             {
                 'node': '$camera', 'prop': 'fov', 'interpolation': 'LINEAR',
                 'times': [0.0, 66.0],
-                'values': [54.0, 46.0],
+                'values': [54.0, 56.0],
             },
             {
                 'node': '$env', 'prop': 'sun_intensity', 'interpolation': 'CUBICSPLINE',
@@ -240,7 +278,7 @@ def main(argv=None):
         return 0
 
     scene = build_scene(hm)
-    shot = build_shot()
+    shot = build_shot(hm)
     os.makedirs(os.path.dirname(SCENE_PATH), exist_ok=True)
     with open(SCENE_PATH, 'w', encoding='utf-8', newline='\n') as f:
         # 紧凑存 hm（6400 个数字，缩进会膨胀到几百 KB），其余字段保持可读
