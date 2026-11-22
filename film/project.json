@@ -45,9 +45,9 @@
    "id": "04_machine",
    "title": "机械",
    "duration": 74.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
+   "scene": "scenes/04_machine.scene.json",
+   "shot": "shots/04_machine.shot.json",
+   "status": "wip",
    "notes": "torus_knot 反应堆 + tube 导管 + 二连杆 IK 机械臂 + 蒙皮 + glTF 金饰"
   },
   {
