@@ -1,7 +1,10 @@
 {
  "name": "worldwright",
  "title": "造界 / Worldwright",
- "stage": [1920, 1080],
+ "stage": [
+  1920,
+  1080
+ ],
  "fps": 30,
  "xfade": 1.2,
  "notes": "12 幕时长合计 733s，扣 11 处 xfade 1.2s 后成片 719.8s（12:00）。scene/shot 为 null 表示该幕尚未建模（M3 逐幕补），probe/render 会明确报「该幕未建模」而不是抛 TypeError。",
@@ -13,7 +16,10 @@
    "scene": "scenes/01_void.scene.json",
    "shot": "shots/01_void.shot.json",
    "energy": "void",
-   "particles": {"count": 5000, "preset": 0},
+   "particles": {
+    "count": 5000,
+    "preset": 0
+   },
    "status": "built",
    "notes": "黑场起搏：稀疏星尘 + Bloom 呼吸，接第 II 幕地形升起"
   },
@@ -23,8 +29,8 @@
    "duration": 66.0,
    "scene": "scenes/02_terrain.scene.json",
    "shot": "shots/02_terrain.shot.json",
-   "status": "wip",
-   "notes": "地形几何成立；相机路径仍是关键帧+样条，会穿进地形（黑缝）且末帧空白。待改为程序化路径（沿谷底等距采样+逐点抬升）"
+   "status": "partial",
+   "notes": "地形+相机路径成立（130 关键帧+穿地检查，联系表无黑缝/空白）；缺 Gerstner 水体与体积雾，且后段地形偏平、构图保守"
   },
   {
    "id": "03_city",

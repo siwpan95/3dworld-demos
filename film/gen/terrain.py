@@ -151,8 +151,8 @@ def build_scene(hm):
                     },
                     'material': {
                         'preset': 'marble',
-                        'base_color': [0.52, 0.45, 0.35],
-                        'roughness': 0.76,
+                        'base_color': [0.34, 0.30, 0.25],
+                        'roughness': 0.94,
                         'metallic': 0.0,
                     },
                 },
@@ -161,39 +161,69 @@ def build_scene(hm):
     }
 
 
-def _path(hm):
-    """相机关键点：沿峡谷自南向北，y 取 ground_at + 10（末段收在谷底附近）。"""
-    pts = [(0.0, 128.0), (0.0, 72.0), (3.0, 32.0), (1.0, 2.0), (-1.5, -34.0)]
-    lift = [40.0, 26.0, 9.0, 6.0, 8.0]        # 起手在云上，随后**低空穿谷**（5-9m）
-    out = []
-    for (x, z), add in zip(pts, lift):
-        g = ground_at(hm, x, z) if hm is not None else 0.0
-        out.append([x, max(g + add, g + 3.5), z])   # 保底离地 3.5m，防穿模
-    return out
+def build_camera_path(hm, duration=DURATION, count=130, clearance=3.5):
+    """程序化相机路径：沿峡谷等距采样 + 逐点离地间隙 + **相邻段穿地检查**。
 
+    为什么不用"5 个关键帧 + 三次样条"（2026-11-23 的教训）
+    ------------------------------------------------------
+    样条在关键帧**之间**会自由摆动，摆进山体没人管；而地形是 80×80 的离散
+    高度场，样条根本不知道它长什么样。于是每次只能修好一个关键帧，中间段又
+    穿进去 —— 症状是画面里黑色树枝状裂缝（看到被背面剔除的内表面）。
+    **关键帧密度必须与地形复杂度匹配**：66 秒穿越地形，130 个点（每秒 2 个）
+    才能让线性插值天然贴地。
 
-def _targets(hm):
-    """注视点：铺在谷底上方 2m，保证相机是"看着地面飞"而不是抬头。"""
-    pts = [(0.0, 0.0), (0.0, -6.0), (0.0, -18.0), (0.0, -44.0), (0.0, -72.0)]
-    out = []
-    for (tx, tz) in pts:
-        g = ground_at(hm, tx, tz) if hm is not None else 0.0
-        out.append([tx, g + 2.0, tz])
-    return out
+    返回 ``(times, positions, targets)``，三者等长，直接喂 Shot 的 LINEAR 通道。
+    """
+    n = max(8, int(count))
+    times, pos, tgt = [], [], []
+    for i in range(n):
+        s = i / (n - 1)
+        z = 110.0 - s * 155.0                  # +110 → -45：**不飞到边界**，
+        x = 2.2 * math.sin(s * 5.4)            # 轻微摆动，别像轨道车
+        g = ground_at(hm, x, z)
+        lift = 8.0 + 38.0 * (1.0 - s) ** 2.2   # 起手 46m 高空 → 末段 8m 贴地
+        pos.append([round(x, 3), round(g + max(lift, clearance), 3), round(z, 3)])
+        # 注视点：前方 26m、比相机**低 8m**。
+        # ⚠️ 不能用"前方地面高度 + 2.5"：前方若是封口高山（40m+），ground 会
+        # 高过相机 ⇒ 相机抬头看天，末帧变成纯天空（实测过一次）。
+        # 相对相机定义才保证"永远看着地面飞"。
+        zt = z - 26.0
+        tgt.append([round(x * 0.6, 3), round(pos[-1][1] - 8.0, 3), round(zt, 3)])
+        times.append(round(s * duration, 3))
+
+    # 相邻段穿地检查：把线段按 6 等分取样，插值高度必须高于沿途地形 + clearance。
+    # 违反就把**后点**抬高（迭代收敛，因为抬后点会同时改善相邻两段）。
+    for _ in range(8):
+        worst = 0.0
+        for k in range(len(pos) - 1):
+            a, b = pos[k], pos[k + 1]
+            for j in range(1, 6):
+                u = j / 6.0
+                xm = a[0] + (b[0] - a[0]) * u
+                zm = a[2] + (b[2] - a[2]) * u
+                ym = a[1] + (b[1] - a[1]) * u
+                need = ground_at(hm, xm, zm) + clearance
+                if ym < need:
+                    d = need - ym
+                    b[1] = round(b[1] + d, 3)
+                    worst = max(worst, d)
+        if worst < 0.05:
+            break
+    return times, pos, tgt
 
 
 def build_shot(hm=None):
-    """演出：地形整体升起（0→16s）+ 相机从高空俯冲到掠地（全 66s）。
+    """演出：地形整体升起（0→16s）+ 相机沿峡谷低空穿行（全 66s）。
 
-    ⚠️ 2026-11-23 教训：相机高度**按地形算**，不能凭感觉填。
-    第一版手填 y=13，而该点地形 mean=27.9m —— 整条路径都在山体内部，
-    成片里出现黑色裂缝与黑椭圆（背面剔除 + 穿模）。现在每个关键点取
-    ``ground_at + 10``，保证永远在表面之上。
-
-    地形升起用**节点 translation 通道**（ShotPlayer 支持普通节点的 translation），
-    而不是顶点级改写 —— 第 II 幕要的是"大地从虚无中浮出"，整体位移就够，
-    顶点级隆起留给第 III 幕的 godhand 能力。
+    相机与注视点的高度**全部由地形算**（2026-11-23）：手填数字会让整条路径
+    埋在山体内部，成片里出现黑色裂缝与黑椭圆（背面剔除 + 穿模）。
     """
+    if hm is not None:
+        times, pos, tgt = build_camera_path(hm)
+    else:
+        times = [0.0, DURATION]
+        pos = [[0.0, 46.0, 110.0], [0.0, 8.0, -70.0]]
+        tgt = [[0.0, 2.0, 84.0], [0.0, 2.0, -96.0]]
     return {
         'version': 1,
         'name': '02_terrain',
@@ -206,38 +236,34 @@ def build_shot(hm=None):
             {'t': 52.0, 'label': '峡谷'},
             {'t': 66.0, 'label': '出峡'},
         ],
-        'notes': '地形整体从 y=-52 升到 y=0；相机用 FlyCamera 的 position/target 双通道。',
+        'notes': ('相机路径由 film/gen/terrain.build_camera_path 程序化生成：'
+                  '130 个等距关键帧（每秒 2 个）+ 逐点离地间隙 + 相邻段穿地检查，'
+                  '用 LINEAR 插值而非样条。'),
         'channels': [
             {
                 'node': 'terrain', 'prop': 'translation', 'interpolation': 'CUBICSPLINE',
-                'times': [0.0, 16.0, 66.0],
+                'times': [0.0, 16.0, DURATION],
                 'values': [[0.0, -80.0, 0.0], [0.0, 0.0, 0.0], [0.0, 0.0, 0.0]],
             },
             {
-                'node': '$camera', 'prop': 'position', 'interpolation': 'CUBICSPLINE',
-                'times': [0.0, 16.0, 34.0, 52.0, 66.0],
-                'values': _path(hm),
+                'node': '$camera', 'prop': 'position', 'interpolation': 'LINEAR',
+                'times': times, 'values': pos,
             },
             {
-                'node': '$camera', 'prop': 'target', 'interpolation': 'CUBICSPLINE',
-                'times': [0.0, 16.0, 34.0, 52.0, 66.0],
-                # target 高度也按地形算（2026-11-23）：手填 3.5 比远处地面（-3）
-                # 还高 ⇒ 相机实际在"抬头看天"，地形只剩右下角。
-                'values': _targets(hm),
+                'node': '$camera', 'prop': 'target', 'interpolation': 'LINEAR',
+                'times': times, 'values': tgt,
             },
             {
                 'node': '$camera', 'prop': 'fov', 'interpolation': 'LINEAR',
-                'times': [0.0, 66.0],
-                'values': [54.0, 56.0],
+                'times': [0.0, DURATION], 'values': [58.0, 58.0],
             },
             {
                 'node': '$env', 'prop': 'sun_intensity', 'interpolation': 'CUBICSPLINE',
-                'times': [0.0, 16.0, 40.0, 66.0],
+                'times': [0.0, 16.0, 40.0, DURATION],
                 'values': [0.4, 2.10, 2.60, 2.20],
             },
         ],
     }
-
 
 def audit(hm):
     """校验：分辨率、值域、起伏度（太平/太碎都报错）。"""
