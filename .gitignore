@@ -4,6 +4,12 @@ dist/
 build/
 assets/fusion_ost_*seg.wav
 
+# 本机时点证据（升级前的 freeze 快照等）：只在本机留存，不入库
+_freeze_before.txt
+
+# 批量验收的冒烟截图落点（可再生的初筛基线，见 verify_demos.py 的 SMOKE_DOCS_DIR）
+.baseline/
+
 # Python
 __pycache__/
 *.pyc
