@@ -49,10 +49,15 @@ python film\render\render_film.py --act 01_void --size 1920x1080 --crf 18
 
 ## 进度
 
+12 幕的完整分配与能力落点见 **[capability_matrix.md](capability_matrix.md)** ——
+由 `film/gen/matrix.py` 生成，缺 / 多 / 重归属都会当场非零退出（`--check` 可入 CI）。
+
 | 幕 | 状态 | 证据 |
 |---|---|---|
 | 01 空无 | **已出片** | 24.00s / 960x540 / 30fps / yuv420p；确定性 sha256 一致 |
-| 02–12 | 待建 | 见计划书 §3.2 |
+| 02–12 | 已登记时长、待建模 | `project.json` 里 `status: planned`，probe 会明确报"尚未建模" |
+
+> 12 幕时长合计 733s，扣 11 处 xfade 1.2s = 成片 **719.8s（12:00）**。
 
 ## 与引擎的关系
 

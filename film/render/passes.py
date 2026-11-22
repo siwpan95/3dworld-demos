@@ -46,7 +46,16 @@ ENERGY = {
 
 
 def load_act(project_dir, act):
-    """读一幕的 scene/shot，返回 (scene_data, shot)。供渲染器与校验脚本共用。"""
+    """读一幕的 scene/shot，返回 (scene_data, shot)。供渲染器与校验脚本共用。
+
+    ``project.json`` 里 12 幕**先全部登记**（时长要能算总片长），未建模的幕
+    ``scene``/``shot`` 为 ``null``。这里给出可读的失败信息 —— 否则
+    ``os.path.join(dir, None)`` 会抛一个跟"还没建"毫无关系的 TypeError。
+    """
+    if not act.get('scene') or not act.get('shot'):
+        built = '（已建好的幕：status == "built"）'
+        raise SystemExit(f'幕 {act["id"]}「{act.get("title", "")}」尚未建模：'
+                         f'project.json 里 scene/shot 为 null。{built}')
     scene_data = load_json(os.path.join(project_dir, act['scene']))
     shot = Shot.load(os.path.join(project_dir, act['shot']))
     return scene_data, shot

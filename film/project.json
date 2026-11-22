@@ -4,6 +4,7 @@
  "stage": [1920, 1080],
  "fps": 30,
  "xfade": 1.2,
+ "notes": "12 幕时长合计 733s，扣 11 处 xfade 1.2s 后成片 719.8s（12:00）。scene/shot 为 null 表示该幕尚未建模（M3 逐幕补），probe/render 会明确报「该幕未建模」而不是抛 TypeError。",
  "acts": [
   {
    "id": "01_void",
@@ -12,7 +13,107 @@
    "scene": "scenes/01_void.scene.json",
    "shot": "shots/01_void.shot.json",
    "energy": "void",
+   "status": "built",
    "notes": "黑场起搏：稀疏星尘 + Bloom 呼吸，接第 II 幕地形升起"
+  },
+  {
+   "id": "02_terrain",
+   "title": "地脉",
+   "duration": 66.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "fBm 四叉树地形 + CDLOD + Gerstner 水体 + 高度雾 + 地形隆起"
+  },
+  {
+   "id": "03_city",
+   "title": "城邦",
+   "duration": 80.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "Voronoi 街区 + 长屋 + L-System 植被 + WFC 路网 + 程序化 PBR + NPC"
+  },
+  {
+   "id": "04_machine",
+   "title": "机械",
+   "duration": 74.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "torus_knot 反应堆 + tube 导管 + 二连杆 IK 机械臂 + 蒙皮 + glTF 金饰"
+  },
+  {
+   "id": "05_crystal",
+   "title": "晶体",
+   "duration": 64.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "SDF 八晶习 + 光谱材质 + 2D SDF 字卡 + raymarch 门廊 + DoF"
+  },
+  {
+   "id": "06_cave",
+   "title": "洞窟",
+   "duration": 64.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "元胞洞穴 + 体素面剔除 + 火把 + FOV 记忆 + 隧道 + 光弹"
+  },
+  {
+   "id": "07_swarm",
+   "title": "法则·群",
+   "duration": 58.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "boids 群集 + 实例化 + 弹幕编队 + 节拍同步"
+  },
+  {
+   "id": "08_body",
+   "title": "法则·体",
+   "duration": 58.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "刚体塔 + 2D 刚体沙盒 + 相交透明层"
+  },
+  {
+   "id": "09_field",
+   "title": "法则·场",
+   "duration": 54.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "点云 + 4096 实例 + GPU compute 星云 + 流场 + 反应扩散 + 曲线"
+  },
+  {
+   "id": "10_void",
+   "title": "虚空",
+   "duration": 80.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "行星系 + 飞船 + 龙 + 孤峰 + 后室插叙 + 冲刺运动模糊"
+  },
+  {
+   "id": "11_loop",
+   "title": "回环",
+   "duration": 64.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "回到 II 幕机位 + 昼夜 + 季节 + 雨雪 + 级联光向变化"
+  },
+  {
+   "id": "12_finale",
+   "title": "收束",
+   "duration": 47.0,
+   "scene": null,
+   "shot": null,
+   "status": "planned",
+   "notes": "星球全景 + 全 pass 叠加 + 片尾字卡 + 频谱收束"
   }
  ]
 }
