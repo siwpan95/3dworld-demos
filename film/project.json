@@ -66,9 +66,9 @@
    "id": "06_cave",
    "title": "洞窟",
    "duration": 64.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
+   "scene": "scenes/06_cave.scene.json",
+   "shot": "shots/06_cave.shot.json",
+   "status": "wip",
    "notes": "元胞洞穴 + 体素面剔除 + 火把 + FOV 记忆 + 隧道 + 光弹"
   },
   {
