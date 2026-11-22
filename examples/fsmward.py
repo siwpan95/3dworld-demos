@@ -48,8 +48,8 @@ import math
 import random
 
 from pyglet.gl import (GL_BLEND, GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT,
-                       GL_DEPTH_TEST, GL_FILL, GL_FRONT_AND_BACK, GL_LINES,
-                       GL_LINE_STRIP, GL_POLYGON_MODE, GL_TRIANGLES,
+                       GL_DEPTH_TEST, GL_FILL, GL_FRONT_AND_BACK, GL_LINE,
+                       GL_LINES, GL_LINE_STRIP, GL_POLYGON_MODE, GL_TRIANGLES,
                        glClear, glClearColor, glEnable, glPolygonMode)
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
@@ -314,7 +314,7 @@ class FsmWard(DemoApp):
         self.attack_r = 1.6
         self.speeds = {'patrol': 2.2, 'chase': 4.5, 'attack': 3.0, 'flee': 5.0}
         self.click_mode = False
-        self.wire = False
+        self.wire = 'wire' in self.args.flags      # --flag wire：线框对照（也用于验证 GL_LINE 路径）
         self.frame = 0
         self.recent = []
         self.phase = 'calm'

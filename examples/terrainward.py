@@ -58,7 +58,7 @@ SPACE 暂停（同时停掉相机自动旋转）          L 切换 SHADE / FLAT 
 import math
 
 from pyglet.gl import (GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, GL_DEPTH_TEST,
-                       GL_FILL, GL_FRONT_AND_BACK, GL_TRIANGLES, glClear,
+                       GL_FILL, GL_FRONT_AND_BACK, GL_LINE, GL_TRIANGLES, glClear,
                        glClearColor, glEnable, glPolygonMode)
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
@@ -120,7 +120,7 @@ class Terrainward(DemoApp):
         self.step = STEP
         self.seed = SEED0
         self.flat = False                 # False=完整坡面光照，True=纯高度分层
-        self.wire = False
+        self.wire = 'wire' in self.args.flags      # --flag wire：线框对照（也用于验证 GL_LINE 路径）
         self.L = _norm(LIGHT_DIR)
         self.cam = OrbitCamera(target=Vec3(0, 0, 0), yaw=35.0, pitch=56.0,
                                dist=220.0, pitch_range=(8.0, 85.0),

@@ -379,6 +379,13 @@ class VoxelDemo(DemoApp):
         return (yaw, 16.0, 19.0, x0, y0, z0)
 
     def update(self, dt):
+        # 换种子期间每帧啃几列，不冻画面。
+        # 2026-11-22 修复 F811：这段原本是**第二个同名 update**（定义在 "输入" 区注释后），
+        # 按 Python 后定义覆盖前定义，把下面整段漫游相机 + 地形避让逻辑全废掉了。
+        # 现合并回本方法，两段逻辑都生效；放在 paused 判断之前，保持"暂停时也继续换种子"
+        # 的原语义（原第二个 update 没有 paused 检查）。
+        if self._rb is not None:
+            self.step_reseed()
         if self.paused:
             return
         self.auto.absorb()
@@ -415,10 +422,6 @@ class VoxelDemo(DemoApp):
             vlist.draw(GL_TRIANGLES)
 
     # --------------------------------------------------------------- 输入 --
-    def update(self, dt):
-        if self._rb is not None:
-            self.step_reseed()          # 换种子期间每帧啃几列，不冻画面
-
     def on_key(self, symbol, modifiers):
         key = pyglet.window.key
         if symbol in (key._1, key._2):

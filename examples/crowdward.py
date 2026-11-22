@@ -52,8 +52,8 @@ import math
 import random
 
 from pyglet.gl import (GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT,
-                       GL_DEPTH_TEST, GL_FILL, GL_FRONT_AND_BACK, GL_LINES,
-                       GL_TRIANGLES, glClear, glClearColor, glEnable,
+                       GL_DEPTH_TEST, GL_FILL, GL_FRONT_AND_BACK, GL_LINE,
+                       GL_LINES, GL_TRIANGLES, glClear, glClearColor, glEnable,
                        glPolygonMode)
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
@@ -382,7 +382,7 @@ class Crowdward(DemoApp):
             if s[0] in self.args.flags:
                 self.scene_i = i
         self.show_paths = True
-        self.wire = False
+        self.wire = 'wire' in self.args.flags      # --flag wire：线框对照（也用于验证 GL_LINE 路径）
         self.rng = random.Random(20261026)
         self.ctx = Context()
         self.astar_calls = 0

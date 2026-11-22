@@ -51,7 +51,7 @@ import math
 import random
 
 from pyglet.gl import (GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT, GL_DEPTH_TEST,
-                       GL_FILL, GL_FRONT_AND_BACK, GL_TRIANGLES, glClear,
+                       GL_FILL, GL_FRONT_AND_BACK, GL_LINE, GL_TRIANGLES, glClear,
                        glClearColor, glEnable, glPolygonMode)
 from pyglet.graphics.shader import Shader, ShaderProgram
 from pyglet.math import Mat4, Vec3
@@ -210,7 +210,7 @@ class Box2Dward(DemoApp):
         self.box_vl = self.meshes['box']
         self.sphere_vl = self.meshes['sphere']
 
-        self.wire = False
+        self.wire = 'wire' in self.args.flags      # --flag wire：线框对照（也用于验证 GL_LINE 路径）
         self.show_contacts = True
         self.acc = 0.0
         self.sim_t = 0.0

@@ -60,8 +60,8 @@ import random
 
 import numpy as np
 from pyglet.gl import (GL_BLEND, GL_COLOR_BUFFER_BIT, GL_DEPTH_BUFFER_BIT,
-                       GL_DEPTH_TEST, GL_FILL, GL_FRONT_AND_BACK, GL_LINES,
-                       GL_ONE_MINUS_SRC_ALPHA, GL_POINTS, GL_SRC_ALPHA,
+                       GL_DEPTH_TEST, GL_FILL, GL_FRONT_AND_BACK, GL_LINE,
+                       GL_LINES, GL_ONE_MINUS_SRC_ALPHA, GL_POINTS, GL_SRC_ALPHA,
                        GL_TRIANGLES, glBlendFunc, glClear, glClearColor,
                        glEnable, glPolygonMode)
 from pyglet.graphics.shader import Shader, ShaderProgram
@@ -186,7 +186,7 @@ class Ozzward(DemoApp):
         self.prog = ShaderProgram(Shader(VERT, 'vertex'), Shader(FRAG, 'fragment'))
         self.bone_prog = ShaderProgram(Shader(BONE_VERT, 'vertex'),
                                        Shader(BONE_FRAG, 'fragment'))
-        self.wire = False
+        self.wire = 'wire' in self.args.flags      # --flag wire：线框对照（也用于验证 GL_LINE 路径）
         self.show_bones = False
         self.rng = random.Random(SEED)
         self.n_joints = N_JOINTS
