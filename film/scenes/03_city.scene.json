@@ -1,0 +1,3760 @@
+{
+ "name": "03-city",
+ "environment": {
+  "sun_dir": [
+   -0.62,
+   0.28,
+   0.73
+  ],
+  "sun_color": [
+   1.0,
+   0.68,
+   0.4
+  ],
+  "sun_intensity": 1.45,
+  "sky_zenith": [
+   0.1,
+   0.13,
+   0.24
+  ],
+  "sky_horizon": [
+   0.52,
+   0.38,
+   0.3
+  ],
+  "sky_ground": [
+   0.09,
+   0.08,
+   0.07
+  ],
+  "ibl_intensity": 0.6,
+  "sky_intensity": 0.55,
+  "fog_density": 0.0026,
+  "fog_falloff": 0.03,
+  "fog_color": [
+   0.46,
+   0.38,
+   0.33
+  ]
+ },
+ "root": {
+  "name": "root",
+  "children": [
+   {
+    "name": "ground",
+    "mesh": {
+     "builder": "ground_grid",
+     "args": {
+      "half": 110,
+      "tile": 4.0,
+      "color_a": [
+       0.2,
+       0.18,
+       0.16
+      ],
+      "color_b": [
+       0.15,
+       0.135,
+       0.12
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.22,
+      0.2112,
+      0.198
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "street",
+    "mesh": {
+     "builder": "plane",
+     "args": {
+      "width": 10.0,
+      "depth": 148.4,
+      "segs": 24,
+      "y": 0.02,
+      "color": [
+       0.27,
+       0.25,
+       0.22
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.28,
+      0.26880000000000004,
+      0.25200000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_0",
+    "translation": [
+     -9.6,
+     4.651,
+     68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.554,
+      "sy": 9.303,
+      "sz": 8.972,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_1",
+    "translation": [
+     -20.2,
+     4.847,
+     68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.613,
+      "sy": 9.695,
+      "sz": 9.448,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_2",
+    "translation": [
+     -30.8,
+     4.878,
+     68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.971,
+      "sy": 9.756,
+      "sz": 7.577,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_3",
+    "translation": [
+     -41.4,
+     4.756,
+     68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.666,
+      "sy": 9.512,
+      "sz": 9.329,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_4",
+    "translation": [
+     -52.0,
+     5.164,
+     68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.184,
+      "sy": 10.328,
+      "sz": 9.677,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_5",
+    "translation": [
+     20.2,
+     4.682,
+     68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.217,
+      "sy": 9.364,
+      "sz": 9.754,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_6",
+    "translation": [
+     30.8,
+     5.06,
+     68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.545,
+      "sy": 10.12,
+      "sz": 7.674,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_7",
+    "translation": [
+     41.4,
+     5.273,
+     68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.371,
+      "sy": 10.546,
+      "sz": 8.288,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_8",
+    "translation": [
+     52.0,
+     4.975,
+     68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.406,
+      "sy": 9.95,
+      "sz": 9.137,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_9",
+    "translation": [
+     -9.6,
+     5.869,
+     58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.644,
+      "sy": 11.738,
+      "sz": 8.142,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_10",
+    "translation": [
+     -20.2,
+     7.356,
+     58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.348,
+      "sy": 14.711,
+      "sz": 9.014,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_11",
+    "translation": [
+     -30.8,
+     7.172,
+     58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.317,
+      "sy": 14.343,
+      "sz": 9.496,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_12",
+    "translation": [
+     -41.4,
+     6.023,
+     58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.708,
+      "sy": 12.047,
+      "sz": 8.121,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_13",
+    "translation": [
+     -52.0,
+     7.336,
+     58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.577,
+      "sy": 14.671,
+      "sz": 8.474,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_14",
+    "translation": [
+     9.6,
+     7.406,
+     58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.812,
+      "sy": 14.811,
+      "sz": 8.377,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_15",
+    "translation": [
+     30.8,
+     6.902,
+     58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.694,
+      "sy": 13.803,
+      "sz": 9.742,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_16",
+    "translation": [
+     41.4,
+     6.189,
+     58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.12,
+      "sy": 12.379,
+      "sz": 8.926,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_17",
+    "translation": [
+     52.0,
+     6.932,
+     58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.2,
+      "sy": 13.863,
+      "sz": 7.846,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_18",
+    "translation": [
+     -9.6,
+     8.302,
+     47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.905,
+      "sy": 16.605,
+      "sz": 8.88,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_19",
+    "translation": [
+     -30.8,
+     7.995,
+     47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.57,
+      "sy": 15.989,
+      "sz": 7.627,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_20",
+    "translation": [
+     -41.4,
+     7.423,
+     47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.967,
+      "sy": 14.846,
+      "sz": 7.883,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_21",
+    "translation": [
+     -52.0,
+     9.169,
+     47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.365,
+      "sy": 18.338,
+      "sz": 8.024,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_22",
+    "translation": [
+     9.6,
+     8.09,
+     47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.416,
+      "sy": 16.18,
+      "sz": 8.193,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_23",
+    "translation": [
+     20.2,
+     8.941,
+     47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.495,
+      "sy": 17.882,
+      "sz": 8.83,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_24",
+    "translation": [
+     30.8,
+     6.981,
+     47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.799,
+      "sy": 13.962,
+      "sz": 8.756,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_25",
+    "translation": [
+     41.4,
+     7.917,
+     47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.607,
+      "sy": 15.835,
+      "sz": 7.601,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_26",
+    "translation": [
+     -9.6,
+     10.998,
+     37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.18,
+      "sy": 21.995,
+      "sz": 8.838,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_27",
+    "translation": [
+     -20.2,
+     7.751,
+     37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.623,
+      "sy": 15.502,
+      "sz": 9.768,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_28",
+    "translation": [
+     -30.8,
+     8.148,
+     37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.668,
+      "sy": 16.295,
+      "sz": 9.023,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_29",
+    "translation": [
+     -41.4,
+     12.312,
+     37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.438,
+      "sy": 24.624,
+      "sz": 9.238,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_30",
+    "translation": [
+     -52.0,
+     9.927,
+     37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.665,
+      "sy": 19.853,
+      "sz": 9.002,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_31",
+    "translation": [
+     9.6,
+     13.49,
+     37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.634,
+      "sy": 26.98,
+      "sz": 9.598,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_32",
+    "translation": [
+     20.2,
+     10.903,
+     37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.2,
+      "sy": 21.805,
+      "sz": 9.263,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_33",
+    "translation": [
+     41.4,
+     10.243,
+     37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.048,
+      "sy": 20.485,
+      "sz": 9.477,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_34",
+    "translation": [
+     52.0,
+     9.709,
+     37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.767,
+      "sy": 19.418,
+      "sz": 8.916,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_35",
+    "translation": [
+     -9.6,
+     10.966,
+     26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.194,
+      "sy": 21.933,
+      "sz": 8.008,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_36",
+    "translation": [
+     -20.2,
+     13.281,
+     26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.35,
+      "sy": 26.562,
+      "sz": 8.946,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_37",
+    "translation": [
+     -30.8,
+     11.637,
+     26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.998,
+      "sy": 23.274,
+      "sz": 8.036,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_38",
+    "translation": [
+     -41.4,
+     15.665,
+     26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.616,
+      "sy": 31.33,
+      "sz": 7.83,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_39",
+    "translation": [
+     9.6,
+     13.975,
+     26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.018,
+      "sy": 27.951,
+      "sz": 9.505,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_40",
+    "translation": [
+     20.2,
+     16.132,
+     26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.14,
+      "sy": 32.265,
+      "sz": 9.195,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_41",
+    "translation": [
+     30.8,
+     15.309,
+     26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.475,
+      "sy": 30.617,
+      "sz": 9.486,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_42",
+    "translation": [
+     41.4,
+     8.843,
+     26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.119,
+      "sy": 17.686,
+      "sz": 7.408,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_43",
+    "translation": [
+     52.0,
+     12.875,
+     26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.712,
+      "sy": 25.75,
+      "sz": 8.191,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_44",
+    "translation": [
+     -30.8,
+     16.529,
+     15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.805,
+      "sy": 33.058,
+      "sz": 9.25,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_45",
+    "translation": [
+     -41.4,
+     12.118,
+     15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.74,
+      "sy": 24.235,
+      "sz": 8.411,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_46",
+    "translation": [
+     -52.0,
+     16.782,
+     15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.313,
+      "sy": 33.565,
+      "sz": 8.307,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_47",
+    "translation": [
+     9.6,
+     10.777,
+     15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.326,
+      "sy": 21.555,
+      "sz": 9.032,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_48",
+    "translation": [
+     20.2,
+     13.123,
+     15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.955,
+      "sy": 26.246,
+      "sz": 9.077,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_49",
+    "translation": [
+     30.8,
+     18.343,
+     15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.207,
+      "sy": 36.686,
+      "sz": 8.683,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_50",
+    "translation": [
+     41.4,
+     16.613,
+     15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.582,
+      "sy": 33.225,
+      "sz": 9.729,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_51",
+    "translation": [
+     52.0,
+     11.382,
+     15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.497,
+      "sy": 22.765,
+      "sz": 7.598,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_52",
+    "translation": [
+     -20.2,
+     11.376,
+     5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.425,
+      "sy": 22.752,
+      "sz": 8.087,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_53",
+    "translation": [
+     -30.8,
+     11.321,
+     5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.329,
+      "sy": 22.641,
+      "sz": 8.316,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_54",
+    "translation": [
+     -41.4,
+     20.483,
+     5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.099,
+      "sy": 40.966,
+      "sz": 8.422,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_55",
+    "translation": [
+     -52.0,
+     18.023,
+     5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.771,
+      "sy": 36.045,
+      "sz": 8.091,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_56",
+    "translation": [
+     9.6,
+     19.388,
+     5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.533,
+      "sy": 38.776,
+      "sz": 9.423,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_57",
+    "translation": [
+     20.2,
+     13.395,
+     5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.668,
+      "sy": 26.789,
+      "sz": 9.41,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_58",
+    "translation": [
+     30.8,
+     18.163,
+     5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.924,
+      "sy": 36.326,
+      "sz": 9.401,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_59",
+    "translation": [
+     41.4,
+     19.507,
+     5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.885,
+      "sy": 39.015,
+      "sz": 8.704,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_60",
+    "translation": [
+     52.0,
+     19.992,
+     5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.784,
+      "sy": 39.985,
+      "sz": 7.603,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_61",
+    "translation": [
+     -9.6,
+     14.657,
+     -5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.624,
+      "sy": 29.315,
+      "sz": 8.115,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_62",
+    "translation": [
+     -20.2,
+     17.459,
+     -5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.446,
+      "sy": 34.918,
+      "sz": 7.481,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_63",
+    "translation": [
+     -30.8,
+     10.706,
+     -5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.682,
+      "sy": 21.412,
+      "sz": 7.646,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_64",
+    "translation": [
+     -41.4,
+     11.0,
+     -5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.612,
+      "sy": 22.001,
+      "sz": 8.492,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_65",
+    "translation": [
+     -52.0,
+     15.102,
+     -5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.99,
+      "sy": 30.203,
+      "sz": 8.555,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_66",
+    "translation": [
+     9.6,
+     13.572,
+     -5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.548,
+      "sy": 27.143,
+      "sz": 9.227,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_67",
+    "translation": [
+     20.2,
+     12.557,
+     -5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.662,
+      "sy": 25.115,
+      "sz": 9.763,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_68",
+    "translation": [
+     41.4,
+     13.406,
+     -5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.45,
+      "sy": 26.812,
+      "sz": 7.801,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_69",
+    "translation": [
+     52.0,
+     21.017,
+     -5.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.081,
+      "sy": 42.034,
+      "sz": 8.33,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_70",
+    "translation": [
+     -9.6,
+     11.504,
+     -15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.541,
+      "sy": 23.008,
+      "sz": 9.653,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_71",
+    "translation": [
+     -30.8,
+     15.107,
+     -15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.471,
+      "sy": 30.215,
+      "sz": 8.467,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_72",
+    "translation": [
+     -41.4,
+     12.633,
+     -15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.619,
+      "sy": 25.265,
+      "sz": 8.964,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_73",
+    "translation": [
+     -52.0,
+     11.951,
+     -15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.743,
+      "sy": 23.902,
+      "sz": 8.345,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_74",
+    "translation": [
+     20.2,
+     11.45,
+     -15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.553,
+      "sy": 22.9,
+      "sz": 8.09,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_75",
+    "translation": [
+     30.8,
+     18.396,
+     -15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.197,
+      "sy": 36.792,
+      "sz": 7.487,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_76",
+    "translation": [
+     41.4,
+     18.33,
+     -15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.957,
+      "sy": 36.66,
+      "sz": 8.303,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_77",
+    "translation": [
+     52.0,
+     16.809,
+     -15.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.93,
+      "sy": 33.618,
+      "sz": 8.205,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_78",
+    "translation": [
+     -9.6,
+     15.463,
+     -26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.567,
+      "sy": 30.926,
+      "sz": 7.494,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_79",
+    "translation": [
+     -30.8,
+     8.827,
+     -26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.976,
+      "sy": 17.655,
+      "sz": 7.847,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_80",
+    "translation": [
+     -52.0,
+     15.183,
+     -26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.889,
+      "sy": 30.367,
+      "sz": 7.821,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_81",
+    "translation": [
+     9.6,
+     10.34,
+     -26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.786,
+      "sy": 20.68,
+      "sz": 7.835,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_82",
+    "translation": [
+     20.2,
+     11.702,
+     -26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.659,
+      "sy": 23.403,
+      "sz": 7.494,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_83",
+    "translation": [
+     30.8,
+     10.227,
+     -26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.704,
+      "sy": 20.453,
+      "sz": 9.582,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_84",
+    "translation": [
+     41.4,
+     8.902,
+     -26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.264,
+      "sy": 17.804,
+      "sz": 8.894,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_85",
+    "translation": [
+     52.0,
+     11.153,
+     -26.5
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.448,
+      "sy": 22.305,
+      "sz": 7.724,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_86",
+    "translation": [
+     -9.6,
+     12.58,
+     -37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.618,
+      "sy": 25.16,
+      "sz": 9.408,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_87",
+    "translation": [
+     -20.2,
+     10.875,
+     -37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.875,
+      "sy": 21.75,
+      "sz": 8.408,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_88",
+    "translation": [
+     -41.4,
+     12.816,
+     -37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.0,
+      "sy": 25.632,
+      "sz": 9.397,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_89",
+    "translation": [
+     -52.0,
+     11.978,
+     -37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.067,
+      "sy": 23.957,
+      "sz": 9.04,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_90",
+    "translation": [
+     9.6,
+     9.711,
+     -37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.75,
+      "sy": 19.421,
+      "sz": 9.18,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_91",
+    "translation": [
+     20.2,
+     7.639,
+     -37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.787,
+      "sy": 15.278,
+      "sz": 9.14,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_92",
+    "translation": [
+     30.8,
+     10.464,
+     -37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.439,
+      "sy": 20.928,
+      "sz": 8.687,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_93",
+    "translation": [
+     41.4,
+     13.217,
+     -37.1
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.818,
+      "sy": 26.434,
+      "sz": 9.54,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_94",
+    "translation": [
+     -20.2,
+     9.413,
+     -47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.674,
+      "sy": 18.827,
+      "sz": 9.729,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_95",
+    "translation": [
+     -30.8,
+     7.057,
+     -47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.771,
+      "sy": 14.115,
+      "sz": 8.716,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_96",
+    "translation": [
+     -41.4,
+     6.946,
+     -47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.49,
+      "sy": 13.891,
+      "sz": 8.722,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_97",
+    "translation": [
+     9.6,
+     9.519,
+     -47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.872,
+      "sy": 19.038,
+      "sz": 7.589,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_98",
+    "translation": [
+     20.2,
+     8.043,
+     -47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.609,
+      "sy": 16.086,
+      "sz": 7.637,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_99",
+    "translation": [
+     30.8,
+     7.648,
+     -47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.631,
+      "sy": 15.297,
+      "sz": 9.079,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_100",
+    "translation": [
+     52.0,
+     6.815,
+     -47.7
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.575,
+      "sy": 13.63,
+      "sz": 7.719,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_101",
+    "translation": [
+     -9.6,
+     7.595,
+     -58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.764,
+      "sy": 15.19,
+      "sz": 8.468,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_102",
+    "translation": [
+     -20.2,
+     5.56,
+     -58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.267,
+      "sy": 11.12,
+      "sz": 9.08,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_103",
+    "translation": [
+     -30.8,
+     5.785,
+     -58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.425,
+      "sy": 11.57,
+      "sz": 8.262,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_104",
+    "translation": [
+     -41.4,
+     7.487,
+     -58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.524,
+      "sy": 14.973,
+      "sz": 8.28,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_105",
+    "translation": [
+     -52.0,
+     5.633,
+     -58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.749,
+      "sy": 11.266,
+      "sz": 8.078,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_106",
+    "translation": [
+     20.2,
+     6.265,
+     -58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.076,
+      "sy": 12.53,
+      "sz": 8.8,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_107",
+    "translation": [
+     30.8,
+     7.784,
+     -58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.538,
+      "sy": 15.568,
+      "sz": 8.423,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_108",
+    "translation": [
+     41.4,
+     7.641,
+     -58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.762,
+      "sy": 15.283,
+      "sz": 9.096,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_109",
+    "translation": [
+     52.0,
+     6.652,
+     -58.3
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.821,
+      "sy": 13.304,
+      "sz": 9.5,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_110",
+    "translation": [
+     -9.6,
+     5.024,
+     -68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.465,
+      "sy": 10.048,
+      "sz": 9.567,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_111",
+    "translation": [
+     -20.2,
+     5.023,
+     -68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.783,
+      "sy": 10.045,
+      "sz": 8.874,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_112",
+    "translation": [
+     -30.8,
+     5.154,
+     -68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.95,
+      "sy": 10.308,
+      "sz": 9.774,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_113",
+    "translation": [
+     -41.4,
+     4.657,
+     -68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.462,
+      "sy": 9.314,
+      "sz": 9.685,
+      "color": [
+       0.324,
+       0.30132000000000003,
+       0.26567999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.324,
+      0.31104,
+      0.2916
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_114",
+    "translation": [
+     9.6,
+     4.76,
+     -68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.421,
+      "sy": 9.521,
+      "sz": 9.721,
+      "color": [
+       0.42000000000000004,
+       0.39060000000000006,
+       0.34440000000000004
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.42000000000000004,
+      0.4032,
+      0.37800000000000006
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_115",
+    "translation": [
+     20.2,
+     4.645,
+     -68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.55,
+      "sy": 9.29,
+      "sz": 7.91,
+      "color": [
+       0.388,
+       0.36084000000000005,
+       0.31816
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.37248,
+      0.3492
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_116",
+    "translation": [
+     30.8,
+     5.323,
+     -68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.013,
+      "sy": 10.647,
+      "sz": 8.536,
+      "color": [
+       0.356,
+       0.33108,
+       0.29191999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.356,
+      0.34175999999999995,
+      0.3204
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "blk_117",
+    "translation": [
+     52.0,
+     5.092,
+     -68.9
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.848,
+      "sy": 10.183,
+      "sz": 9.075,
+      "color": [
+       0.292,
+       0.27156,
+       0.23943999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.292,
+      0.28031999999999996,
+      0.2628
+     ],
+     "roughness": 0.8,
+     "metallic": 0.0
+    }
+   }
+  ]
+ }
+}

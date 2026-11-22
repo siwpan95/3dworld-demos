@@ -36,9 +36,9 @@
    "id": "03_city",
    "title": "城邦",
    "duration": 80.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
+   "scene": "scenes/03_city.scene.json",
+   "shot": "shots/03_city.shot.json",
+   "status": "wip",
    "notes": "Voronoi 街区 + 长屋 + L-System 植被 + WFC 路网 + 程序化 PBR + NPC"
   },
   {
