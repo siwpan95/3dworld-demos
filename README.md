@@ -10,7 +10,7 @@
 > 仓库：<https://gitee.com/siwpan/3dworld-demos> ｜ 许可：MIT（见 [LICENSE](LICENSE)）
 > 引擎本体在独立仓 [siwpan/3dworld](https://gitee.com/siwpan/3dworld)（PyPI 包名 `3dworld`）。
 
-本仓是 **3dworld 三维引擎的演示程序集**：66 个单文件演示 + 两条主线演出入口
+本仓是 **3dworld 三维引擎的演示程序集**：67 个单文件演示 + 两条主线演出入口
 （48 秒五幕演出 / 150 秒六幕走廊漫游）+ 成片录制 / exe 打包 / 批量验收工具。
 
 2026-10-19 从引擎仓剥离：**演示所代表的能力全部保留在引擎内**（`world3d.logic` /

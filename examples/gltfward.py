@@ -122,23 +122,29 @@ class GltfwardApp(EngineApp):
 
     # ------------------------------------------------------------ 材质 --
     def _material(self, mat_idx):
-        """gltf.material() 的 PBR 参数叠到预设克隆上（引擎不加载贴图槽）。
+        """glTF 材质 → 引擎 Material（**含贴图槽**，0.7.5 起）。
 
-        资产没有贴图时 metallic=1 会渲染成白镜面，故钳到低金属度、中粗糙度，
-        保证"无贴图也好看"。
+        走 ``texture.material_from_gltf``：baseColor 按 sRGB 上传、MR/Occlusion/
+        Normal 按线性上传，``normalTexture.scale`` / ``occlusionTexture.strength``
+        一并带过来。无贴图资产沿用旧口径的金属度钳制（metallic=1 无贴图会渲染
+        成白镜面）。
         """
         if mat_idx in self._mats:
             return self._mats[mat_idx]
-        m = PRESETS['emerald_light'].clone(name=f'gltfward_m{mat_idx}')
-        m.emissive = (0.0, 0.0, 0.0)
-        src = self.gltf.material(mat_idx)
-        m.base_color = src.base_color
-        m.metallic = min(src.metallic, 0.2)
-        m.roughness = max(src.roughness, 0.45)
-        m.alpha = src.alpha
-        m.alpha_mode = src.alpha_mode
-        m.alpha_cutoff = src.alpha_cutoff
-        m.double_sided = src.double_sided
+        from world3d.engine.texture import material_from_gltf
+        try:
+            m = material_from_gltf(self.gltf, mat_idx)
+            m.name = f'gltfward_m{mat_idx}'
+        except Exception as exc:                        # noqa: BLE001
+            print(f'[gltfward] texture load skipped: {type(exc).__name__}: {exc}')
+            m = PRESETS['emerald_light'].clone(name=f'gltfward_m{mat_idx}')
+            m.emissive = (0.0, 0.0, 0.0)
+            src = self.gltf.material(mat_idx)
+            m.base_color = src.base_color
+        if m.base_tex is None and m.mr_tex is None:
+            # 无贴图：压金属度、抬粗糙度，保证"无贴图也好看"（旧口径）
+            m.metallic = min(m.metallic, 0.2)
+            m.roughness = max(m.roughness, 0.45)
         self._mats[mat_idx] = m
         return m
 
