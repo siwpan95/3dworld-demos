@@ -98,6 +98,17 @@ class ActRenderer:
 
         # --- 粒子 ---
         self.particles = ParticleSystem(get('particles'), count=particle_count)
+        # 分辨率标定（2026-11-22，含一次**错误对照**的教训）
+        #   物理：粒子的屏幕像素尺寸 ∝ 画面高度 h（世界尺寸固定），而加性混合把
+        #   固定能量摊到 p² 个像素 ⇒ 单像素峰值亮度 ∝ alpha / p² ∝ 1/(size_scale⁴·h²)。
+        #   要让观感与 h 无关，需 size_scale ∝ h^-0.5；取 -0.55 是轻微过补偿，
+        #   让 1080p 的星点略微更"实"（不是更亮）。
+        #
+        #   ⚠️ 教训：第一版验证得出"1080p 暗 28%"，其实是拿**改镜头前**的 540p 图
+        #   去比**改镜头后**的 1080p 帧 —— 相机从 z=11 拉到 z=27，盘面自然又小又暗。
+        #   控制变量重测（同版代码、同 t=16、只变分辨率）：mean 16.84 → 16.65、
+        #   有光像素 4.01% → 3.50%，差 1.1% 可忽略。**先锁变量，再下结论。**
+        self.size_scale = 3.2 * (540.0 / max(1, window.height)) ** 0.55
 
         # --- 演出 ---
         self.player = ShotPlayer(self.shot, scene=self.scene,
@@ -139,7 +150,7 @@ class ActRenderer:
             prog = self.particles.program
             prog.use()
             self.particles.set_uniforms(time=self._phase, energy=energy,
-                                        preset=0, size_scale=3.2)
+                                        preset=0, size_scale=self.size_scale)
             glDepthMask(False)          # 粒子自叠自，不写深度
             glEnable(GL_BLEND)
             glBlendFunc(GL_SRC_ALPHA, GL_ONE)     # 加性
