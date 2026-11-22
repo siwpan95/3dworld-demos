@@ -13,6 +13,7 @@
    "scene": "scenes/01_void.scene.json",
    "shot": "shots/01_void.shot.json",
    "energy": "void",
+   "particles": {"count": 5000, "preset": 0},
    "status": "built",
    "notes": "黑场起搏：稀疏星尘 + Bloom 呼吸，接第 II 幕地形升起"
   },
@@ -20,9 +21,9 @@
    "id": "02_terrain",
    "title": "地脉",
    "duration": 66.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
+   "scene": "scenes/02_terrain.scene.json",
+   "shot": "shots/02_terrain.shot.json",
+   "status": "built",
    "notes": "fBm 四叉树地形 + CDLOD + Gerstner 水体 + 高度雾 + 地形隆起"
   },
   {

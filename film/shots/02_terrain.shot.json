@@ -1,0 +1,166 @@
+{
+ "version": 1,
+ "name": "02_terrain",
+ "duration": 66.0,
+ "scene": "scenes/02_terrain.scene.json",
+ "acts": [
+  {
+   "t": 0.0,
+   "label": "虚空余烬"
+  },
+  {
+   "t": 16.0,
+   "label": "大地升起"
+  },
+  {
+   "t": 34.0,
+   "label": "掠地"
+  },
+  {
+   "t": 52.0,
+   "label": "峡谷"
+  },
+  {
+   "t": 66.0,
+   "label": "出峡"
+  }
+ ],
+ "notes": "地形整体从 y=-52 升到 y=0；相机用 FlyCamera 的 position/target 双通道。",
+ "channels": [
+  {
+   "node": "terrain",
+   "prop": "translation",
+   "interpolation": "CUBICSPLINE",
+   "times": [
+    0.0,
+    16.0,
+    66.0
+   ],
+   "values": [
+    [
+     0.0,
+     -52.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     0.0,
+     0.0
+    ]
+   ]
+  },
+  {
+   "node": "$camera",
+   "prop": "position",
+   "interpolation": "CUBICSPLINE",
+   "times": [
+    0.0,
+    16.0,
+    34.0,
+    52.0,
+    66.0
+   ],
+   "values": [
+    [
+     0.0,
+     78.0,
+     128.0
+    ],
+    [
+     0.0,
+     28.0,
+     72.0
+    ],
+    [
+     3.0,
+     13.0,
+     32.0
+    ],
+    [
+     1.0,
+     6.0,
+     2.0
+    ],
+    [
+     -1.5,
+     7.5,
+     -34.0
+    ]
+   ]
+  },
+  {
+   "node": "$camera",
+   "prop": "target",
+   "interpolation": "CUBICSPLINE",
+   "times": [
+    0.0,
+    16.0,
+    34.0,
+    52.0,
+    66.0
+   ],
+   "values": [
+    [
+     0.0,
+     0.0,
+     0.0
+    ],
+    [
+     0.0,
+     5.0,
+     -6.0
+    ],
+    [
+     0.0,
+     4.0,
+     -18.0
+    ],
+    [
+     0.0,
+     3.5,
+     -44.0
+    ],
+    [
+     0.0,
+     6.0,
+     -72.0
+    ]
+   ]
+  },
+  {
+   "node": "$camera",
+   "prop": "fov",
+   "interpolation": "LINEAR",
+   "times": [
+    0.0,
+    66.0
+   ],
+   "values": [
+    54.0,
+    46.0
+   ]
+  },
+  {
+   "node": "$env",
+   "prop": "sun_intensity",
+   "interpolation": "CUBICSPLINE",
+   "times": [
+    0.0,
+    16.0,
+    40.0,
+    66.0
+   ],
+   "values": [
+    0.4,
+    2.1,
+    2.6,
+    2.2
+   ]
+  }
+ ]
+}

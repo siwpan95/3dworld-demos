@@ -14,6 +14,7 @@
 顺序一旦错了，症状会很隐蔽（Bloom 照不到粒子、雾把 DoF 深度冲掉），
 故这里的注释只写"为什么是这个顺序"。
 """
+import math
 import os
 
 from world3d.engine.camera import FlyCamera
@@ -61,6 +62,31 @@ def load_act(project_dir, act):
     return scene_data, shot
 
 
+def _aim(camera, pos, target):
+    """把 ``(position, target)`` 转成 ``FlyCamera`` 的 ``yaw/pitch``。
+
+    为什么要这一层
+    --------------
+    `ShotPlayer._apply_camera` 只认 position / target / fov；但 **`FlyCamera`
+    不维护 target**（docstring 原话："目标点 = 位置 + 前向量（由 yaw/pitch 现算）"），
+    所以 target 通道对它**静默无效** —— 实测 t=52 相机到位 `(1,8,2)` 却仍
+    `yaw=-90, pitch=0` 水平看 -z，于是峡谷的崖壁根本不在画面里（天空占 95%）。
+
+    这是引擎侧的契约缺口（ShotPlayer 的相机支持与 FlyCamera 的朝向模型不匹配），
+    记为 0.7.8 反哺项；本项目先用这一层把 target 译成 yaw/pitch，不阻塞推进。
+
+    `FlyCamera.forward()` 的定义是
+    ``(cos(pitch)·cos(yaw), sin(pitch), cos(pitch)·sin(yaw))``，
+    因此反解就是 ``yaw = atan2(dz, dx)``、``pitch = asin(dy/|d|)``。
+    """
+    dx = float(target[0]) - float(pos[0])
+    dy = float(target[1]) - float(pos[1])
+    dz = float(target[2]) - float(pos[2])
+    dist = math.sqrt(dx * dx + dy * dy + dz * dz) or 1.0
+    camera.pitch = math.degrees(math.asin(max(-1.0, min(1.0, dy / dist))))
+    camera.yaw = math.degrees(math.atan2(dz, dx))
+
+
 class ActRenderer:
     """一幕的渲染器：装环境 / 场景 / 相机 / 粒子，按 ``t`` 画一帧。
 
@@ -68,7 +94,7 @@ class ActRenderer:
     与 ffmpeg 负责，渲染层只管单幕的确定性推进。
     """
 
-    def __init__(self, window, project_dir, act, fps=30, particle_count=5000):
+    def __init__(self, window, project_dir, act, fps=30, particle_count=None):
         self.window = window
         self.act = act
         self.fps = float(fps)
@@ -76,6 +102,16 @@ class ActRenderer:
         w, h = window.width, window.height
 
         scene_data, self.shot = load_act(project_dir, act)
+
+        # --- 粒子：**按幕配置**，不是全局常量 ---
+        # 第 I 幕是"星尘"，第 II 幕是"地形"，硬画粒子会把上一幕的视觉语言带进来
+        # （实测：第 II 幕探针里星盘浮在地形上，看着像两幕叠在一起）。
+        # project.json 的幕里写 "particles": {"count": N, "preset": P}；缺省 = 无粒子。
+        pcfg = act.get('particles') or {}
+        n = pcfg.get('count', 0) if particle_count is None else particle_count
+        self.particle_preset = int(pcfg.get('preset', 0))
+        self.size_scale = 3.2 * (540.0 / max(1, window.height)) ** 0.55
+        self.particles = ParticleSystem(get('particles'), count=n) if n > 0 else None
 
         # --- 环境：scene JSON 的 environment 段 ↔ LightEnvironment 字段同名 ---
         self.env = LightEnvironment(**(scene_data.get('environment') or {})).bake()
@@ -96,20 +132,6 @@ class ActRenderer:
         # 空无幕没有几何：SSAO 只会白耗一遍全屏 pass，关掉（有几何的幕再按需开）
         post.ssao_enabled = bool(scene_data.get('root', {}).get('children'))
 
-        # --- 粒子 ---
-        self.particles = ParticleSystem(get('particles'), count=particle_count)
-        # 分辨率标定（2026-11-22，含一次**错误对照**的教训）
-        #   物理：粒子的屏幕像素尺寸 ∝ 画面高度 h（世界尺寸固定），而加性混合把
-        #   固定能量摊到 p² 个像素 ⇒ 单像素峰值亮度 ∝ alpha / p² ∝ 1/(size_scale⁴·h²)。
-        #   要让观感与 h 无关，需 size_scale ∝ h^-0.5；取 -0.55 是轻微过补偿，
-        #   让 1080p 的星点略微更"实"（不是更亮）。
-        #
-        #   ⚠️ 教训：第一版验证得出"1080p 暗 28%"，其实是拿**改镜头前**的 540p 图
-        #   去比**改镜头后**的 1080p 帧 —— 相机从 z=11 拉到 z=27，盘面自然又小又暗。
-        #   控制变量重测（同版代码、同 t=16、只变分辨率）：mean 16.84 → 16.65、
-        #   有光像素 4.01% → 3.50%，差 1.1% 可忽略。**先锁变量，再下结论。**
-        self.size_scale = 3.2 * (540.0 / max(1, window.height)) ** 0.55
-
         # --- 演出 ---
         self.player = ShotPlayer(self.shot, scene=self.scene,
                                  camera=self.camera, env=self.env)
@@ -122,43 +144,54 @@ class ActRenderer:
         energy = self.energy_fn(t, self.duration)
         self.last_applied = self.player.apply(t)
 
+        # target → yaw/pitch（FlyCamera 不认 target，见 _aim 的说明）
+        vals = self.shot.sample(t)
+        pos = vals.get(('$camera', 'position'))
+        tgt = vals.get(('$camera', 'target'))
+        if pos is not None and tgt is not None:
+            _aim(self.camera, pos, tgt)
+
         # 粒子相位按**固定 dt** 推进（不是墙钟），这样同 t 必然同相位 ——
         # 确定性成片的地基。用墙钟会让"同一秒"在慢机器上少走几步。
-        phase = self.particles.advance(1.0 / self.fps, energy)
-        self._phase = phase
+        pre_post = None
+        if self.particles is not None:
+            self._phase = self.particles.advance(1.0 / self.fps, energy)
 
-        def _draw_particles():
-            """在场景之后、Bloom 之前画粒子。
+            def _draw_particles():
+                """在场景之后、Bloom 之前画粒子。
 
-            顺序理由：Bloom 是"对 scene_target 做阈值+模糊"，粒子必须已经写进
-            target 才会发光；若画在 composite 之后，光点就变成贴上去的死点，
-            起搏感全无。
+                顺序理由：Bloom 是"对 scene_target 做阈值+模糊"，粒子必须已经写进
+                target 才会发光；若画在 composite 之后，光点就变成贴上去的死点，
+                起搏感全无。
 
-            ⚠️ `prog.use()` 不能省：`ParticleSystem.set_uniforms()` 只写 uniform、
-            **不绑定 program**（见其 docstring 的用法示例——示例里也没写 use，
-            照抄就会得到"满屏没有粒子"）。机制链路（2026-11-22 逐层查证）：
+                ⚠️ `prog.use()` 不能省：`ParticleSystem.set_uniforms()` 只写 uniform、
+                **不绑定 program**（见其 docstring 的用法示例——示例里也没写 use，
+                照抄就会得到"满屏没有粒子"）。机制链路（2026-11-22 逐层查证）：
 
-            `program['u_x'] = v` → `Uniform.set()` → `glUniform*`，作用于**当前绑定的
-            program**。而平台层为了性能关掉了 pyglet 的逐调用 `glGetError` 巡检
-            （见 `platform/app.py` 的注释：它占每帧 Python 耗时 ~44%），
-            于是"program 未绑定 → uniform 写到 0 号 → 驱动忽略"这一路
-            **既不抛异常、也不 warn**。后果不是"画得淡"，而是 `u_size_scale`
-            停在默认 0 ⇒ **整批粒子尺寸为 0 ⇒ 一颗都看不见**。
-            """
-            from pyglet.gl import (GL_BLEND, GL_ONE, GL_SRC_ALPHA, GL_TRUE,
-                                   glBlendFunc, glDepthMask, glDisable, glEnable)
-            prog = self.particles.program
-            prog.use()
-            self.particles.set_uniforms(time=self._phase, energy=energy,
-                                        preset=0, size_scale=self.size_scale)
-            glDepthMask(False)          # 粒子自叠自，不写深度
-            glEnable(GL_BLEND)
-            glBlendFunc(GL_SRC_ALPHA, GL_ONE)     # 加性
-            self.particles.draw()
-            glDisable(GL_BLEND)
-            glDepthMask(GL_TRUE)        # **必须还原**：否则下一帧深度清不掉
+                `program['u_x'] = v` → `Uniform.set()` → `glUniform*`，作用于**当前绑定的
+                program**。而平台层为了性能关掉了 pyglet 的逐调用 `glGetError` 巡检
+                （见 `platform/app.py` 的注释：它占每帧 Python 耗时 ~44%），
+                于是"program 未绑定 → uniform 写到 0 号 → 驱动忽略"这一路
+                **既不抛异常、也不 warn**。后果不是"画得淡"，而是 `u_size_scale`
+                停在默认 0 ⇒ **整批粒子尺寸为 0 ⇒ 一颗都看不见**。
+                """
+                from pyglet.gl import (GL_BLEND, GL_ONE, GL_SRC_ALPHA, GL_TRUE,
+                                       glBlendFunc, glDepthMask, glDisable, glEnable)
+                prog = self.particles.program
+                prog.use()
+                self.particles.set_uniforms(time=self._phase, energy=energy,
+                                            preset=self.particle_preset,
+                                            size_scale=self.size_scale)
+                glDepthMask(False)          # 粒子自叠自，不写深度
+                glEnable(GL_BLEND)
+                glBlendFunc(GL_SRC_ALPHA, GL_ONE)     # 加性
+                self.particles.draw()
+                glDisable(GL_BLEND)
+                glDepthMask(GL_TRUE)        # **必须还原**：否则下一帧深度清不掉
+
+            pre_post = _draw_particles
 
         aspect = self.window.width / max(1.0, float(self.window.height))
         self.renderer.render(self.camera, self.scene, aspect, self.window,
-                             pre_post=_draw_particles)
+                             pre_post=pre_post)
         return energy, self.last_applied

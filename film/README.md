@@ -54,6 +54,15 @@ python film\render\render_film.py --act 01_void --size 1920x1080 --crf 18
    > 去比**改镜头后**的 1080p 帧（相机 z=11 → z=27）。控制变量重测只差 1.1%。
    > **先锁变量，再下结论**——这条教训比公式本身更值钱。
 
+5. **`target` 通道对 `FlyCamera` 无效**。`FlyCamera` 不维护 target（朝向只由 yaw/pitch
+   现算），而 `ShotPlayer._apply_camera` 只写 position / target / fov —— 两者相乘 =
+   相机只会平移、**永不转向**（实测 t=52 相机到位 `(1,8,2)`，yaw/pitch 仍是默认
+   `-90/0`，于是峡谷崖壁根本不在画面里）。`passes._aim()` 把 target 译成 yaw/pitch
+   兜住；引擎侧记为 **0.7.8 反哺项**。
+
+6. **`heightfield` 是单面网格、边缘无裙边**。相机正视地形边界会看到切面（画面正中
+   一条竖直亮边）。雨/雾没接上之前，靠 `|v|>0.78` 处谷体合拢成山把尽头挡住。
+
 ## 进度
 
 12 幕的完整分配与能力落点见 **[capability_matrix.md](capability_matrix.md)** ——
