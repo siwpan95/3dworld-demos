@@ -10,7 +10,7 @@
 > 仓库：<https://gitee.com/siwpan/3dworld-demos> ｜ 许可：MIT（见 [LICENSE](LICENSE)）
 > 引擎本体在独立仓 [siwpan/3dworld](https://gitee.com/siwpan/3dworld)（PyPI 包名 `3dworld`）。
 
-本仓是 **3dworld 三维引擎的演示程序集**：65 个单文件演示 + 两条主线演出入口
+本仓是 **3dworld 三维引擎的演示程序集**：66 个单文件演示 + 两条主线演出入口
 （48 秒五幕演出 / 150 秒六幕走廊漫游）+ 成片录制 / exe 打包 / 批量验收工具。
 
 2026-10-19 从引擎仓剥离：**演示所代表的能力全部保留在引擎内**（`world3d.logic` /
@@ -49,7 +49,7 @@ python kkrieger_demo.py                       150 秒六幕走廊漫游
 ## 目录
 
 ```
-examples/        65 个单文件演示与工具（详见 examples/README.md：统一命令行 + 踩坑清单）
+examples/        66 个单文件演示与工具（详见 examples/README.md：统一命令行 + 踩坑清单）
 main.py          48 秒五幕演出入口（能力在引擎 presentation/app.py）
 kkrieger_demo.py 150 秒六幕走廊漫游入口（能力在引擎 presentation/kkrieger_app.py）
 pyglet_3d_demo*.py  历史 pyglet 1.x 兼容件（与 cocos2d 共存环境）
@@ -66,8 +66,9 @@ scripts/
   record_all.py     成片批量录制（ffmpeg）
   build_exe.py      PyInstaller 单文件打包
   gen_sfx.py        SFX 生成（bloodmusic 预设 → WAV）
+  make_posterward_glb.py  《谪仙》金饰 GLB 生成（程序化环/绸带环/玉璧 → assets/）
   new_demo.py       新演示脚手架
-recordings/      成片 MP4（本地产物，不入库）—— 65 条，与录制计划 65 条一一对应
+recordings/      成片 MP4（本地产物，不入库）—— 65 条已录（新增 posterward 待录）
 dist/            exe 与发行版包（本地产物，不入库）
 ```
 
@@ -91,7 +92,7 @@ python scripts\record_all.py --fusion          65 段串成 46.6 分钟融合总
 
 ## 与引擎的版本关系
 
-演示对引擎版本**不锁死**：`requirements.txt` 里写 `3dworld>=0.7.3,<0.8`（0.7.x 都接受），
+演示对引擎版本**不锁死**：`requirements.txt` 里写 `3dworld>=0.7.4,<0.8`（0.7.x 都接受，posterward 需 >=0.7.4 的 sdf2d_glsl），
 需要逐位可复现时用 `requirements.lock.txt`。完整口径见
 [docs/依赖与版本.md](docs/依赖与版本.md)。
 其中 terrain / voxel / particles / 隧道 / SDF 五项演示保持**自包含**（其能力已上提

@@ -37,7 +37,7 @@
 #    world3d/engine/spectrum.py + spectral_glsl.py（《晶极 / Crystalward》反哺的光谱
 #    能力）；crystalward.py 按仓惯例自包含，不 import 它们，但旧上限会让新 clone
 #    只能装到 0.6.x，与引擎现状脱节。0.7.3 已在 PyPI 实测可装。
-3dworld>=0.7.3,<0.8
+3dworld>=0.7.4,<0.8
 
 # ② 可选增强：examples/scene_walker.py 的马尔可夫演出变体（纯标准库实现）
 #    不装的话 scene_walker 只是没有发光变体，其余功能照常（ImportError 已兜住）
