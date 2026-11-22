@@ -7,10 +7,10 @@
 #
 # 本次快照的三处实质变化（相对 2026-11-14 快照）
 # ------------------------------------------------------------
-# 0. ✔ **0.7.9 已于 2026-11-23 发布到 PyPI**（高度雾），venv 为实体安装；
+# 0. ✔ **0.8.0 已于 2026-11-23 发布到 PyPI**（Gerstner 水面上提），venv 为实体安装；
 #    本机装的 wheel 与 PyPI 记录的 sha256 完全一致（1f00edf1…），故本文件即 venv 实况。
 #    注：`pypi.org/simple` 索引比 JSON API 滞后，本次是用上传的那份 wheel 落地的；
-#    索引刷新后 `pip install -U 3dworld==0.7.9` 会得到同一份字节。
+#    索引刷新后 `pip install -U 3dworld==0.8.0` 会得到同一份字节。
 # 1. 引擎来源变了：旧 venv 是 `pip install <本地引擎目录>` 的 **0.7.4 拷贝快照**
 #    （direct_url.json 记录 file:///D:/projects/repos/3dworld，且 world3d/presentation/film.py
 #    **根本不存在**）；本次改为 **PyPI 0.7.6**。

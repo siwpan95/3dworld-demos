@@ -78,6 +78,19 @@ class ActRenderer:
 
         scene_data, self.shot = load_act(project_dir, act)
 
+        # --- 水面（Gerstner，引擎 0.8.0）---
+        # 幕里写 "water": {"preset": 0, "size": 26, "segs": 32, "y": 2.15}
+        wcfg = act.get('water') or {}
+        self.water = None
+        if wcfg:
+            from world3d.engine.water import WaterPlane
+            from world3d.logic.waves import scaled_preset
+            waves = scaled_preset(int(wcfg.get('preset', 0)))[1]
+            self.water = WaterPlane(waves,
+                                    size=float(wcfg.get('size', 160.0)),
+                                    segs=int(wcfg.get('segs', 32)),
+                                    y=float(wcfg.get('y', 0.0)))
+
         # --- 粒子：**按幕配置**，不是全局常量 ---
         # 第 I 幕是"星尘"，第 II 幕是"地形"，硬画粒子会把上一幕的视觉语言带进来
         # （实测：第 II 幕探针里星盘浮在地形上，看着像两幕叠在一起）。
@@ -162,6 +175,18 @@ class ActRenderer:
                 glDepthMask(GL_TRUE)        # **必须还原**：否则下一帧深度清不掉
 
             pre_post = _draw_particles
+
+        if self.water is not None:
+            _prev_pp = pre_post
+
+            def _pre_post_all():
+                # 水是**不透明**的（自带色调映射），必须先于加性粒子画：
+                # 反过来的话粒子会被水的深度写入挡掉。
+                self.water.draw(t, self.camera.position, self.env)
+                if _prev_pp is not None:
+                    _prev_pp()
+
+            pre_post = _pre_post_all
 
         aspect = self.window.width / max(1.0, float(self.window.height))
         self.renderer.render(self.camera, self.scene, aspect, self.window,
