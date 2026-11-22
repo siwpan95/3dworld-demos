@@ -47,14 +47,18 @@ if not os.path.exists(PYTHON):                       # 非 Windows / 系统 pyth
 
 SKIP = {'_harness.py'}
 MIN_PNG_BYTES = 2048
+#: 冒烟/bench 阶段的截图落点（配合引擎 0.7.7 的 `WORLD3D_DOCS_DIR`）：
+#: 让"只跑冒烟"真正零副作用，同时仍保留抓帧行为——这些图可当渲染基线的初筛证据。
+#: 本地产物，不入库（见 .gitignore 的 .baseline/）。
+SMOKE_DOCS_DIR = os.path.join(ROOT, '.baseline', 'smoke')
 _DISCOVERED = None                       # discover() 的缓存（见其 docstring）
 # 从 --bench 的输出里取"均值 / p1 / 最慢帧(ms)"
 BENCH_RE = re.compile(r'fps mean=([\d.]+) median=([\d.]+) p1=([\d.]+) '
                       r'worst_frame_ms=([\d.]+)')
 
 
-def child_env():
-    """子进程环境：补上 WORLD3D_PROJECT_ROOT / WORLD3D_CONFIGS。
+def child_env(docs_dir=None):
+    """子进程环境：补上 WORLD3D_PROJECT_ROOT / WORLD3D_CONFIGS（+ 可选截图落点）。
 
     2026-10-26 实踩：43 个 demo 里有 13 个（boxward / brickward / godhand /
     pulsefall / rayhold / scene_walker / skinned_creature / stillhall /
@@ -65,11 +69,34 @@ def child_env():
     ``FileNotFoundError: 配置树不存在``。
 
     所以批量验收必须自己补上：**已设置则尊重，未设置才回填本仓路径**。
+
+    2026-11-22 增 ``docs_dir``（配合引擎 0.7.7 的 ``shot_path``）：
+    ``DemoApp._capture_due()`` 在**任何模式**下都会抓帧（有意的历史行为，
+    便于人工跑一遍就留关键帧），于是 ``--smoke`` 也会写 ``docs/*.png``。
+    冒烟只跑 1.5s，``SHOTS`` 里更晚的时刻抓不到 ⇒ 一套截图混进两个引擎版本。
+    冒烟/bench 阶段把 ``WORLD3D_DOCS_DIR`` 指向临时目录即可零副作用，
+    同时保留抓帧本身（那些图还能当渲染基线证据）。
     """
     env = os.environ.copy()
     env.setdefault('WORLD3D_PROJECT_ROOT', ROOT)
     env.setdefault('WORLD3D_CONFIGS', os.path.join(ROOT, 'configs'))
+    if docs_dir:
+        # 强制覆盖：外部若已设该变量，以本轮验收的隔离目录为准，否则隔离失效
+        env['WORLD3D_DOCS_DIR'] = docs_dir
     return env
+
+
+def engine_supports_docs_dir():
+    """当前解释器里的引擎是否支持 ``WORLD3D_DOCS_DIR`` 隔离（3dworld>=0.7.7）。
+
+    0.7.6 及更早：``DOCS_DIR`` 只定义、从不被消费，设了环境变量也没用 ——
+    冒烟阶段照样改写 ``docs/*.png``。这里显式探测，避免"以为隔离了其实没有"。
+    """
+    try:
+        from world3d.platform.app import shot_path          # noqa: F401
+        return True
+    except Exception:
+        return False
 
 
 def discover():
@@ -124,7 +151,7 @@ def _read_shots(path, name):
         sys.path[:] = saved
 
 
-def run_demo(name, path, extra, timeout=180.0):
+def run_demo(name, path, extra, timeout=180.0, docs_dir=None):
     """跑一个 demo 并返回 (proc 视图, 秒数)。
 
     挂起容错：某些执行环境（Agent 沙箱等）里 pyglet 窗口会"逻辑完成但
@@ -143,7 +170,7 @@ def run_demo(name, path, extra, timeout=180.0):
     t0 = time.time()
     try:
         proc = subprocess.run([PYTHON, '-u', path] + extra, cwd=ROOT,
-                              env=child_env(),
+                              env=child_env(docs_dir),
                               capture_output=True, text=True, encoding='utf-8',
                               errors='replace', timeout=timeout)
     except subprocess.TimeoutExpired as e:
@@ -202,11 +229,25 @@ def main():
         raise SystemExit('no demo matched')
 
     print(f'verifying {len(demos)} demos (python={PYTHON})\n' + '-' * 72)
+
+    # 冒烟/bench 的截图隔离：引擎 0.7.7 起 WORLD3D_DOCS_DIR 才真正生效（见 child_env）。
+    # 旧引擎下必须显式告警——否则"以为跑的是零副作用冒烟，实际把剧照改成了半截基线"。
+    supports_iso = engine_supports_docs_dir()
+    if supports_iso:
+        os.makedirs(SMOKE_DOCS_DIR, exist_ok=True)
+        print(f'[iso] 冒烟/bench 截图落点 -> {SMOKE_DOCS_DIR}（docs/ 不受影响）')
+    else:
+        print('[warn] 当前引擎不支持 WORLD3D_DOCS_DIR 隔离（需 3dworld>=0.7.7）：\n'
+              '       冒烟阶段会按 SHOTS 改写 docs/*.png，且只跑到 --smoke-sec 那么久，\n'
+              '       会把截图基线改成"半截"（同一套图混两个引擎版本）。\n'
+              '       对策：pip install -U "3dworld>=0.7.7"，或用 --only 缩小范围。')
+    smoke_docs = SMOKE_DOCS_DIR if supports_iso else None
+
     rows, failures = [], []
     for name, path, shots in demos:
         # --- 阶段 1：冒烟 ---
         proc, secs = run_demo(name, path, ['--smoke', str(args.smoke_sec)],
-                              timeout=args.timeout)
+                              timeout=args.timeout, docs_dir=smoke_docs)
         ok_smoke = 'EXIT_OK' in proc.stdout
         note = f'{secs:4.1f}s'
         if ok_smoke and proc.returncode != 0:
@@ -218,7 +259,7 @@ def main():
         bench = '—'
         if args.bench:
             proc3, secs3 = run_demo(name, path, ['--bench', str(args.bench)],
-                                    timeout=args.timeout)
+                                    timeout=args.timeout, docs_dir=smoke_docs)
             note += f' + {secs3:4.1f}s'
             m = BENCH_RE.search(proc3.stdout)
             if proc3.returncode != 0 or 'EXIT_OK' not in proc3.stdout or not m:
