@@ -311,23 +311,13 @@ def main(argv=None):
     scene = build_scene(hm)
     shot = build_shot(hm)
     os.makedirs(os.path.dirname(SCENE_PATH), exist_ok=True)
-    with open(SCENE_PATH, 'w', encoding='utf-8', newline='\n') as f:
-        # 紧凑存 hm（6400 个数字，缩进会膨胀到几百 KB），其余字段保持可读
-        f.write('{"name": ' + json.dumps(scene['name'], ensure_ascii=False) + ',\n')
-        f.write(' "environment": ' + json.dumps(scene['environment'],
-                                                ensure_ascii=False, indent=1).replace('\n', '\n ') + ',\n')
-        node = scene['root']['children'][0]
-        f.write(' "root": {"name": "root", "children": [\n')
-        f.write('  {"name": ' + json.dumps(node['name']) +
-                ', "translation": ' + json.dumps(node['translation']) + ',\n')
-        f.write('   "mesh": {"builder": "heightfield", "args": {"hm": ')
-        f.write(json.dumps(node['mesh']['args']['hm'], separators=(',', ':')))
-        rest = {k: v for k, v in node['mesh']['args'].items() if k != 'hm'}
-        f.write(', ' + json.dumps(rest, ensure_ascii=False)[1:-1] + '}},\n')
-        f.write('   "material": ' + json.dumps(node['material'], ensure_ascii=False) + '}\n')
-        # 关 children 数组 + root 对象 + 最外层；手拼 JSON 就这三个括号最容易错
-        f.write(' ]}}\n')
-    with open(SHOT_PATH, 'w', encoding='utf-8', newline='\n') as f:
+    with open(SCENE_PATH, 'w', encoding='utf-8', newline='') as f:
+        # 2026-11-23 修：此前手写 JSON 拼接、且**只写 children[0]** ——
+        # 加第二个节点（水面）时被静默丢弃，画面毫无变化，白查了一轮材质。
+        # 现在整体 json.dump（hm 展开成 6400 行、文件 ~150KB，正确优先于紧凑）。
+        json.dump(scene, f, ensure_ascii=False, indent=1)
+        f.write(chr(10))
+    with open(SHOT_PATH, 'w', encoding='utf-8', newline='') as f:
         json.dump(shot, f, ensure_ascii=False, indent=1)
         f.write('\n')
 
