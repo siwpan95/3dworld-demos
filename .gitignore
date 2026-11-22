@@ -30,3 +30,6 @@ Desktop.ini
 assets/brogueward_sfx/
 assets/brogueward_runs/
 BrogueCE-*.zip
+
+# 视频项目产物（可再生物，不入库）：成片 MP4 与逐帧中间件
+film/out/

@@ -1,0 +1,17 @@
+{
+ "name": "01-void",
+ "environment": {
+  "sun_dir": [0.35, 0.72, -0.55],
+  "sun_color": [0.62, 0.70, 1.00],
+  "sun_intensity": 0.0,
+  "sky_zenith": [0.012, 0.014, 0.022],
+  "sky_horizon": [0.022, 0.026, 0.040],
+  "sky_ground": [0.008, 0.009, 0.012],
+  "ibl_intensity": 0.12,
+  "sky_intensity": 0.18
+ },
+ "root": {
+  "name": "root",
+  "children": []
+ }
+}

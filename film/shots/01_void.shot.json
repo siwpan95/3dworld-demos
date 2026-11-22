@@ -1,0 +1,57 @@
+{
+ "version": 1,
+ "name": "01_void",
+ "duration": 24.0,
+ "scene": "scenes/01_void.scene.json",
+ "acts": [
+  {"t": 0.0, "label": "黑场"},
+  {"t": 8.0, "label": "星尘初显"},
+  {"t": 16.0, "label": "起搏"},
+  {"t": 22.0, "label": "过曝接幕"}
+ ],
+ "notes": "相机走 FlyCamera 的 position/target 双通道：ShotPlayer 只写回 position/target/fov（yaw/pitch/dist 会被 _apply_camera 拒绝），而 OrbitCamera 在 0.7.4 起对 position 赋值无效。",
+ "channels": [
+  {
+   "node": "$camera",
+   "prop": "position",
+   "interpolation": "CUBICSPLINE",
+   "times": [0.0, 8.0, 16.0, 24.0],
+   "values": [[0.0, 4.0, 42.0], [0.3, 4.4, 34.0], [0.8, 5.0, 27.0], [1.2, 5.6, 21.0]]
+  },
+  {
+   "node": "$camera",
+   "prop": "target",
+   "interpolation": "CUBICSPLINE",
+   "times": [0.0, 8.0, 16.0, 24.0],
+   "values": [[0.0, 0.3, 0.0], [0.1, 0.45, 0.0], [0.2, 0.65, 0.0], [0.3, 0.85, 0.0]]
+  },
+  {
+   "node": "$camera",
+   "prop": "fov",
+   "interpolation": "LINEAR",
+   "times": [0.0, 24.0],
+   "values": [52.0, 62.0]
+  },
+  {
+   "node": "$env",
+   "prop": "sun_intensity",
+   "interpolation": "CUBICSPLINE",
+   "times": [0.0, 8.0, 16.0, 22.0, 24.0],
+   "values": [0.0, 0.12, 0.85, 2.30, 3.60]
+  },
+  {
+   "node": "$env",
+   "prop": "ibl_intensity",
+   "interpolation": "LINEAR",
+   "times": [0.0, 24.0],
+   "values": [0.12, 0.34]
+  },
+  {
+   "node": "$env",
+   "prop": "sky_intensity",
+   "interpolation": "CUBICSPLINE",
+   "times": [0.0, 16.0, 24.0],
+   "values": [0.18, 0.28, 0.55]
+  }
+ ]
+}

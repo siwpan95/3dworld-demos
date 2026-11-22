@@ -1,0 +1,18 @@
+{
+ "name": "worldwright",
+ "title": "造界 / Worldwright",
+ "stage": [1920, 1080],
+ "fps": 30,
+ "xfade": 1.2,
+ "acts": [
+  {
+   "id": "01_void",
+   "title": "空无",
+   "duration": 24.0,
+   "scene": "scenes/01_void.scene.json",
+   "shot": "shots/01_void.shot.json",
+   "energy": "void",
+   "notes": "黑场起搏：稀疏星尘 + Bloom 呼吸，接第 II 幕地形升起"
+  }
+ ]
+}
