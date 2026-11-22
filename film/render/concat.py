@@ -33,8 +33,10 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 FILM_DIR = os.path.dirname(HERE)
 ROOT = os.path.dirname(FILM_DIR)
 
-#: 参与拼接的幕状态（built = 完整；partial = 画面成立但缺能力，先拼进来）
-CONCAT_STATUS = ('built', 'partial')
+#: 参与拼接的幕状态（built = 完整；partial = 画面成立但缺能力；wip = 骨架成立）
+#: 2026-11-23 起纳入 wip：**三幕齐了才第一次能判断"片子成不成立"**，
+#: 单幕再完美也回答不了跨幕色彩/节奏/分辨率混用的问题。
+CONCAT_STATUS = ('built', 'partial', 'wip')
 
 
 def load_project():

@@ -6,7 +6,7 @@
   1080
  ],
  "fps": 30,
- "xfade": 1.2,
+ "xfade": 2.4,
  "notes": "12 幕时长合计 733s，扣 11 处 xfade 1.2s 后成片 719.8s（12:00）。scene/shot 为 null 表示该幕尚未建模（M3 逐幕补），probe/render 会明确报「该幕未建模」而不是抛 TypeError。",
  "acts": [
   {
