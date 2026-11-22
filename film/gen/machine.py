@@ -44,7 +44,10 @@ def _node(name, mesh, material, translation=(0.0, 0.0, 0.0), rotation=None):
 
 
 def _metal(bright=0.30, rough=0.42):
-    return {'preset': 'steel', 'base_color': [bright, bright * 0.94, bright * 0.86],
+    """金属材质。``bright`` 是"想要的目标灰阶"，内部乘 1.55 —— 冷调环境 + 高
+    metallic 会把 base_color 压得很暗，首版 0.34 的臂在画面里几乎是黑的。"""
+    b = min(0.88, bright * 1.55)
+    return {'preset': 'steel', 'base_color': [b, b * 0.94, b * 0.86],
             'roughness': rough, 'metallic': 0.9}
 
 
@@ -116,7 +119,7 @@ def build_scene():
                   'color': [0.95, 0.62, 0.22]}},
         {'preset': 'gold', 'base_color': [0.95, 0.62, 0.22],
          'roughness': 0.28, 'metallic': 0.85,
-         'emissive': [1.55, 0.70, 0.17]},
+         'emissive': [0.95, 0.42, 0.10]},
         translation=(0.0, 7.2, 0.0)))
 
     # --- 八根导管：从反应堆外缘垂到平台，tube 走折线，带"工业弯折" ---
@@ -194,10 +197,11 @@ def build_shot():
         ang = math.radians(-118.0 + 250.0 * s)
         # 相机必须**在环梁（y=18）下方**：首版 y 从 26 起，全程在梁上看，
         # 画面被环梁切成上下两半（t=30 那一帧整个上半是空的）。
-        # 走**内圈**：半径 30→20，全程在柱环（33）内侧 —— 外圈环绕会反复被
-        # 8 根均匀柱子切开（实测 t=55 两根柱子并排挡死画面）。
-        rad = 30.0 - 10.0 * (s ** 1.20)       # 30 → 20
-        y = 14.0 - 6.0 * (s ** 1.10)          # 14 → 8，低于环梁（18）
+        # 退到**柱环外侧**（46→40）：臂底座在 19、柱环 33，相机若与臂同半径
+        # （上一版 30→20）臂永远落在视线两侧、画面里只剩反应堆。
+        # 柱子此时是"前景框架"而不是"挡死"——相机在外侧，柱子只切画面边缘。
+        rad = 46.0 - 6.0 * (s ** 1.20)        # 46 → 40
+        y = 16.0 - 4.0 * (s ** 1.10)          # 16 → 12，略低于环梁（18）
         pos.append([round(math.cos(ang) * rad, 3), round(y, 3),
                     round(math.sin(ang) * rad, 3)])
         # 注视点：反应堆中心，随 s 略微上抬（把顶部环梁也带进画面）
