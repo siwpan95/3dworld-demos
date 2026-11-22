@@ -116,8 +116,14 @@ class ActRenderer:
 
             ⚠️ `prog.use()` 不能省：`ParticleSystem.set_uniforms()` 只写 uniform、
             **不绑定 program**（见其 docstring 的用法示例——示例里也没写 use，
-            照抄就会得到"满屏没有粒子"）。而 `program['u_x'] = v` 写到未绑定的
-            program 上不会响亮报错，只会静默丢值。
+            照抄就会得到"满屏没有粒子"）。机制链路（2026-11-22 逐层查证）：
+
+            `program['u_x'] = v` → `Uniform.set()` → `glUniform*`，作用于**当前绑定的
+            program**。而平台层为了性能关掉了 pyglet 的逐调用 `glGetError` 巡检
+            （见 `platform/app.py` 的注释：它占每帧 Python 耗时 ~44%），
+            于是"program 未绑定 → uniform 写到 0 号 → 驱动忽略"这一路
+            **既不抛异常、也不 warn**。后果不是"画得淡"，而是 `u_size_scale`
+            停在默认 0 ⇒ **整批粒子尺寸为 0 ⇒ 一颗都看不见**。
             """
             from pyglet.gl import (GL_BLEND, GL_ONE, GL_SRC_ALPHA, GL_TRUE,
                                    glBlendFunc, glDepthMask, glDisable, glEnable)
