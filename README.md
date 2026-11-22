@@ -92,7 +92,7 @@ python scripts\record_all.py --fusion          65 段串成 46.6 分钟融合总
 
 ## 与引擎的版本关系
 
-演示对引擎版本**不锁死**：`requirements.txt` 里写 `3dworld>=0.7.5,<0.8`（0.7.x 都接受；posterward 需 0.7.4 的 sdf2d_glsl，texward 需 0.7.5 的 engine/texture），
+演示对引擎版本**不锁死**：`requirements.txt` 里写 `3dworld>=0.7.6,<0.8`（0.7.x 都接受；posterward 需 0.7.4 的 sdf2d_glsl，texward 需 0.7.5 的 engine/texture，成片剪辑可用 0.7.6 的 world3d.presentation.film），
 需要逐位可复现时用 `requirements.lock.txt`。完整口径见
 [docs/依赖与版本.md](docs/依赖与版本.md)。
 其中 terrain / voxel / particles / 隧道 / SDF 五项演示保持**自包含**（其能力已上提

@@ -4,9 +4,9 @@
 # 用途：截图对照 / 发版归档 / CI 复现 —— 要的是**逐位一致**，所以这里全部钉死版本号。
 # 日常开发请用 requirements.txt（接受 0.7.x 小版本增量）。
 #
-# 快照环境：Windows 11 x64 / Python 3.14 / 3dworld 0.7.3（PyPI 发行，
-# 带 world3d/engine/spectrum.py + spectral_glsl.py——crystalward 反哺的光谱能力）
-3dworld==0.7.3
+# 快照环境：2026-11-14 精确锁版（其余依赖不动）；2026-11-22 仅同步引擎版本
+# 3dworld 0.7.6（PyPI 发行，带 world3d/presentation/film.py——声明式成片剪辑）
+3dworld==0.7.6
 numpy==2.5.4
 PyYAML==6.0.3
 pyglet==2.1.16
