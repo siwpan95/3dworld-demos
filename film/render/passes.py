@@ -120,6 +120,13 @@ class ActRenderer:
         # 空无幕没有几何：SSAO 只会白耗一遍全屏 pass，关掉（有几何的幕再按需开）
         post.ssao_enabled = bool(scene_data.get('root', {}).get('children'))
 
+        # --- 骨架（逐帧 IK）：场景节点即骨骼 ---
+        acfg = act.get('arms') or {}
+        self.rig = None
+        if acfg:
+            from rigs import MachineRig
+            self.rig = MachineRig(self.scene, count=int(acfg.get('count', 4)))
+
         # --- 演出 ---
         self.player = ShotPlayer(self.shot, scene=self.scene,
                                  camera=self.camera, env=self.env)
@@ -135,6 +142,15 @@ class ActRenderer:
         # 相机朝向由引擎 0.7.8 的 FlyCamera.look_at 处理（ShotPlayer 的 target
         # 通道现在会反解 yaw/pitch）。此前这里有一层项目内 _aim() 兜底 ——
         # 反哺落地后必须删掉，否则会变成"第二套实现"（同 shot_path 那次的教训）。
+
+        # 骨架：逐帧 IK 写回关节四元数（必须在 renderer.render 之前）。
+        # ⚠️ 写完 rotation 必须 `update_world()`：`Node.world_matrix` 只是**缓存**，
+        # 而 `Renderer` 全程不调 update_world（它假定场景静态）。缺这一步时
+        # IK 算得完全正确、关节四元数也写进去了，但画面上臂**一动不动** ——
+        # 这是第五例"写了但没生效"。
+        if self.rig is not None:
+            self.rig.update(t)
+            self.scene.root.update_world()
 
         # 粒子相位按**固定 dt** 推进（不是墙钟），这样同 t 必然同相位 ——
         # 确定性成片的地基。用墙钟会让"同一秒"在慢机器上少走几步。

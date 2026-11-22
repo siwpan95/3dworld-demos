@@ -27,6 +27,9 @@ PLATFORM_HALF = 44.0
 PILLAR_COUNT = 8
 PILLAR_R = 33.0
 DUCT_R = 27.0
+ARM_COUNT = 4
+ARM_BASE_R = 19.0          # 臂底座所在半径（在柱环 33 内侧）
+L1, L2 = 2.4, 1.8          # 与 logic/choreography 的机械臂几何一致
 
 SCENE_PATH = os.path.join(FILM_DIR, 'scenes', '04_machine.scene.json')
 SHOT_PATH = os.path.join(FILM_DIR, 'shots', '04_machine.shot.json')
@@ -43,6 +46,54 @@ def _node(name, mesh, material, translation=(0.0, 0.0, 0.0), rotation=None):
 def _metal(bright=0.30, rough=0.42):
     return {'preset': 'steel', 'base_color': [bright, bright * 0.94, bright * 0.86],
             'roughness': rough, 'metallic': 0.9}
+
+
+def _arm_tree(i):
+    """第 i 条机械臂的节点树：turret → seg1 → seg2 → grip。
+
+    约定与 ``logic/choreography.build_arm`` 一致（关节平移 = 前一段末端），
+    所以可以把节点树直接当骨骼用：**Node 自带层级 world_matrix**，不必再引
+    ``logic/skeleton``。mesh 用 ``offset`` 从关节向上延伸，贴合几何。
+    """
+    a = math.radians(45.0 + 90.0 * i)          # 45/135/225/315，避开 22.5° 的立柱
+    bx, bz = math.cos(a) * ARM_BASE_R, math.sin(a) * ARM_BASE_R
+    return {
+        'name': f'arm{i}_turret',
+        'translation': [round(bx, 3), 0.0, round(bz, 3)],
+        'mesh': {'builder': 'cylinder',
+                 'args': {'radius': 0.78, 'height': 0.6, 'segments': 14,
+                          'color': [0.42, 0.40, 0.36]}},
+        'material': _metal(0.34, 0.40),
+        'children': [{
+            'name': f'arm{i}_seg1',
+            'translation': [0.0, 0.6, 0.0],
+            'mesh': {'builder': 'box',
+                     'args': {'sx': 0.55, 'sy': L1, 'sz': 0.55,
+                              'offset': [0.0, L1 / 2.0, 0.0],
+                              'color': [0.48, 0.46, 0.42]}},
+            'material': _metal(0.38, 0.36),
+            'children': [{
+                'name': f'arm{i}_seg2',
+                'translation': [0.0, L1, 0.0],
+                'mesh': {'builder': 'box',
+                         'args': {'sx': 0.42, 'sy': L2, 'sz': 0.42,
+                                  'offset': [0.0, L2 / 2.0, 0.0],
+                                  'color': [0.52, 0.50, 0.45]}},
+                'material': _metal(0.40, 0.34),
+                'children': [{
+                    'name': f'arm{i}_grip',
+                    'translation': [0.0, L2, 0.0],
+                    'mesh': {'builder': 'box',
+                             'args': {'sx': 0.78, 'sy': 0.42, 'sz': 0.78,
+                                      'color': [0.92, 0.62, 0.22]}},
+                    'material': {'preset': 'gold',
+                                 'base_color': [0.92, 0.62, 0.22],
+                                 'roughness': 0.30, 'metallic': 0.80,
+                                 'emissive': [0.55, 0.26, 0.06]},
+                }],
+            }],
+        }],
+    }
 
 
 def build_scene():
@@ -94,6 +145,10 @@ def build_scene():
                       'color': [0.19, 0.185, 0.18]}},
             _metal(0.20, 0.62),
             translation=(ca * PILLAR_R, 9.0, sa * PILLAR_R)))
+
+    # --- 四条机械臂：节点树当骨骼，逐帧由 render/rigs.py 用 IK 驱动 ---
+    for i in range(ARM_COUNT):
+        kids.append(_arm_tree(i))
 
     # --- 顶部环梁：把立柱串起来（torus 横放在高处）---
     kids.append(_node(

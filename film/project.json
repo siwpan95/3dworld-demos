@@ -48,7 +48,10 @@
    "scene": "scenes/04_machine.scene.json",
    "shot": "shots/04_machine.shot.json",
    "status": "wip",
-   "notes": "torus_knot 反应堆 + tube 导管 + 二连杆 IK 机械臂 + 蒙皮 + glTF 金饰"
+   "notes": "torus_knot 反应堆 + tube 导管 + 二连杆 IK 机械臂 + 蒙皮 + glTF 金饰",
+   "arms": {
+    "count": 4
+   }
   },
   {
    "id": "05_crystal",

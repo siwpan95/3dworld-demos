@@ -787,6 +787,586 @@
     }
    },
    {
+    "name": "arm0_turret",
+    "translation": [
+     13.435,
+     0.0,
+     13.435
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.78,
+      "height": 0.6,
+      "segments": 14,
+      "color": [
+       0.42,
+       0.4,
+       0.36
+      ]
+     }
+    },
+    "material": {
+     "preset": "steel",
+     "base_color": [
+      0.34,
+      0.3196,
+      0.2924
+     ],
+     "roughness": 0.4,
+     "metallic": 0.9
+    },
+    "children": [
+     {
+      "name": "arm0_seg1",
+      "translation": [
+       0.0,
+       0.6,
+       0.0
+      ],
+      "mesh": {
+       "builder": "box",
+       "args": {
+        "sx": 0.55,
+        "sy": 2.4,
+        "sz": 0.55,
+        "offset": [
+         0.0,
+         1.2,
+         0.0
+        ],
+        "color": [
+         0.48,
+         0.46,
+         0.42
+        ]
+       }
+      },
+      "material": {
+       "preset": "steel",
+       "base_color": [
+        0.38,
+        0.35719999999999996,
+        0.3268
+       ],
+       "roughness": 0.36,
+       "metallic": 0.9
+      },
+      "children": [
+       {
+        "name": "arm0_seg2",
+        "translation": [
+         0.0,
+         2.4,
+         0.0
+        ],
+        "mesh": {
+         "builder": "box",
+         "args": {
+          "sx": 0.42,
+          "sy": 1.8,
+          "sz": 0.42,
+          "offset": [
+           0.0,
+           0.9,
+           0.0
+          ],
+          "color": [
+           0.52,
+           0.5,
+           0.45
+          ]
+         }
+        },
+        "material": {
+         "preset": "steel",
+         "base_color": [
+          0.4,
+          0.376,
+          0.34400000000000003
+         ],
+         "roughness": 0.34,
+         "metallic": 0.9
+        },
+        "children": [
+         {
+          "name": "arm0_grip",
+          "translation": [
+           0.0,
+           1.8,
+           0.0
+          ],
+          "mesh": {
+           "builder": "box",
+           "args": {
+            "sx": 0.78,
+            "sy": 0.42,
+            "sz": 0.78,
+            "color": [
+             0.92,
+             0.62,
+             0.22
+            ]
+           }
+          },
+          "material": {
+           "preset": "gold",
+           "base_color": [
+            0.92,
+            0.62,
+            0.22
+           ],
+           "roughness": 0.3,
+           "metallic": 0.8,
+           "emissive": [
+            0.55,
+            0.26,
+            0.06
+           ]
+          }
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "arm1_turret",
+    "translation": [
+     -13.435,
+     0.0,
+     13.435
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.78,
+      "height": 0.6,
+      "segments": 14,
+      "color": [
+       0.42,
+       0.4,
+       0.36
+      ]
+     }
+    },
+    "material": {
+     "preset": "steel",
+     "base_color": [
+      0.34,
+      0.3196,
+      0.2924
+     ],
+     "roughness": 0.4,
+     "metallic": 0.9
+    },
+    "children": [
+     {
+      "name": "arm1_seg1",
+      "translation": [
+       0.0,
+       0.6,
+       0.0
+      ],
+      "mesh": {
+       "builder": "box",
+       "args": {
+        "sx": 0.55,
+        "sy": 2.4,
+        "sz": 0.55,
+        "offset": [
+         0.0,
+         1.2,
+         0.0
+        ],
+        "color": [
+         0.48,
+         0.46,
+         0.42
+        ]
+       }
+      },
+      "material": {
+       "preset": "steel",
+       "base_color": [
+        0.38,
+        0.35719999999999996,
+        0.3268
+       ],
+       "roughness": 0.36,
+       "metallic": 0.9
+      },
+      "children": [
+       {
+        "name": "arm1_seg2",
+        "translation": [
+         0.0,
+         2.4,
+         0.0
+        ],
+        "mesh": {
+         "builder": "box",
+         "args": {
+          "sx": 0.42,
+          "sy": 1.8,
+          "sz": 0.42,
+          "offset": [
+           0.0,
+           0.9,
+           0.0
+          ],
+          "color": [
+           0.52,
+           0.5,
+           0.45
+          ]
+         }
+        },
+        "material": {
+         "preset": "steel",
+         "base_color": [
+          0.4,
+          0.376,
+          0.34400000000000003
+         ],
+         "roughness": 0.34,
+         "metallic": 0.9
+        },
+        "children": [
+         {
+          "name": "arm1_grip",
+          "translation": [
+           0.0,
+           1.8,
+           0.0
+          ],
+          "mesh": {
+           "builder": "box",
+           "args": {
+            "sx": 0.78,
+            "sy": 0.42,
+            "sz": 0.78,
+            "color": [
+             0.92,
+             0.62,
+             0.22
+            ]
+           }
+          },
+          "material": {
+           "preset": "gold",
+           "base_color": [
+            0.92,
+            0.62,
+            0.22
+           ],
+           "roughness": 0.3,
+           "metallic": 0.8,
+           "emissive": [
+            0.55,
+            0.26,
+            0.06
+           ]
+          }
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "arm2_turret",
+    "translation": [
+     -13.435,
+     0.0,
+     -13.435
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.78,
+      "height": 0.6,
+      "segments": 14,
+      "color": [
+       0.42,
+       0.4,
+       0.36
+      ]
+     }
+    },
+    "material": {
+     "preset": "steel",
+     "base_color": [
+      0.34,
+      0.3196,
+      0.2924
+     ],
+     "roughness": 0.4,
+     "metallic": 0.9
+    },
+    "children": [
+     {
+      "name": "arm2_seg1",
+      "translation": [
+       0.0,
+       0.6,
+       0.0
+      ],
+      "mesh": {
+       "builder": "box",
+       "args": {
+        "sx": 0.55,
+        "sy": 2.4,
+        "sz": 0.55,
+        "offset": [
+         0.0,
+         1.2,
+         0.0
+        ],
+        "color": [
+         0.48,
+         0.46,
+         0.42
+        ]
+       }
+      },
+      "material": {
+       "preset": "steel",
+       "base_color": [
+        0.38,
+        0.35719999999999996,
+        0.3268
+       ],
+       "roughness": 0.36,
+       "metallic": 0.9
+      },
+      "children": [
+       {
+        "name": "arm2_seg2",
+        "translation": [
+         0.0,
+         2.4,
+         0.0
+        ],
+        "mesh": {
+         "builder": "box",
+         "args": {
+          "sx": 0.42,
+          "sy": 1.8,
+          "sz": 0.42,
+          "offset": [
+           0.0,
+           0.9,
+           0.0
+          ],
+          "color": [
+           0.52,
+           0.5,
+           0.45
+          ]
+         }
+        },
+        "material": {
+         "preset": "steel",
+         "base_color": [
+          0.4,
+          0.376,
+          0.34400000000000003
+         ],
+         "roughness": 0.34,
+         "metallic": 0.9
+        },
+        "children": [
+         {
+          "name": "arm2_grip",
+          "translation": [
+           0.0,
+           1.8,
+           0.0
+          ],
+          "mesh": {
+           "builder": "box",
+           "args": {
+            "sx": 0.78,
+            "sy": 0.42,
+            "sz": 0.78,
+            "color": [
+             0.92,
+             0.62,
+             0.22
+            ]
+           }
+          },
+          "material": {
+           "preset": "gold",
+           "base_color": [
+            0.92,
+            0.62,
+            0.22
+           ],
+           "roughness": 0.3,
+           "metallic": 0.8,
+           "emissive": [
+            0.55,
+            0.26,
+            0.06
+           ]
+          }
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
+    "name": "arm3_turret",
+    "translation": [
+     13.435,
+     0.0,
+     -13.435
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.78,
+      "height": 0.6,
+      "segments": 14,
+      "color": [
+       0.42,
+       0.4,
+       0.36
+      ]
+     }
+    },
+    "material": {
+     "preset": "steel",
+     "base_color": [
+      0.34,
+      0.3196,
+      0.2924
+     ],
+     "roughness": 0.4,
+     "metallic": 0.9
+    },
+    "children": [
+     {
+      "name": "arm3_seg1",
+      "translation": [
+       0.0,
+       0.6,
+       0.0
+      ],
+      "mesh": {
+       "builder": "box",
+       "args": {
+        "sx": 0.55,
+        "sy": 2.4,
+        "sz": 0.55,
+        "offset": [
+         0.0,
+         1.2,
+         0.0
+        ],
+        "color": [
+         0.48,
+         0.46,
+         0.42
+        ]
+       }
+      },
+      "material": {
+       "preset": "steel",
+       "base_color": [
+        0.38,
+        0.35719999999999996,
+        0.3268
+       ],
+       "roughness": 0.36,
+       "metallic": 0.9
+      },
+      "children": [
+       {
+        "name": "arm3_seg2",
+        "translation": [
+         0.0,
+         2.4,
+         0.0
+        ],
+        "mesh": {
+         "builder": "box",
+         "args": {
+          "sx": 0.42,
+          "sy": 1.8,
+          "sz": 0.42,
+          "offset": [
+           0.0,
+           0.9,
+           0.0
+          ],
+          "color": [
+           0.52,
+           0.5,
+           0.45
+          ]
+         }
+        },
+        "material": {
+         "preset": "steel",
+         "base_color": [
+          0.4,
+          0.376,
+          0.34400000000000003
+         ],
+         "roughness": 0.34,
+         "metallic": 0.9
+        },
+        "children": [
+         {
+          "name": "arm3_grip",
+          "translation": [
+           0.0,
+           1.8,
+           0.0
+          ],
+          "mesh": {
+           "builder": "box",
+           "args": {
+            "sx": 0.78,
+            "sy": 0.42,
+            "sz": 0.78,
+            "color": [
+             0.92,
+             0.62,
+             0.22
+            ]
+           }
+          },
+          "material": {
+           "preset": "gold",
+           "base_color": [
+            0.92,
+            0.62,
+            0.22
+           ],
+           "roughness": 0.3,
+           "metallic": 0.8,
+           "emissive": [
+            0.55,
+            0.26,
+            0.06
+           ]
+          }
+         }
+        ]
+       }
+      ]
+     }
+    ]
+   },
+   {
     "name": "ring_beam",
     "translation": [
      0.0,
