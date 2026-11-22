@@ -62,31 +62,6 @@ def load_act(project_dir, act):
     return scene_data, shot
 
 
-def _aim(camera, pos, target):
-    """把 ``(position, target)`` 转成 ``FlyCamera`` 的 ``yaw/pitch``。
-
-    为什么要这一层
-    --------------
-    `ShotPlayer._apply_camera` 只认 position / target / fov；但 **`FlyCamera`
-    不维护 target**（docstring 原话："目标点 = 位置 + 前向量（由 yaw/pitch 现算）"），
-    所以 target 通道对它**静默无效** —— 实测 t=52 相机到位 `(1,8,2)` 却仍
-    `yaw=-90, pitch=0` 水平看 -z，于是峡谷的崖壁根本不在画面里（天空占 95%）。
-
-    这是引擎侧的契约缺口（ShotPlayer 的相机支持与 FlyCamera 的朝向模型不匹配），
-    记为 0.7.8 反哺项；本项目先用这一层把 target 译成 yaw/pitch，不阻塞推进。
-
-    `FlyCamera.forward()` 的定义是
-    ``(cos(pitch)·cos(yaw), sin(pitch), cos(pitch)·sin(yaw))``，
-    因此反解就是 ``yaw = atan2(dz, dx)``、``pitch = asin(dy/|d|)``。
-    """
-    dx = float(target[0]) - float(pos[0])
-    dy = float(target[1]) - float(pos[1])
-    dz = float(target[2]) - float(pos[2])
-    dist = math.sqrt(dx * dx + dy * dy + dz * dz) or 1.0
-    camera.pitch = math.degrees(math.asin(max(-1.0, min(1.0, dy / dist))))
-    camera.yaw = math.degrees(math.atan2(dz, dx))
-
-
 class ActRenderer:
     """一幕的渲染器：装环境 / 场景 / 相机 / 粒子，按 ``t`` 画一帧。
 
@@ -144,12 +119,9 @@ class ActRenderer:
         energy = self.energy_fn(t, self.duration)
         self.last_applied = self.player.apply(t)
 
-        # target → yaw/pitch（FlyCamera 不认 target，见 _aim 的说明）
-        vals = self.shot.sample(t)
-        pos = vals.get(('$camera', 'position'))
-        tgt = vals.get(('$camera', 'target'))
-        if pos is not None and tgt is not None:
-            _aim(self.camera, pos, tgt)
+        # 相机朝向由引擎 0.7.8 的 FlyCamera.look_at 处理（ShotPlayer 的 target
+        # 通道现在会反解 yaw/pitch）。此前这里有一层项目内 _aim() 兜底 ——
+        # 反哺落地后必须删掉，否则会变成"第二套实现"（同 shot_path 那次的教训）。
 
         # 粒子相位按**固定 dt** 推进（不是墙钟），这样同 t 必然同相位 ——
         # 确定性成片的地基。用墙钟会让"同一秒"在慢机器上少走几步。
