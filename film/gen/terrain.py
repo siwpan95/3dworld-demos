@@ -131,6 +131,11 @@ def build_scene(hm):
             'sky_ground': [0.075, 0.065, 0.058],
             'ibl_intensity': 0.55,
             'sky_intensity': 0.85,
+            # 高度雾（引擎 0.7.9 起支持）：遮住地形边界 + 给山谷大气感。
+            # 颜色贴近 sky_horizon，避免"灰白雾贴在暖天空上"的违和。
+            'fog_density': 0.006,
+            'fog_falloff': 0.030,
+            'fog_color': [0.50, 0.46, 0.43],
         },
         'root': {
             'name': 'root',
