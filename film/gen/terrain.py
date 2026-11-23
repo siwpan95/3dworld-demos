@@ -32,6 +32,9 @@ if ROOT not in sys.path:
 
 from world3d.logic.noise import heightmap                      # noqa: E402
 
+BASIN_V = 0.02        # 天池中心（归一化 v）：放在相机低飞段（t≈50）下方
+BASIN_Z = BASIN_V * 80.0   # 换成世界 z（TERRAIN_SIZE/2 = 80）
+BASIN_WATER_Y = -1.5  # 水面局部 y：坑底约 -3.1、谷底约 +2.0 ⇒ 真正积住
 GRID = 80              # 高度图分辨率（heightfield 建议 64~128；80 是面数/细节的折中）
 TERRAIN_SIZE = 160.0   # 世界尺寸（米）—— 配 60m 高才够陡（坡度 37%）
 TERRAIN_HEIGHT = 60.0  # 高度幅度（米）—— 220m/20m 只有 9% 坡度，是缓丘不是峡谷
