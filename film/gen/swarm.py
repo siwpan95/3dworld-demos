@@ -21,7 +21,7 @@ HERE = os.path.dirname(os.path.abspath(__file__))
 FILM_DIR = os.path.dirname(HERE)
 ROOT = os.path.dirname(FILM_DIR)
 
-DURATION = 62.0
+DURATION = 58.0   # 与 project.json 的 07_swarm.duration 必须一致
 BOID_COUNT = 80
 BOUNDS = 26.0
 
