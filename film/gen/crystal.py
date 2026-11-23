@@ -57,24 +57,20 @@ def _crystal(idx, rng):
     # 提到 0.42 才有漫反射；emissive ×2.6 做"内部光"。
     mat = {'preset': 'marble', 'base_color': list(base),
            'roughness': 0.42, 'metallic': 0.10,
-           'emissive': [round(min(1.0, c * 2.6), 3) for c in emis]}
+           'emissive': [round(min(1.0, c * 1.05), 3) for c in emis]}
     return {
         'name': f'cry{idx}',
         'translation': [round(x, 3), 0.0, round(z, 3)],
-        'mesh': {'builder': 'cylinder',
-                 'args': {'radius': round(rad, 3), 'height': round(h, 3),
-                          'segments': 6, 'capped': True,
+        # 六棱**双锥**（lathe 画菱形轮廓绕 Y 旋一圈）：两端收尖才是水晶，
+        # 圆柱看起来像"彩色柱子"。端点半径取 0.02 而非 0，避免退化三角形。
+        'mesh': {'builder': 'lathe',
+                 'args': {'profile': [[0.02, 0.0],
+                                      [round(rad, 3), round(h * 0.28, 3)],
+                                      [0.02, round(h, 3)]],
+                          'segments': 6,
+                          'closed_top': False, 'closed_bottom': False,
                           'color': list(base)}},
         'material': mat,
-        'children': [{
-            # 尖顶：sphere 4 段经度 × 2 段纬度 = 八面体
-            'name': f'cry{idx}_tip',
-            'translation': [0.0, round(h * 0.5 + rad * 0.55, 3), 0.0],
-            'mesh': {'builder': 'sphere',
-                     'args': {'radius': round(rad * 1.02, 3), 'segments': 4,
-                              'rings': 2, 'color': list(base)}},
-            'material': mat,
-        }],
     }
 
 

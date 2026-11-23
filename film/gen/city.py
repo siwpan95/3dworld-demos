@@ -62,7 +62,7 @@ def _build_blocks():
                 h = (8.0 + 32.0 * max(0.06, center_falloff)
                      * (0.45 + 0.75 * rng.random()))
                 # 越靠街越亮一点（临街店铺感），靠里更暗
-                shade = 0.26 + 0.16 * (1.0 - col / COLS)
+                shade = 0.135 + 0.105 * (1.0 - col / COLS)   # 压暗：首版 0.26~0.42 在主街上像两堵白墙
                 kids.append({
                     'name': f'blk_{idx}',
                     'translation': [round(x, 3), round(h * 0.5, 3), round(z, 3)],
