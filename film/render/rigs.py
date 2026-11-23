@@ -98,3 +98,44 @@ class MachineRig:
                           arm.base.y + 6.0 + 2.2 * math.sin(t * 0.57 + i * 1.7),
                           arm.base.z + math.sin(ph) * r)
             arm.update(target)
+
+
+class SwarmRig:
+    """群集驱动：`logic/boids.Flock` 是纯 CPU 模拟，这里把它映射到节点位置。
+
+    与粒子的相位策略一致：**按固定 dt 补步**（`round(t*fps)` 决定"应该已经走了
+    多少步"），而不是用墙钟时间 —— 同 t 必然同状态，probe 跳帧也能复现。
+
+    捕获者（predator）会在中途出现：它把群"推"成一个旋涡，是这一幕唯一的
+    戏剧动作。位置同样只依赖 t。
+    """
+
+    def __init__(self, scene, count=80, bounds=26.0, seed=20261123, fps=30.0):
+        from world3d.logic.boids import Flock
+        self.flock = Flock(count=count, bounds=bounds, seed=seed)
+        self.nodes = []
+        for i in range(count):
+            node = None
+            for n in scene.root.traverse():
+                if getattr(n, 'name', None) == f'boid{i}':
+                    node = n
+                    break
+            self.nodes.append(node)
+        self.fps = float(fps)
+        self._steps = 0
+        self._dt = 1.0 / self.fps
+
+    def update(self, t):
+        target = int(round(float(t) * self.fps))
+        while self._steps < target:
+            # 捕食者按时间绕群转圈，把 boid 推开形成旋涡
+            ph = self._steps * self._dt * 0.55
+            self.flock.set_predator((math.cos(ph) * 16.0,
+                                     5.0 + 6.0 * math.sin(ph * 0.7),
+                                     math.sin(ph) * 16.0))
+            self.flock.step(self._dt)
+            self._steps += 1
+        for node, b in zip(self.nodes, self.flock.boids):
+            if node is None:
+                continue
+            node.translation = (b.pos.x, b.pos.y, b.pos.z)

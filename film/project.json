@@ -75,10 +75,15 @@
    "id": "07_swarm",
    "title": "法则·群",
    "duration": 58.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
-   "notes": "boids 群集 + 实例化 + 弹幕编队 + 节拍同步"
+   "scene": "scenes/07_swarm.scene.json",
+   "shot": "shots/07_swarm.shot.json",
+   "status": "wip",
+   "notes": "boids 群集 + 实例化 + 弹幕编队 + 节拍同步",
+   "swarm": {
+    "count": 80,
+    "bounds": 26.0,
+    "seed": 20261123
+   }
   },
   {
    "id": "08_body",

@@ -120,12 +120,21 @@ class ActRenderer:
         # 空无幕没有几何：SSAO 只会白耗一遍全屏 pass，关掉（有几何的幕再按需开）
         post.ssao_enabled = bool(scene_data.get('root', {}).get('children'))
 
-        # --- 骨架（逐帧 IK）：场景节点即骨骼 ---
+        # --- 骨架（逐帧 IK）/ 群集（逐帧 boids）---
         acfg = act.get('arms') or {}
+        scfg = act.get('swarm') or {}
         self.rig = None
+        self.swarm = None
         if acfg:
             from rigs import MachineRig
             self.rig = MachineRig(self.scene, count=int(acfg.get('count', 4)))
+        if scfg:
+            from rigs import SwarmRig
+            self.swarm = SwarmRig(self.scene,
+                                  count=int(scfg.get('count', 80)),
+                                  bounds=float(scfg.get('bounds', 26.0)),
+                                  seed=int(scfg.get('seed', 20261123)),
+                                  fps=self.fps)
 
         # --- 演出 ---
         self.player = ShotPlayer(self.shot, scene=self.scene,
@@ -148,8 +157,11 @@ class ActRenderer:
         # 而 `Renderer` 全程不调 update_world（它假定场景静态）。缺这一步时
         # IK 算得完全正确、关节四元数也写进去了，但画面上臂**一动不动** ——
         # 这是第五例"写了但没生效"。
-        if self.rig is not None:
-            self.rig.update(t)
+        if self.rig is not None or self.swarm is not None:
+            if self.rig is not None:
+                self.rig.update(t)
+            if self.swarm is not None:
+                self.swarm.update(t)
             self.scene.root.update_world()
 
         # 粒子相位按**固定 dt** 推进（不是墙钟），这样同 t 必然同相位 ——
