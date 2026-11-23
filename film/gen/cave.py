@@ -16,6 +16,7 @@ import argparse
 import json
 import math
 import os
+import random
 import sys
 
 HERE = os.path.dirname(os.path.abspath(__file__))
@@ -34,9 +35,41 @@ FLOOR_H = 11.0            # 洞底起伏幅度
 CEIL_BASE = 31.0          # 洞顶基准高度
 CEIL_H = -17.0            # 洞顶起伏（负 = 向下垂）
 TORCH_COUNT = 9
+SEED = 20261127
 
 SCENE_PATH = os.path.join(FILM_DIR, 'scenes', '06_cave.scene.json')
 SHOT_PATH = os.path.join(FILM_DIR, 'shots', '06_cave.shot.json')
+
+
+def _cave_grid(w, h, seed):
+    """元胞自动机洞穴（`logic/ca` 的 OuterTotalisticRule）。
+
+    初始化 48% 墙，跑 5 轮 B5678/S45678 —— 这是经典的"洞穴平滑"规则：
+    邻居墙多的保持墙、墙少的被侵蚀，几轮后自然形成连通洞室与通道。
+
+    然后**强制清出一条中央走廊**（宽度 8 格）：元胞洞穴的空地率约 55%，
+    相机沿 z 直线穿行时会频繁撞墙；留一条走廊既保证运镜可行，
+    两侧又保留元胞生成的洞室结构。
+
+    返回 1=墙、0=空地。
+    """
+    from world3d.logic.ca import OuterTotalisticRule
+    rng = random.Random(seed)
+    g = [[1 if rng.random() < 0.48 else 0 for _ in range(w)] for _ in range(h)]
+    rule = OuterTotalisticRule('cave', born=(5, 6, 7, 8),
+                               survive=(4, 5, 6, 7, 8))
+    for _ in range(5):
+        g = rule.step(g)
+    for r in range(h):
+        for c in range(w // 2 - 4, w // 2 + 4):
+            g[r][c] = 0
+    return g
+
+
+def _to_hm(grid, wall_val, empty_val):
+    """元胞图 → 高度图（0..1）。墙与空地各给一个高度，形成"实心墙/空洞"。"""
+    return [[round(wall_val if cell else empty_val, 4) for cell in row]
+            for row in grid]
 
 
 def _heights(seed, scale, octaves):
@@ -54,20 +87,25 @@ def _rock(dark=0.24):
 
 def build_scene():
     kids = []
+    grid = _cave_grid(GRID, GRID, SEED)
+    walls = sum(sum(r) for r in grid)
+    print(f'[cave] 元胞洞穴：{walls / (GRID * GRID):.0%} 墙 / '
+          f'{1 - walls / (GRID * GRID):.0%} 空地')
     kids.append({
         'name': 'floor',
+        # 墙处抬高、空地压低 ⇒ 洞底出现"土台"
         'mesh': {'builder': 'heightfield',
-                 'args': {'hm': _heights(4101, 0.075, 5),
+                 'args': {'hm': _to_hm(grid, 0.56, 0.05),
                           'width': CAVE_W, 'depth': CAVE_D,
                           'height': FLOOR_H, 'y_base': 0.0,
                           'color': [0.26, 0.23, 0.20]}},
-        'material': _rock(0.32),
+        'material': _rock(0.42),
     })
     kids.append({
         'name': 'ceil',
-        # 倒挂：height 取负、y_base 高，噪声种子与洞底不同 ⇒ 局部会靠近形成石柱
+        # 倒挂：墙处压低（垂下来）、空地保持高 ⇒ 与洞底夹出通道
         'mesh': {'builder': 'heightfield',
-                 'args': {'hm': _heights(7703, 0.062, 4),
+                 'args': {'hm': _to_hm(grid, 0.46, 0.96),
                           'width': CAVE_W, 'depth': CAVE_D,
                           'height': CEIL_H, 'y_base': CEIL_BASE,
                           'color': [0.18, 0.16, 0.15]}},
@@ -129,11 +167,11 @@ def build_shot():
         z = CAVE_D * 0.52 - s * CAVE_D * 0.92
         x = 2.6 * math.sin(s * 6.0)
         # 高度：从洞口外的 18m 降到通道里的 8m，末尾抬到 12m 看洞顶
-        y = 18.0 - 11.0 * min(1.0, s * 2.2) + 4.0 * max(0.0, s - 0.75) * 4.0
+        y = 14.0 - 9.5 * min(1.0, s * 2.2) + 4.0 * max(0.0, s - 0.78) * 3.0
         pos.append([round(x, 3), round(y, 3), round(z, 3)])
         # 注视点：前方 24m；末段抬高看洞顶
         look_up = max(0.0, (s - 0.78) / 0.22)
-        ty = 6.0 + 16.0 * look_up
+        ty = 3.0 + 18.0 * look_up
         tgt.append([round(x * 0.4, 3), round(ty, 3), round(z - 24.0, 3)])
         times.append(round(t, 3))
     return {
