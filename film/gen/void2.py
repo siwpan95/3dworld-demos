@@ -98,6 +98,18 @@ def build_scene():
                                       round(rng.uniform(0.32, 0.88), 2),
                                       round(rng.uniform(0.38, 1.00), 2)]},
         })
+    # 三根体积光柱（专用节点）：从核心外围往下打，给"空"一点方向感
+    # 宽度 ×5：本幕相机从 760m 外推进，20m 宽的光柱在远处只有几个像素
+    for i, (sx, sz, w, it) in enumerate(((36.0, 18.0, 120.0, 0.55),
+                                         (-44.0, -26.0, 150.0, 0.42),
+                                         (10.0, -52.0, 100.0, 0.34))):
+        kids.append({
+            'name': f'shaft{i}',
+            'render': 'volumetric',
+            'translation': [sx, 34.0, sz],
+            'params': {'x': sx, 'y': 34.0, 'z': sz, 'height': 160.0, 'width': w,
+                       'intensity': it, 'color': [1.0, 0.90, 0.72]},
+        })
     return {
         'name': '10-void',
         'environment': {

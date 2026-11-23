@@ -8104,6 +8104,72 @@
       0.47
      ]
     }
+   },
+   {
+    "name": "shaft0",
+    "render": "volumetric",
+    "translation": [
+     36.0,
+     34.0,
+     18.0
+    ],
+    "params": {
+     "x": 36.0,
+     "y": 34.0,
+     "z": 18.0,
+     "height": 160.0,
+     "width": 120.0,
+     "intensity": 0.55,
+     "color": [
+      1.0,
+      0.9,
+      0.72
+     ]
+    }
+   },
+   {
+    "name": "shaft1",
+    "render": "volumetric",
+    "translation": [
+     -44.0,
+     34.0,
+     -26.0
+    ],
+    "params": {
+     "x": -44.0,
+     "y": 34.0,
+     "z": -26.0,
+     "height": 160.0,
+     "width": 150.0,
+     "intensity": 0.42,
+     "color": [
+      1.0,
+      0.9,
+      0.72
+     ]
+    }
+   },
+   {
+    "name": "shaft2",
+    "render": "volumetric",
+    "translation": [
+     10.0,
+     34.0,
+     -52.0
+    ],
+    "params": {
+     "x": 10.0,
+     "y": 34.0,
+     "z": -52.0,
+     "height": 160.0,
+     "width": 100.0,
+     "intensity": 0.34,
+     "color": [
+      1.0,
+      0.9,
+      0.72
+     ]
+    }
    }
   ]
  }

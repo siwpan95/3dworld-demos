@@ -50,6 +50,8 @@ ACTS = (
 )
 
 XFADE = 2.4
+#: 世界层的段间飞行过渡（与世界层 film/world.py 的 BLEND 一致）
+WORLD_BLEND = 6.0
 SR_DEFAULT = 44100
 
 
@@ -118,14 +120,15 @@ def _reverb(x, sr, delay=0.13, decay=0.30, taps=6):
 
 
 def build(sr=SR_DEFAULT, out_path=None):
-    total = sum(a[1] for a in ACTS) - XFADE * (len(ACTS) - 1)
+    # 世界层：每段后接 6s 飞行过渡（不再用 2.4s xfade）
+    total = sum(a[1] for a in ACTS) + WORLD_BLEND * (len(ACTS) - 1)
     n_total = int(round(total * sr))
     track = np.zeros(n_total, dtype=np.float64)
     # 幕起点（累计，含交叠）
     starts, acc = [], 0.0
     for _, dur, _ in ACTS:
         starts.append(int(round(acc * sr)))
-        acc += dur - XFADE
+        acc += dur + WORLD_BLEND
 
     for idx, (name, dur, freqs) in enumerate(ACTS):
         n = int(round(dur * sr))
