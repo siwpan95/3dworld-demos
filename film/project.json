@@ -57,9 +57,9 @@
    "id": "05_crystal",
    "title": "晶体",
    "duration": 64.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
+   "scene": "scenes/05_crystal.scene.json",
+   "shot": "shots/05_crystal.shot.json",
+   "status": "wip",
    "notes": "SDF 八晶习 + 光谱材质 + 2D SDF 字卡 + raymarch 门廊 + DoF"
   },
   {

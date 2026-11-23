@@ -1,0 +1,1875 @@
+{
+ "name": "05-crystal",
+ "environment": {
+  "sun_dir": [
+   -0.35,
+   0.58,
+   -0.72
+  ],
+  "sun_color": [
+   0.72,
+   0.86,
+   1.0
+  ],
+  "sun_intensity": 0.9,
+  "sky_zenith": [
+   0.02,
+   0.028,
+   0.052
+  ],
+  "sky_horizon": [
+   0.065,
+   0.08,
+   0.115
+  ],
+  "sky_ground": [
+   0.012,
+   0.014,
+   0.02
+  ],
+  "ibl_intensity": 0.35,
+  "sky_intensity": 0.2,
+  "fog_density": 0.006,
+  "fog_falloff": 0.02,
+  "fog_color": [
+   0.07,
+   0.085,
+   0.13
+  ]
+ },
+ "root": {
+  "name": "root",
+  "children": [
+   {
+    "name": "bed",
+    "mesh": {
+     "builder": "ground_grid",
+     "args": {
+      "half": 46,
+      "tile": 4.0,
+      "color_a": [
+       0.09,
+       0.1,
+       0.12
+      ],
+      "color_b": [
+       0.06,
+       0.07,
+       0.085
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.11,
+      0.12,
+      0.14
+     ],
+     "roughness": 0.55,
+     "metallic": 0.25
+    }
+   },
+   {
+    "name": "cry0",
+    "translation": [
+     -3.204,
+     0.0,
+     0.514
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.914,
+      "height": 14.861,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.29,
+       1.0,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.29,
+      1.0,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.104,
+      0.676,
+      0.936
+     ]
+    },
+    "children": [
+     {
+      "name": "cry0_tip",
+      "translation": [
+       0.0,
+       7.933,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 0.932,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.29,
+         1.0,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.29,
+        1.0,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.104,
+        0.676,
+        0.936
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry1",
+    "translation": [
+     -6.352,
+     0.0,
+     -6.96
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.038,
+      "height": 10.12,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.899,
+       0.493,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.899,
+      0.493,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.468,
+      0.182,
+      0.832
+     ]
+    },
+    "children": [
+     {
+      "name": "cry1_tip",
+      "translation": [
+       0.0,
+       5.631,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.059,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.899,
+         0.493,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.899,
+        0.493,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.468,
+        0.182,
+        0.832
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry2",
+    "translation": [
+     21.685,
+     0.0,
+     -6.216
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.941,
+      "height": 7.025,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       1.0,
+       0.957,
+       0.319
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      1.0,
+      0.957,
+      0.319
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.884,
+      0.468,
+      0.078
+     ]
+    },
+    "children": [
+     {
+      "name": "cry2_tip",
+      "translation": [
+       0.0,
+       4.03,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 0.96,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         1.0,
+         0.957,
+         0.319
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        1.0,
+        0.957,
+        0.319
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.884,
+        0.468,
+        0.078
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry3",
+    "translation": [
+     17.438,
+     0.0,
+     8.881
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.442,
+      "height": 10.432,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.29,
+       1.0,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.29,
+      1.0,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.104,
+      0.676,
+      0.936
+     ]
+    },
+    "children": [
+     {
+      "name": "cry3_tip",
+      "translation": [
+       0.0,
+       6.009,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.471,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.29,
+         1.0,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.29,
+        1.0,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.104,
+        0.676,
+        0.936
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry4",
+    "translation": [
+     -11.918,
+     0.0,
+     8.87
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.143,
+      "height": 7.44,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.899,
+       0.493,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.899,
+      0.493,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.468,
+      0.182,
+      0.832
+     ]
+    },
+    "children": [
+     {
+      "name": "cry4_tip",
+      "translation": [
+       0.0,
+       4.348,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.166,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.899,
+         0.493,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.899,
+        0.493,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.468,
+        0.182,
+        0.832
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry5",
+    "translation": [
+     2.379,
+     0.0,
+     5.162
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.227,
+      "height": 17.365,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       1.0,
+       0.957,
+       0.319
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      1.0,
+      0.957,
+      0.319
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.884,
+      0.468,
+      0.078
+     ]
+    },
+    "children": [
+     {
+      "name": "cry5_tip",
+      "translation": [
+       0.0,
+       9.358,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.252,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         1.0,
+         0.957,
+         0.319
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        1.0,
+        0.957,
+        0.319
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.884,
+        0.468,
+        0.078
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry6",
+    "translation": [
+     -7.592,
+     0.0,
+     -7.177
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.94,
+      "height": 12.034,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.29,
+       1.0,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.29,
+      1.0,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.104,
+      0.676,
+      0.936
+     ]
+    },
+    "children": [
+     {
+      "name": "cry6_tip",
+      "translation": [
+       0.0,
+       7.084,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.978,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.29,
+         1.0,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.29,
+        1.0,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.104,
+        0.676,
+        0.936
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry7",
+    "translation": [
+     9.575,
+     0.0,
+     -16.598
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.76,
+      "height": 4.36,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.899,
+       0.493,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.899,
+      0.493,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.468,
+      0.182,
+      0.832
+     ]
+    },
+    "children": [
+     {
+      "name": "cry7_tip",
+      "translation": [
+       0.0,
+       2.598,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 0.775,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.899,
+         0.493,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.899,
+        0.493,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.468,
+        0.182,
+        0.832
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry8",
+    "translation": [
+     6.987,
+     0.0,
+     22.009
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.198,
+      "height": 4.512,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       1.0,
+       0.957,
+       0.319
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      1.0,
+      0.957,
+      0.319
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.884,
+      0.468,
+      0.078
+     ]
+    },
+    "children": [
+     {
+      "name": "cry8_tip",
+      "translation": [
+       0.0,
+       2.915,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.222,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         1.0,
+         0.957,
+         0.319
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        1.0,
+        0.957,
+        0.319
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.884,
+        0.468,
+        0.078
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry9",
+    "translation": [
+     2.287,
+     0.0,
+     -4.699
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.54,
+      "height": 14.153,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.29,
+       1.0,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.29,
+      1.0,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.104,
+      0.676,
+      0.936
+     ]
+    },
+    "children": [
+     {
+      "name": "cry9_tip",
+      "translation": [
+       0.0,
+       7.923,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.571,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.29,
+         1.0,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.29,
+        1.0,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.104,
+        0.676,
+        0.936
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry10",
+    "translation": [
+     -0.522,
+     0.0,
+     -4.902
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.019,
+      "height": 9.735,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.899,
+       0.493,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.899,
+      0.493,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.468,
+      0.182,
+      0.832
+     ]
+    },
+    "children": [
+     {
+      "name": "cry10_tip",
+      "translation": [
+       0.0,
+       5.428,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.04,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.899,
+         0.493,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.899,
+        0.493,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.468,
+        0.182,
+        0.832
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry11",
+    "translation": [
+     -16.737,
+     0.0,
+     -9.373
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.664,
+      "height": 5.802,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       1.0,
+       0.957,
+       0.319
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      1.0,
+      0.957,
+      0.319
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.884,
+      0.468,
+      0.078
+     ]
+    },
+    "children": [
+     {
+      "name": "cry11_tip",
+      "translation": [
+       0.0,
+       3.816,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.698,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         1.0,
+         0.957,
+         0.319
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        1.0,
+        0.957,
+        0.319
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.884,
+        0.468,
+        0.078
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry12",
+    "translation": [
+     9.848,
+     0.0,
+     -6.031
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.89,
+      "height": 5.57,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.29,
+       1.0,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.29,
+      1.0,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.104,
+      0.676,
+      0.936
+     ]
+    },
+    "children": [
+     {
+      "name": "cry12_tip",
+      "translation": [
+       0.0,
+       3.274,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 0.908,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.29,
+         1.0,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.29,
+        1.0,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.104,
+        0.676,
+        0.936
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry13",
+    "translation": [
+     -11.941,
+     0.0,
+     -4.088
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.814,
+      "height": 8.018,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.899,
+       0.493,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.899,
+      0.493,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.468,
+      0.182,
+      0.832
+     ]
+    },
+    "children": [
+     {
+      "name": "cry13_tip",
+      "translation": [
+       0.0,
+       4.457,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 0.83,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.899,
+         0.493,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.899,
+        0.493,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.468,
+        0.182,
+        0.832
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry14",
+    "translation": [
+     -15.894,
+     0.0,
+     -12.816
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.583,
+      "height": 9.356,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       1.0,
+       0.957,
+       0.319
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      1.0,
+      0.957,
+      0.319
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.884,
+      0.468,
+      0.078
+     ]
+    },
+    "children": [
+     {
+      "name": "cry14_tip",
+      "translation": [
+       0.0,
+       5.549,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.615,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         1.0,
+         0.957,
+         0.319
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        1.0,
+        0.957,
+        0.319
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.884,
+        0.468,
+        0.078
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry15",
+    "translation": [
+     -4.654,
+     0.0,
+     3.571
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.893,
+      "height": 11.446,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.29,
+       1.0,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.29,
+      1.0,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.104,
+      0.676,
+      0.936
+     ]
+    },
+    "children": [
+     {
+      "name": "cry15_tip",
+      "translation": [
+       0.0,
+       6.214,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 0.911,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.29,
+         1.0,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.29,
+        1.0,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.104,
+        0.676,
+        0.936
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry16",
+    "translation": [
+     7.075,
+     0.0,
+     -20.85
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.211,
+      "height": 4.299,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.899,
+       0.493,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.899,
+      0.493,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.468,
+      0.182,
+      0.832
+     ]
+    },
+    "children": [
+     {
+      "name": "cry16_tip",
+      "translation": [
+       0.0,
+       2.815,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.235,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.899,
+         0.493,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.899,
+        0.493,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.468,
+        0.182,
+        0.832
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry17",
+    "translation": [
+     2.768,
+     0.0,
+     -0.544
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.924,
+      "height": 7.173,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       1.0,
+       0.957,
+       0.319
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      1.0,
+      0.957,
+      0.319
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.884,
+      0.468,
+      0.078
+     ]
+    },
+    "children": [
+     {
+      "name": "cry17_tip",
+      "translation": [
+       0.0,
+       4.645,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.962,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         1.0,
+         0.957,
+         0.319
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        1.0,
+        0.957,
+        0.319
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.884,
+        0.468,
+        0.078
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry18",
+    "translation": [
+     -14.913,
+     0.0,
+     -1.398
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.733,
+      "height": 5.526,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.29,
+       1.0,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.29,
+      1.0,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.104,
+      0.676,
+      0.936
+     ]
+    },
+    "children": [
+     {
+      "name": "cry18_tip",
+      "translation": [
+       0.0,
+       3.716,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.767,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.29,
+         1.0,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.29,
+        1.0,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.104,
+        0.676,
+        0.936
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry19",
+    "translation": [
+     10.605,
+     0.0,
+     1.969
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.378,
+      "height": 11.098,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.899,
+       0.493,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.899,
+      0.493,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.468,
+      0.182,
+      0.832
+     ]
+    },
+    "children": [
+     {
+      "name": "cry19_tip",
+      "translation": [
+       0.0,
+       6.307,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.405,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.899,
+         0.493,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.899,
+        0.493,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.468,
+        0.182,
+        0.832
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry20",
+    "translation": [
+     20.301,
+     0.0,
+     -4.262
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.674,
+      "height": 9.573,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       1.0,
+       0.957,
+       0.319
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      1.0,
+      0.957,
+      0.319
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.884,
+      0.468,
+      0.078
+     ]
+    },
+    "children": [
+     {
+      "name": "cry20_tip",
+      "translation": [
+       0.0,
+       5.157,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 0.687,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         1.0,
+         0.957,
+         0.319
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        1.0,
+        0.957,
+        0.319
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.884,
+        0.468,
+        0.078
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry21",
+    "translation": [
+     -7.104,
+     0.0,
+     9.367
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.093,
+      "height": 6.954,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.29,
+       1.0,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.29,
+      1.0,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.104,
+      0.676,
+      0.936
+     ]
+    },
+    "children": [
+     {
+      "name": "cry21_tip",
+      "translation": [
+       0.0,
+       4.078,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.115,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.29,
+         1.0,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.29,
+        1.0,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.104,
+        0.676,
+        0.936
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry22",
+    "translation": [
+     -6.93,
+     0.0,
+     -0.24
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 0.759,
+      "height": 12.959,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       0.899,
+       0.493,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.899,
+      0.493,
+      1.0
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.468,
+      0.182,
+      0.832
+     ]
+    },
+    "children": [
+     {
+      "name": "cry22_tip",
+      "translation": [
+       0.0,
+       6.897,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 0.774,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         0.899,
+         0.493,
+         1.0
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        0.899,
+        0.493,
+        1.0
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.468,
+        0.182,
+        0.832
+       ]
+      }
+     }
+    ]
+   },
+   {
+    "name": "cry23",
+    "translation": [
+     -12.974,
+     0.0,
+     -13.539
+    ],
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 1.565,
+      "height": 10.099,
+      "segments": 6,
+      "capped": true,
+      "color": [
+       1.0,
+       0.957,
+       0.319
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      1.0,
+      0.957,
+      0.319
+     ],
+     "roughness": 0.42,
+     "metallic": 0.1,
+     "emissive": [
+      0.884,
+      0.468,
+      0.078
+     ]
+    },
+    "children": [
+     {
+      "name": "cry23_tip",
+      "translation": [
+       0.0,
+       5.91,
+       0.0
+      ],
+      "mesh": {
+       "builder": "sphere",
+       "args": {
+        "radius": 1.597,
+        "segments": 4,
+        "rings": 2,
+        "color": [
+         1.0,
+         0.957,
+         0.319
+        ]
+       }
+      },
+      "material": {
+       "preset": "marble",
+       "base_color": [
+        1.0,
+        0.957,
+        0.319
+       ],
+       "roughness": 0.42,
+       "metallic": 0.1,
+       "emissive": [
+        0.884,
+        0.468,
+        0.078
+       ]
+      }
+     }
+    ]
+   }
+  ]
+ }
+}
