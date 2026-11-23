@@ -89,18 +89,18 @@
    "id": "08_body",
    "title": "法则·体",
    "duration": 58.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
+   "scene": "scenes/08_body.scene.json",
+   "shot": "shots/08_body.shot.json",
+   "status": "wip",
    "notes": "刚体塔 + 2D 刚体沙盒 + 相交透明层"
   },
   {
    "id": "09_field",
    "title": "法则·场",
    "duration": 54.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
+   "scene": "scenes/09_field.scene.json",
+   "shot": "shots/09_field.shot.json",
+   "status": "wip",
    "notes": "点云 + 4096 实例 + GPU compute 星云 + 流场 + 反应扩散 + 曲线"
   },
   {
@@ -116,9 +116,9 @@
    "id": "11_loop",
    "title": "回环",
    "duration": 64.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
+   "scene": "scenes/11_loop.scene.json",
+   "shot": "shots/11_loop.shot.json",
+   "status": "wip",
    "notes": "回到 II 幕机位 + 昼夜 + 季节 + 雨雪 + 级联光向变化"
   },
   {

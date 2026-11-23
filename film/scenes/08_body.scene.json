@@ -1,0 +1,2994 @@
+{
+ "name": "08-body",
+ "environment": {
+  "sun_dir": [
+   0.58,
+   0.46,
+   0.67
+  ],
+  "sun_color": [
+   0.96,
+   0.9,
+   0.8
+  ],
+  "sun_intensity": 1.85,
+  "sky_zenith": [
+   0.1,
+   0.12,
+   0.16
+  ],
+  "sky_horizon": [
+   0.3,
+   0.28,
+   0.26
+  ],
+  "sky_ground": [
+   0.07,
+   0.07,
+   0.065
+  ],
+  "ibl_intensity": 0.5,
+  "sky_intensity": 0.4,
+  "fog_density": 0.0045,
+  "fog_falloff": 0.035,
+  "fog_color": [
+   0.28,
+   0.26,
+   0.24
+  ]
+ },
+ "root": {
+  "name": "root",
+  "children": [
+   {
+    "name": "podium",
+    "mesh": {
+     "builder": "cylinder",
+     "args": {
+      "radius": 16.0,
+      "height": 1.6,
+      "segments": 40,
+      "color": [
+       0.24,
+       0.23,
+       0.21
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.26,
+      0.247,
+      0.2288
+     ],
+     "roughness": 0.9,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "layer0",
+    "translation": [
+     0.0,
+     2.375,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.0,
+     0.0,
+     1.0
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 10.2,
+      "sy": 1.55,
+      "sz": 10.2,
+      "color": [
+       0.34,
+       0.32,
+       0.29
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.4,
+      0.38,
+      0.35200000000000004
+     ],
+     "roughness": 0.78,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "layer1",
+    "translation": [
+     0.0,
+     3.925,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.09584575252022398,
+     0.0,
+     0.9953961983671789
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 9.351,
+      "sy": 1.55,
+      "sz": 9.351,
+      "color": [
+       0.328,
+       0.308,
+       0.27999999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.388,
+      0.3686,
+      0.34144
+     ],
+     "roughness": 0.78,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "layer2",
+    "translation": [
+     0.0,
+     5.475,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.1908089953765448,
+     0.0,
+     0.981627183447664
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 8.502,
+      "sy": 1.55,
+      "sz": 8.502,
+      "color": [
+       0.316,
+       0.296,
+       0.26999999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.376,
+      0.35719999999999996,
+      0.33088
+     ],
+     "roughness": 0.78,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "layer3",
+    "translation": [
+     0.0,
+     7.025,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.28401534470392265,
+     0.0,
+     0.958819734868193
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 7.653,
+      "sy": 1.55,
+      "sz": 7.653,
+      "color": [
+       0.30400000000000005,
+       0.28400000000000003,
+       0.26
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.364,
+      0.3458,
+      0.32032
+     ],
+     "roughness": 0.78,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "layer4",
+    "translation": [
+     0.0,
+     8.575,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.374606593415912,
+     0.0,
+     0.9271838545667874
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 6.804,
+      "sy": 1.55,
+      "sz": 6.804,
+      "color": [
+       0.29200000000000004,
+       0.272,
+       0.24999999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.35200000000000004,
+      0.33440000000000003,
+      0.30976000000000004
+     ],
+     "roughness": 0.78,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "layer5",
+    "translation": [
+     0.0,
+     10.125,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.4617486132350339,
+     0.0,
+     0.8870108331782217
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 5.955,
+      "sy": 1.55,
+      "sz": 5.955,
+      "color": [
+       0.28,
+       0.26,
+       0.24
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.34,
+      0.323,
+      0.2992
+     ],
+     "roughness": 0.78,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "layer6",
+    "translation": [
+     0.0,
+     11.675,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.5446390350150271,
+     0.0,
+     0.838670567945424
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 5.106,
+      "sy": 1.55,
+      "sz": 5.106,
+      "color": [
+       0.268,
+       0.248,
+       0.22999999999999998
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.328,
+      0.3116,
+      0.28864
+     ],
+     "roughness": 0.78,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "layer7",
+    "translation": [
+     0.0,
+     13.225,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.6225146366376196,
+     0.0,
+     0.7826081568524139
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 4.257,
+      "sy": 1.55,
+      "sz": 4.257,
+      "color": [
+       0.256,
+       0.236,
+       0.21999999999999997
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.316,
+      0.30019999999999997,
+      0.27808
+     ],
+     "roughness": 0.78,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "layer8",
+    "translation": [
+     0.0,
+     14.775,
+     0.0
+    ],
+    "rotation": [
+     0.0,
+     0.6946583704589973,
+     0.0,
+     0.7193398003386512
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 3.408,
+      "sy": 1.55,
+      "sz": 3.408,
+      "color": [
+       0.24400000000000002,
+       0.224,
+       0.20999999999999996
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.30400000000000005,
+      0.28880000000000006,
+      0.26752000000000004
+     ],
+     "roughness": 0.78,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris0",
+    "translation": [
+     10.38,
+     0.52,
+     -20.73
+    ],
+    "rotation": [
+     0.0,
+     0.9449840296335384,
+     0.0,
+     -0.32711646815401973
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.607,
+      "sy": 1.139,
+      "sz": 1.845,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris1",
+    "translation": [
+     -12.39,
+     0.55,
+     0.81
+    ],
+    "rotation": [
+     0.0,
+     0.7609546296439716,
+     0.0,
+     -0.6488050952508049
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.477,
+      "sy": 1.254,
+      "sz": 1.623,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris2",
+    "translation": [
+     -23.9,
+     0.46,
+     -13.84
+    ],
+    "rotation": [
+     0.0,
+     0.6097848467703492,
+     0.0,
+     -0.7925669944233495
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.485,
+      "sy": 1.102,
+      "sz": 1.125,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris3",
+    "translation": [
+     20.28,
+     0.61,
+     -2.23
+    ],
+    "rotation": [
+     0.0,
+     0.512375385745083,
+     0.0,
+     -0.8587615874517079
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.552,
+      "sy": 1.049,
+      "sz": 0.731,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris4",
+    "translation": [
+     10.59,
+     0.63,
+     17.58
+    ],
+    "rotation": [
+     0.0,
+     0.9098816978437632,
+     0.0,
+     0.41486780536569823
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.246,
+      "sy": 1.271,
+      "sz": 1.661,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris5",
+    "translation": [
+     -17.42,
+     0.46,
+     -8.95
+    ],
+    "rotation": [
+     0.0,
+     0.9985790806451331,
+     0.0,
+     -0.05328995869693223
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.661,
+      "sy": 0.448,
+      "sz": 2.261,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris6",
+    "translation": [
+     -17.06,
+     0.51,
+     3.61
+    ],
+    "rotation": [
+     0.0,
+     0.4114981994387614,
+     0.0,
+     -0.9114105726063624
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.406,
+      "sy": 1.069,
+      "sz": 1.781,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris7",
+    "translation": [
+     3.64,
+     0.63,
+     -12.26
+    ],
+    "rotation": [
+     0.0,
+     0.38188550006943617,
+     0.0,
+     -0.92420964333679
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.999,
+      "sy": 1.329,
+      "sz": 1.755,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris8",
+    "translation": [
+     -24.06,
+     0.33,
+     13.94
+    ],
+    "rotation": [
+     0.0,
+     0.6913972535206032,
+     0.0,
+     -0.7224748008229537
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.469,
+      "sy": 0.828,
+      "sz": 0.797,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris9",
+    "translation": [
+     -21.31,
+     0.31,
+     12.77
+    ],
+    "rotation": [
+     0.0,
+     0.9998532178684766,
+     0.0,
+     0.017133088397974054
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.341,
+      "sy": 0.437,
+      "sz": 1.484,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris10",
+    "translation": [
+     -14.27,
+     0.77,
+     -26.35
+    ],
+    "rotation": [
+     0.0,
+     0.9355987504673108,
+     0.0,
+     0.35306511881522173
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.536,
+      "sy": 1.152,
+      "sz": 0.663,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris11",
+    "translation": [
+     21.22,
+     0.3,
+     -7.0
+    ],
+    "rotation": [
+     0.0,
+     0.6832019445934023,
+     0.0,
+     0.7302294864655862
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.766,
+      "sy": 0.409,
+      "sz": 0.85,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris12",
+    "translation": [
+     1.29,
+     0.23,
+     -20.59
+    ],
+    "rotation": [
+     0.0,
+     0.871879056180892,
+     0.0,
+     0.4897212588739811
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.512,
+      "sy": 0.624,
+      "sz": 1.392,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris13",
+    "translation": [
+     -4.07,
+     0.4,
+     18.5
+    ],
+    "rotation": [
+     0.0,
+     0.6420363202825583,
+     0.0,
+     -0.766674222494817
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.99,
+      "sy": 0.847,
+      "sz": 1.92,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris14",
+    "translation": [
+     -2.43,
+     0.65,
+     16.41
+    ],
+    "rotation": [
+     0.0,
+     0.9999356001883273,
+     0.0,
+     0.011348809453400355
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.332,
+      "sy": 1.498,
+      "sz": 1.244,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris15",
+    "translation": [
+     -20.14,
+     0.83,
+     -10.75
+    ],
+    "rotation": [
+     0.0,
+     0.6267317840855584,
+     0.0,
+     0.7792350549204862
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.637,
+      "sy": 1.366,
+      "sz": 1.733,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris16",
+    "translation": [
+     -11.35,
+     0.64,
+     -3.95
+    ],
+    "rotation": [
+     0.0,
+     0.13474844375251824,
+     0.0,
+     0.9908798397920277
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.866,
+      "sy": 1.031,
+      "sz": 1.907,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris17",
+    "translation": [
+     -12.85,
+     0.95,
+     -14.2
+    ],
+    "rotation": [
+     0.0,
+     0.2735136254494596,
+     0.0,
+     0.9618681285360757
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.789,
+      "sy": 1.481,
+      "sz": 0.982,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris18",
+    "translation": [
+     -14.51,
+     0.78,
+     -2.63
+    ],
+    "rotation": [
+     0.0,
+     0.09551268008794223,
+     0.0,
+     -0.9954282133546438
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.048,
+      "sy": 1.203,
+      "sz": 0.868,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris19",
+    "translation": [
+     23.81,
+     0.53,
+     2.41
+    ],
+    "rotation": [
+     0.0,
+     0.9998620845765472,
+     0.0,
+     -0.016607583395589424
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.462,
+      "sy": 0.895,
+      "sz": 1.824,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris20",
+    "translation": [
+     -3.76,
+     0.66,
+     29.63
+    ],
+    "rotation": [
+     0.0,
+     0.503700988600499,
+     0.0,
+     -0.8638780666754308
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.172,
+      "sy": 0.971,
+      "sz": 0.916,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris21",
+    "translation": [
+     12.63,
+     0.82,
+     -0.12
+    ],
+    "rotation": [
+     0.0,
+     0.8954891798565461,
+     0.0,
+     0.44508328294809096
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.483,
+      "sy": 1.321,
+      "sz": 2.078,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris22",
+    "translation": [
+     -25.81,
+     0.53,
+     -4.8
+    ],
+    "rotation": [
+     0.0,
+     0.9879713656329261,
+     0.0,
+     -0.1546369318416889
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.405,
+      "sy": 1.051,
+      "sz": 2.389,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris23",
+    "translation": [
+     18.26,
+     0.33,
+     4.07
+    ],
+    "rotation": [
+     0.0,
+     0.39573197214978245,
+     0.0,
+     -0.9183660524096281
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.57,
+      "sy": 0.777,
+      "sz": 1.945,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris24",
+    "translation": [
+     -9.38,
+     0.76,
+     -17.21
+    ],
+    "rotation": [
+     0.0,
+     0.31738701288359883,
+     0.0,
+     -0.9482960951373923
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.2,
+      "sy": 1.183,
+      "sz": 2.104,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris25",
+    "translation": [
+     27.46,
+     0.46,
+     -11.28
+    ],
+    "rotation": [
+     0.0,
+     0.9991506015335585,
+     0.0,
+     0.04120771111246393
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.995,
+      "sy": 1.101,
+      "sz": 2.25,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris26",
+    "translation": [
+     -5.4,
+     0.53,
+     24.66
+    ],
+    "rotation": [
+     0.0,
+     0.8526074646632936,
+     0.0,
+     -0.5225519220139091
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.297,
+      "sy": 1.01,
+      "sz": 1.107,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris27",
+    "translation": [
+     29.08,
+     0.24,
+     2.07
+    ],
+    "rotation": [
+     0.0,
+     0.9259751688317084,
+     0.0,
+     0.37758441004242904
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.965,
+      "sy": 0.489,
+      "sz": 1.951,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris28",
+    "translation": [
+     -3.26,
+     0.46,
+     15.14
+    ],
+    "rotation": [
+     0.0,
+     0.9716465509092774,
+     0.0,
+     -0.23643811051965594
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.686,
+      "sy": 0.676,
+      "sz": 1.542,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris29",
+    "translation": [
+     -18.35,
+     0.58,
+     11.96
+    ],
+    "rotation": [
+     0.0,
+     0.8010346460186548,
+     0.0,
+     -0.5986179882677837
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.677,
+      "sy": 1.044,
+      "sz": 2.112,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris30",
+    "translation": [
+     11.29,
+     0.83,
+     8.26
+    ],
+    "rotation": [
+     0.0,
+     0.8834546880384091,
+     0.0,
+     -0.4685166103597152
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.904,
+      "sy": 1.371,
+      "sz": 1.894,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris31",
+    "translation": [
+     -18.97,
+     0.68,
+     -10.04
+    ],
+    "rotation": [
+     0.0,
+     0.02605103457579002,
+     0.0,
+     -0.9996606142074074
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.456,
+      "sy": 1.318,
+      "sz": 0.979,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris32",
+    "translation": [
+     -9.64,
+     0.41,
+     5.41
+    ],
+    "rotation": [
+     0.0,
+     0.9888422182684313,
+     0.0,
+     -0.14896666529787167
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.794,
+      "sy": 0.578,
+      "sz": 2.073,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris33",
+    "translation": [
+     -17.39,
+     0.3,
+     16.95
+    ],
+    "rotation": [
+     0.0,
+     0.6239354458193896,
+     0.0,
+     0.7814758853926074
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.478,
+      "sy": 0.678,
+      "sz": 1.132,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris34",
+    "translation": [
+     -5.38,
+     0.76,
+     10.92
+    ],
+    "rotation": [
+     0.0,
+     0.7448342377966253,
+     0.0,
+     0.6672495471755078
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.586,
+      "sy": 1.332,
+      "sz": 1.381,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris35",
+    "translation": [
+     -5.53,
+     0.54,
+     18.35
+    ],
+    "rotation": [
+     0.0,
+     0.7276589923380602,
+     0.0,
+     -0.6859390576935817
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.14,
+      "sy": 0.788,
+      "sz": 0.952,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris36",
+    "translation": [
+     15.36,
+     0.65,
+     -14.95
+    ],
+    "rotation": [
+     0.0,
+     0.723514259425486,
+     0.0,
+     -0.6903094352592832
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.797,
+      "sy": 1.347,
+      "sz": 1.443,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris37",
+    "translation": [
+     -14.41,
+     0.35,
+     -7.76
+    ],
+    "rotation": [
+     0.0,
+     0.6533270476455304,
+     0.0,
+     -0.7570758012344436
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.377,
+      "sy": 0.469,
+      "sz": 1.089,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris38",
+    "translation": [
+     -13.63,
+     0.79,
+     1.67
+    ],
+    "rotation": [
+     0.0,
+     0.004818793768848553,
+     0.0,
+     -0.9999883895459053
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.342,
+      "sy": 1.205,
+      "sz": 1.182,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris39",
+    "translation": [
+     11.42,
+     0.41,
+     -3.91
+    ],
+    "rotation": [
+     0.0,
+     0.7897518250800534,
+     0.0,
+     0.6134264868610784
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.218,
+      "sy": 1.024,
+      "sz": 0.772,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris40",
+    "translation": [
+     6.19,
+     0.36,
+     10.09
+    ],
+    "rotation": [
+     0.0,
+     0.9202354589685845,
+     0.0,
+     0.39136517481359856
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.712,
+      "sy": 0.757,
+      "sz": 1.32,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris41",
+    "translation": [
+     -8.62,
+     0.61,
+     17.04
+    ],
+    "rotation": [
+     0.0,
+     0.8143628495826088,
+     0.0,
+     0.5803560538322085
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.163,
+      "sy": 1.247,
+      "sz": 2.198,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris42",
+    "translation": [
+     -18.49,
+     0.22,
+     -1.37
+    ],
+    "rotation": [
+     0.0,
+     0.8898564941738962,
+     0.0,
+     0.4562405284239253
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.87,
+      "sy": 0.58,
+      "sz": 2.369,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris43",
+    "translation": [
+     22.9,
+     0.66,
+     1.3
+    ],
+    "rotation": [
+     0.0,
+     0.9830114434084651,
+     0.0,
+     -0.18354427838536957
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.422,
+      "sy": 0.964,
+      "sz": 1.09,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris44",
+    "translation": [
+     -14.38,
+     0.91,
+     13.62
+    ],
+    "rotation": [
+     0.0,
+     0.13464192316767518,
+     0.0,
+     0.9908943195546687
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.792,
+      "sy": 1.413,
+      "sz": 0.62,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris45",
+    "translation": [
+     -16.55,
+     0.36,
+     9.7
+    ],
+    "rotation": [
+     0.0,
+     0.1542331388495391,
+     0.0,
+     0.9880344826374324
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.86,
+      "sy": 0.658,
+      "sz": 1.657,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris46",
+    "translation": [
+     9.78,
+     0.68,
+     -0.89
+    ],
+    "rotation": [
+     0.0,
+     0.0786890484612392,
+     0.0,
+     0.996899209374882
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.546,
+      "sy": 1.449,
+      "sz": 1.57,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris47",
+    "translation": [
+     6.88,
+     0.51,
+     -11.68
+    ],
+    "rotation": [
+     0.0,
+     0.7391252250881819,
+     0.0,
+     0.67356803786874
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.832,
+      "sy": 0.738,
+      "sz": 1.439,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris48",
+    "translation": [
+     26.53,
+     0.43,
+     12.52
+    ],
+    "rotation": [
+     0.0,
+     0.8263401662112192,
+     0.0,
+     0.5631713147045174
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.527,
+      "sy": 0.968,
+      "sz": 1.412,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris49",
+    "translation": [
+     -9.96,
+     0.19,
+     21.87
+    ],
+    "rotation": [
+     0.0,
+     0.9996562113645818,
+     0.0,
+     -0.026219440882873923
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.856,
+      "sy": 0.45,
+      "sz": 2.357,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris50",
+    "translation": [
+     -15.35,
+     0.43,
+     21.46
+    ],
+    "rotation": [
+     0.0,
+     0.8444114462792939,
+     0.0,
+     0.535695164615578
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.721,
+      "sy": 0.59,
+      "sz": 1.693,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris51",
+    "translation": [
+     16.27,
+     0.51,
+     -0.85
+    ],
+    "rotation": [
+     0.0,
+     0.8199374756605952,
+     0.0,
+     -0.5724530862938298
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.443,
+      "sy": 0.733,
+      "sz": 0.869,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris52",
+    "translation": [
+     -17.05,
+     0.43,
+     -4.98
+    ],
+    "rotation": [
+     0.0,
+     0.7795039289029944,
+     0.0,
+     0.6263973378174555
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.282,
+      "sy": 0.436,
+      "sz": 0.732,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris53",
+    "translation": [
+     -11.44,
+     0.62,
+     -9.87
+    ],
+    "rotation": [
+     0.0,
+     0.233653310583863,
+     0.0,
+     0.9723199732871894
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.531,
+      "sy": 1.281,
+      "sz": 1.436,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris54",
+    "translation": [
+     -27.3,
+     0.89,
+     -3.36
+    ],
+    "rotation": [
+     0.0,
+     0.1945345622344211,
+     0.0,
+     -0.9808956642254375
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.148,
+      "sy": 1.434,
+      "sz": 1.697,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris55",
+    "translation": [
+     3.84,
+     0.36,
+     8.8
+    ],
+    "rotation": [
+     0.0,
+     0.14004145080721728,
+     0.0,
+     -0.9901456418405374
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.173,
+      "sy": 0.555,
+      "sz": 2.035,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris56",
+    "translation": [
+     22.8,
+     0.55,
+     -3.94
+    ],
+    "rotation": [
+     0.0,
+     0.24259148762466495,
+     0.0,
+     0.9701285327893681
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.946,
+      "sy": 1.2,
+      "sz": 1.817,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris57",
+    "translation": [
+     -14.11,
+     0.34,
+     1.38
+    ],
+    "rotation": [
+     0.0,
+     0.7288491678160633,
+     0.0,
+     0.6846742952483552
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.548,
+      "sy": 0.438,
+      "sz": 0.647,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris58",
+    "translation": [
+     15.14,
+     0.36,
+     8.11
+    ],
+    "rotation": [
+     0.0,
+     0.7872867173910377,
+     0.0,
+     -0.6165870778889583
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.857,
+      "sy": 0.629,
+      "sz": 0.684,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris59",
+    "translation": [
+     3.94,
+     0.59,
+     14.73
+    ],
+    "rotation": [
+     0.0,
+     0.7367578698867632,
+     0.0,
+     0.6761566690937236
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.99,
+      "sy": 0.946,
+      "sz": 1.752,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris60",
+    "translation": [
+     0.62,
+     0.45,
+     -21.37
+    ],
+    "rotation": [
+     0.0,
+     0.9123166509217183,
+     0.0,
+     -0.40948544351537036
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 2.389,
+      "sy": 1.013,
+      "sz": 2.192,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris61",
+    "translation": [
+     26.59,
+     0.54,
+     9.94
+    ],
+    "rotation": [
+     0.0,
+     0.9999898897886337,
+     0.0,
+     0.004496701070373674
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.44,
+      "sy": 1.135,
+      "sz": 0.918,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris62",
+    "translation": [
+     15.92,
+     0.67,
+     1.01
+    ],
+    "rotation": [
+     0.0,
+     0.9000218135104896,
+     0.0,
+     -0.4358448522184122
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.306,
+      "sy": 0.899,
+      "sz": 2.199,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris63",
+    "translation": [
+     21.87,
+     0.29,
+     13.86
+    ],
+    "rotation": [
+     0.0,
+     0.9984644838101308,
+     0.0,
+     -0.055395618687483154
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.588,
+      "sy": 0.57,
+      "sz": 0.987,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris64",
+    "translation": [
+     23.42,
+     0.69,
+     -8.91
+    ],
+    "rotation": [
+     0.0,
+     0.2842486687548541,
+     0.0,
+     0.958750590253322
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.052,
+      "sy": 1.009,
+      "sz": 1.508,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris65",
+    "translation": [
+     10.34,
+     0.95,
+     16.13
+    ],
+    "rotation": [
+     0.0,
+     0.09824501056980732,
+     0.0,
+     -0.9951622570707445
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.793,
+      "sy": 1.46,
+      "sz": 0.717,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris66",
+    "translation": [
+     -17.64,
+     0.62,
+     19.56
+    ],
+    "rotation": [
+     0.0,
+     0.3217366484167945,
+     0.0,
+     0.9468291974086603
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.442,
+      "sy": 0.889,
+      "sz": 2.395,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris67",
+    "translation": [
+     -26.66,
+     0.74,
+     -9.86
+    ],
+    "rotation": [
+     0.0,
+     0.851950442973824,
+     0.0,
+     -0.5236224238100436
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.151,
+      "sy": 1.04,
+      "sz": 1.912,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris68",
+    "translation": [
+     -7.98,
+     0.35,
+     14.05
+    ],
+    "rotation": [
+     0.0,
+     0.9729553870896572,
+     0.0,
+     -0.23099310538025855
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 0.951,
+      "sy": 0.427,
+      "sz": 0.762,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   },
+   {
+    "name": "debris69",
+    "translation": [
+     12.28,
+     0.57,
+     -11.75
+    ],
+    "rotation": [
+     0.0,
+     0.37102079639037083,
+     0.0,
+     -0.9286245574212729
+    ],
+    "mesh": {
+     "builder": "box",
+     "args": {
+      "sx": 1.435,
+      "sy": 1.061,
+      "sz": 2.38,
+      "color": [
+       0.3,
+       0.28,
+       0.25
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.3,
+      0.285,
+      0.264
+     ],
+     "roughness": 0.88,
+     "metallic": 0.0
+    }
+   }
+  ]
+ }
+}
