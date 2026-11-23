@@ -125,10 +125,14 @@
    "id": "12_finale",
    "title": "收束",
    "duration": 47.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
-   "notes": "星球全景 + 全 pass 叠加 + 片尾字卡 + 频谱收束"
+   "scene": "scenes/12_finale.scene.json",
+   "shot": "shots/12_finale.shot.json",
+   "status": "wip",
+   "notes": "星球全景 + 全 pass 叠加 + 片尾字卡 + 频谱收束",
+   "particles": {
+    "count": 7000,
+    "preset": 0
+   }
   }
  ]
 }

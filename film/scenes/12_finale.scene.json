@@ -1,0 +1,76 @@
+{
+ "name": "12-finale",
+ "environment": {
+  "sun_dir": [
+   0.2,
+   0.5,
+   0.84
+  ],
+  "sun_color": [
+   0.85,
+   0.88,
+   1.0
+  ],
+  "sun_intensity": 0.55,
+  "sky_zenith": [
+   0.01,
+   0.012,
+   0.022
+  ],
+  "sky_horizon": [
+   0.03,
+   0.033,
+   0.048
+  ],
+  "sky_ground": [
+   0.006,
+   0.007,
+   0.01
+  ],
+  "ibl_intensity": 0.18,
+  "sky_intensity": 0.12,
+  "fog_density": 0.003,
+  "fog_falloff": 0.012,
+  "fog_color": [
+   0.04,
+   0.045,
+   0.065
+  ]
+ },
+ "root": {
+  "name": "root",
+  "children": [
+   {
+    "name": "seed",
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.5,
+      "segments": 24,
+      "rings": 16,
+      "color": [
+       1.0,
+       0.97,
+       0.9
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      1.0,
+      0.97,
+      0.9
+     ],
+     "roughness": 0.4,
+     "metallic": 0.0,
+     "emissive": [
+      2.2,
+      1.9,
+      1.5
+     ]
+    }
+   }
+  ]
+ }
+}
