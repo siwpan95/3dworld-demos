@@ -107,9 +107,9 @@
    "id": "10_void",
    "title": "虚空",
    "duration": 80.0,
-   "scene": null,
-   "shot": null,
-   "status": "planned",
+   "scene": "scenes/10_void2.scene.json",
+   "shot": "shots/10_void2.shot.json",
+   "status": "wip",
    "notes": "行星系 + 飞船 + 龙 + 孤峰 + 后室插叙 + 冲刺运动模糊"
   },
   {

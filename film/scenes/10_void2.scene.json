@@ -1,0 +1,8110 @@
+{
+ "name": "10-void",
+ "environment": {
+  "sun_dir": [
+   0.12,
+   0.3,
+   0.95
+  ],
+  "sun_color": [
+   0.6,
+   0.66,
+   0.85
+  ],
+  "sun_intensity": 0.3,
+  "sky_zenith": [
+   0.006,
+   0.008,
+   0.016
+  ],
+  "sky_horizon": [
+   0.02,
+   0.024,
+   0.038
+  ],
+  "sky_ground": [
+   0.004,
+   0.005,
+   0.008
+  ],
+  "ibl_intensity": 0.1,
+  "sky_intensity": 0.06,
+  "fog_density": 0.0016,
+  "fog_falloff": 0.006,
+  "fog_color": [
+   0.03,
+   0.035,
+   0.055
+  ]
+ },
+ "root": {
+  "name": "root",
+  "children": [
+   {
+    "name": "core",
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 11.0,
+      "segments": 48,
+      "rings": 32,
+      "color": [
+       1.0,
+       0.96,
+       0.88
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      1.0,
+      0.96,
+      0.88
+     ],
+     "roughness": 0.45,
+     "metallic": 0.0,
+     "emissive": [
+      2.6,
+      2.2,
+      1.8
+     ]
+    }
+   },
+   {
+    "name": "halo",
+    "rotation": [
+     0.7071067811865476,
+     0.0,
+     0.0,
+     0.7071067811865476
+    ],
+    "mesh": {
+     "builder": "torus",
+     "args": {
+      "major": 30.0,
+      "minor": 1.5,
+      "major_segs": 160,
+      "minor_segs": 12,
+      "color": [
+       0.95,
+       0.88,
+       0.75
+      ]
+     }
+    },
+    "material": {
+     "preset": "gold",
+     "base_color": [
+      0.95,
+      0.88,
+      0.75
+     ],
+     "roughness": 0.3,
+     "metallic": 0.6,
+     "emissive": [
+      0.85,
+      0.7,
+      0.5
+     ]
+    }
+   },
+   {
+    "name": "ring_outer",
+    "rotation": [
+     0.7071067811865476,
+     0.0,
+     0.0,
+     0.7071067811865476
+    ],
+    "mesh": {
+     "builder": "torus",
+     "args": {
+      "major": 62.0,
+      "minor": 0.55,
+      "major_segs": 200,
+      "minor_segs": 8,
+      "color": [
+       0.62,
+       0.7,
+       0.86
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.62,
+      0.7,
+      0.86
+     ],
+     "roughness": 0.35,
+     "metallic": 0.0,
+     "emissive": [
+      0.3,
+      0.36,
+      0.48
+     ]
+    }
+   },
+   {
+    "name": "ring_tilted",
+    "rotation": [
+     0.42,
+     0.0,
+     0.28,
+     0.86
+    ],
+    "mesh": {
+     "builder": "torus",
+     "args": {
+      "major": 96.0,
+      "minor": 0.35,
+      "major_segs": 220,
+      "minor_segs": 6,
+      "color": [
+       0.45,
+       0.52,
+       0.7
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.45,
+      0.52,
+      0.7
+     ],
+     "roughness": 0.4,
+     "metallic": 0.0,
+     "emissive": [
+      0.18,
+      0.22,
+      0.32
+     ]
+    }
+   },
+   {
+    "name": "star0",
+    "translation": [
+     27.8,
+     -250.9,
+     -41.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.77,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.32,
+      0.54,
+      0.79
+     ]
+    }
+   },
+   {
+    "name": "star1",
+    "translation": [
+     24.5,
+     -303.2,
+     -263.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.0,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.71,
+      0.81,
+      0.94
+     ]
+    }
+   },
+   {
+    "name": "star2",
+    "translation": [
+     -191.4,
+     -117.7,
+     -215.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.32,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.31,
+      0.48,
+      0.83
+     ]
+    }
+   },
+   {
+    "name": "star3",
+    "translation": [
+     -171.1,
+     46.4,
+     -74.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.98,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.84,
+      0.76,
+      0.61
+     ]
+    }
+   },
+   {
+    "name": "star4",
+    "translation": [
+     -99.8,
+     179.9,
+     -290.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.52,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.71,
+      0.5,
+      0.76
+     ]
+    }
+   },
+   {
+    "name": "star5",
+    "translation": [
+     -307.8,
+     -24.7,
+     120.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.67,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.53,
+      0.43,
+      0.65
+     ]
+    }
+   },
+   {
+    "name": "star6",
+    "translation": [
+     -139.4,
+     289.6,
+     -114.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.59,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.47,
+      0.36,
+      0.45
+     ]
+    }
+   },
+   {
+    "name": "star7",
+    "translation": [
+     -105.9,
+     291.6,
+     -204.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.09,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.62,
+      0.5,
+      1.0
+     ]
+    }
+   },
+   {
+    "name": "star8",
+    "translation": [
+     -84.7,
+     -30.2,
+     -243.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.51,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.32,
+      0.33,
+      0.43
+     ]
+    }
+   },
+   {
+    "name": "star9",
+    "translation": [
+     -13.0,
+     192.5,
+     31.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.07,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.5,
+      0.77,
+      0.64
+     ]
+    }
+   },
+   {
+    "name": "star10",
+    "translation": [
+     190.5,
+     87.0,
+     88.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.95,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.57,
+      0.71,
+      0.42
+     ]
+    }
+   },
+   {
+    "name": "star11",
+    "translation": [
+     62.5,
+     14.5,
+     -140.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.19,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.72,
+      0.44,
+      0.55
+     ]
+    }
+   },
+   {
+    "name": "star12",
+    "translation": [
+     -20.8,
+     -316.4,
+     39.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.16,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.44,
+      0.35,
+      0.73
+     ]
+    }
+   },
+   {
+    "name": "star13",
+    "translation": [
+     -70.0,
+     -278.9,
+     -57.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.04,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.36,
+      0.34,
+      0.89
+     ]
+    }
+   },
+   {
+    "name": "star14",
+    "translation": [
+     -99.9,
+     261.3,
+     -133.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.71,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.63,
+      0.64,
+      0.97
+     ]
+    }
+   },
+   {
+    "name": "star15",
+    "translation": [
+     31.6,
+     -106.4,
+     -69.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.27,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.41,
+      0.53,
+      0.48
+     ]
+    }
+   },
+   {
+    "name": "star16",
+    "translation": [
+     180.4,
+     17.9,
+     -237.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.29,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.61,
+      0.8,
+      0.62
+     ]
+    }
+   },
+   {
+    "name": "star17",
+    "translation": [
+     -214.9,
+     -15.1,
+     116.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.43,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.8,
+      0.5,
+      0.77
+     ]
+    }
+   },
+   {
+    "name": "star18",
+    "translation": [
+     48.0,
+     242.4,
+     -174.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.31,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.73,
+      0.81,
+      0.8
+     ]
+    }
+   },
+   {
+    "name": "star19",
+    "translation": [
+     267.8,
+     132.9,
+     267.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.56,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.61,
+      0.57,
+      0.72
+     ]
+    }
+   },
+   {
+    "name": "star20",
+    "translation": [
+     -240.8,
+     28.5,
+     128.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.43,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.49,
+      0.64,
+      0.53
+     ]
+    }
+   },
+   {
+    "name": "star21",
+    "translation": [
+     -214.7,
+     -3.1,
+     -20.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.31,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.65,
+      0.65,
+      0.68
+     ]
+    }
+   },
+   {
+    "name": "star22",
+    "translation": [
+     94.0,
+     112.0,
+     -182.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.42,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.54,
+      0.65,
+      0.84
+     ]
+    }
+   },
+   {
+    "name": "star23",
+    "translation": [
+     20.4,
+     -248.1,
+     70.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.63,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.6,
+      0.41,
+      0.54
+     ]
+    }
+   },
+   {
+    "name": "star24",
+    "translation": [
+     -9.2,
+     -60.5,
+     -131.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.05,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.38,
+      0.67,
+      0.67
+     ]
+    }
+   },
+   {
+    "name": "star25",
+    "translation": [
+     119.7,
+     -43.2,
+     -52.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.17,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.5,
+      0.79,
+      0.59
+     ]
+    }
+   },
+   {
+    "name": "star26",
+    "translation": [
+     -78.1,
+     -167.4,
+     -195.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.23,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.53,
+      0.36,
+      0.62
+     ]
+    }
+   },
+   {
+    "name": "star27",
+    "translation": [
+     171.7,
+     -198.4,
+     -44.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.19,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.56,
+      0.54,
+      0.9
+     ]
+    }
+   },
+   {
+    "name": "star28",
+    "translation": [
+     69.2,
+     169.3,
+     34.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.86,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.78,
+      0.37,
+      0.59
+     ]
+    }
+   },
+   {
+    "name": "star29",
+    "translation": [
+     286.4,
+     -145.0,
+     -52.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.45,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.63,
+      0.77,
+      0.83
+     ]
+    }
+   },
+   {
+    "name": "star30",
+    "translation": [
+     238.8,
+     169.9,
+     212.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.32,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.58,
+      0.82,
+      0.55
+     ]
+    }
+   },
+   {
+    "name": "star31",
+    "translation": [
+     -86.8,
+     -45.9,
+     132.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.2,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.36,
+      0.37,
+      0.59
+     ]
+    }
+   },
+   {
+    "name": "star32",
+    "translation": [
+     -37.3,
+     -186.2,
+     -7.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.56,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.82,
+      0.46,
+      0.75
+     ]
+    }
+   },
+   {
+    "name": "star33",
+    "translation": [
+     63.3,
+     -30.6,
+     259.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.52,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.84,
+      0.41,
+      0.42
+     ]
+    }
+   },
+   {
+    "name": "star34",
+    "translation": [
+     275.7,
+     106.4,
+     185.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.59,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.32,
+      0.61,
+      0.6
+     ]
+    }
+   },
+   {
+    "name": "star35",
+    "translation": [
+     -310.3,
+     -44.2,
+     -17.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.01,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.66,
+      0.54,
+      0.67
+     ]
+    }
+   },
+   {
+    "name": "star36",
+    "translation": [
+     164.2,
+     264.9,
+     58.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.21,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.49,
+      0.82,
+      0.49
+     ]
+    }
+   },
+   {
+    "name": "star37",
+    "translation": [
+     -196.6,
+     232.9,
+     93.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.04,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.78,
+      0.77,
+      0.42
+     ]
+    }
+   },
+   {
+    "name": "star38",
+    "translation": [
+     40.8,
+     145.7,
+     -139.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.64,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.68,
+      0.59,
+      0.53
+     ]
+    }
+   },
+   {
+    "name": "star39",
+    "translation": [
+     62.6,
+     112.6,
+     -144.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.04,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.8,
+      0.74,
+      0.66
+     ]
+    }
+   },
+   {
+    "name": "star40",
+    "translation": [
+     2.4,
+     -91.4,
+     302.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.03,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.31,
+      0.51,
+      0.87
+     ]
+    }
+   },
+   {
+    "name": "star41",
+    "translation": [
+     16.8,
+     92.6,
+     -267.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.09,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.47,
+      0.63,
+      0.68
+     ]
+    }
+   },
+   {
+    "name": "star42",
+    "translation": [
+     -38.9,
+     -56.9,
+     102.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.93,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.64,
+      0.7,
+      0.96
+     ]
+    }
+   },
+   {
+    "name": "star43",
+    "translation": [
+     -158.0,
+     -253.0,
+     -170.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.23,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.82,
+      0.51,
+      0.62
+     ]
+    }
+   },
+   {
+    "name": "star44",
+    "translation": [
+     -171.2,
+     289.0,
+     243.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.69,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.83,
+      0.36,
+      0.79
+     ]
+    }
+   },
+   {
+    "name": "star45",
+    "translation": [
+     -42.3,
+     68.2,
+     240.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.44,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.57,
+      0.81,
+      0.53
+     ]
+    }
+   },
+   {
+    "name": "star46",
+    "translation": [
+     -107.5,
+     -52.7,
+     50.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.19,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.8,
+      0.48,
+      0.71
+     ]
+    }
+   },
+   {
+    "name": "star47",
+    "translation": [
+     31.5,
+     -52.1,
+     -116.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.68,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.68,
+      0.67,
+      0.88
+     ]
+    }
+   },
+   {
+    "name": "star48",
+    "translation": [
+     37.0,
+     114.9,
+     149.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.17,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.55,
+      0.52,
+      0.4
+     ]
+    }
+   },
+   {
+    "name": "star49",
+    "translation": [
+     157.1,
+     111.8,
+     -288.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.83,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.38,
+      0.54,
+      0.46
+     ]
+    }
+   },
+   {
+    "name": "star50",
+    "translation": [
+     218.4,
+     39.8,
+     346.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.84,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.66,
+      0.54,
+      0.85
+     ]
+    }
+   },
+   {
+    "name": "star51",
+    "translation": [
+     -280.0,
+     -258.2,
+     -160.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.28,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.52,
+      0.65,
+      0.4
+     ]
+    }
+   },
+   {
+    "name": "star52",
+    "translation": [
+     -190.6,
+     135.0,
+     304.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.41,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.76,
+      0.85,
+      0.61
+     ]
+    }
+   },
+   {
+    "name": "star53",
+    "translation": [
+     303.1,
+     -289.4,
+     26.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.53,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.81,
+      0.42,
+      0.85
+     ]
+    }
+   },
+   {
+    "name": "star54",
+    "translation": [
+     -92.3,
+     -9.9,
+     269.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.21,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.36,
+      0.72,
+      0.64
+     ]
+    }
+   },
+   {
+    "name": "star55",
+    "translation": [
+     -121.4,
+     -155.8,
+     144.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.37,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.53,
+      0.85,
+      0.84
+     ]
+    }
+   },
+   {
+    "name": "star56",
+    "translation": [
+     179.0,
+     11.6,
+     173.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.54,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.79,
+      0.7,
+      0.67
+     ]
+    }
+   },
+   {
+    "name": "star57",
+    "translation": [
+     -180.3,
+     -187.8,
+     -317.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.72,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.44,
+      0.76,
+      0.9
+     ]
+    }
+   },
+   {
+    "name": "star58",
+    "translation": [
+     -187.7,
+     -65.7,
+     -216.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.08,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.63,
+      0.8,
+      0.41
+     ]
+    }
+   },
+   {
+    "name": "star59",
+    "translation": [
+     119.1,
+     348.1,
+     43.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.59,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.69,
+      0.51,
+      0.75
+     ]
+    }
+   },
+   {
+    "name": "star60",
+    "translation": [
+     119.3,
+     89.9,
+     222.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.64,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.71,
+      0.46,
+      0.87
+     ]
+    }
+   },
+   {
+    "name": "star61",
+    "translation": [
+     -18.9,
+     -286.1,
+     138.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.95,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.67,
+      0.55,
+      0.69
+     ]
+    }
+   },
+   {
+    "name": "star62",
+    "translation": [
+     144.9,
+     -211.2,
+     -61.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.54,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.42,
+      0.4,
+      0.41
+     ]
+    }
+   },
+   {
+    "name": "star63",
+    "translation": [
+     -286.0,
+     179.0,
+     124.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.67,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.42,
+      0.68,
+      0.69
+     ]
+    }
+   },
+   {
+    "name": "star64",
+    "translation": [
+     77.0,
+     -190.2,
+     -87.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.85,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.82,
+      0.66,
+      0.78
+     ]
+    }
+   },
+   {
+    "name": "star65",
+    "translation": [
+     223.0,
+     -279.1,
+     -53.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.94,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.6,
+      0.47,
+      0.79
+     ]
+    }
+   },
+   {
+    "name": "star66",
+    "translation": [
+     -71.4,
+     65.6,
+     -90.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.1,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.55,
+      0.72,
+      0.54
+     ]
+    }
+   },
+   {
+    "name": "star67",
+    "translation": [
+     -5.2,
+     219.4,
+     60.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.76,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.34,
+      0.62,
+      0.63
+     ]
+    }
+   },
+   {
+    "name": "star68",
+    "translation": [
+     138.6,
+     84.7,
+     69.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.43,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.41,
+      0.5,
+      0.84
+     ]
+    }
+   },
+   {
+    "name": "star69",
+    "translation": [
+     -20.6,
+     -253.6,
+     201.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.15,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.4,
+      0.49,
+      0.43
+     ]
+    }
+   },
+   {
+    "name": "star70",
+    "translation": [
+     17.7,
+     -5.5,
+     -152.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.9,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.38,
+      0.76,
+      0.83
+     ]
+    }
+   },
+   {
+    "name": "star71",
+    "translation": [
+     -44.1,
+     -25.3,
+     156.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.11,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.83,
+      0.43,
+      0.59
+     ]
+    }
+   },
+   {
+    "name": "star72",
+    "translation": [
+     97.5,
+     -112.7,
+     130.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.92,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.48,
+      0.39,
+      0.8
+     ]
+    }
+   },
+   {
+    "name": "star73",
+    "translation": [
+     106.7,
+     -39.3,
+     327.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.01,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.36,
+      0.51,
+      0.71
+     ]
+    }
+   },
+   {
+    "name": "star74",
+    "translation": [
+     119.1,
+     99.6,
+     -34.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.44,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.68,
+      0.33,
+      0.42
+     ]
+    }
+   },
+   {
+    "name": "star75",
+    "translation": [
+     36.8,
+     -256.9,
+     -303.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.75,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.54,
+      0.47,
+      0.88
+     ]
+    }
+   },
+   {
+    "name": "star76",
+    "translation": [
+     -135.7,
+     -91.8,
+     0.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.47,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.45,
+      0.57,
+      0.76
+     ]
+    }
+   },
+   {
+    "name": "star77",
+    "translation": [
+     32.3,
+     115.8,
+     -39.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.28,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.42,
+      0.46,
+      0.42
+     ]
+    }
+   },
+   {
+    "name": "star78",
+    "translation": [
+     -276.9,
+     100.1,
+     -237.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.89,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.7,
+      0.52,
+      0.52
+     ]
+    }
+   },
+   {
+    "name": "star79",
+    "translation": [
+     70.7,
+     -330.3,
+     61.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.96,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.35,
+      0.72,
+      0.96
+     ]
+    }
+   },
+   {
+    "name": "star80",
+    "translation": [
+     21.7,
+     102.5,
+     -377.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.5,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.79,
+      0.35,
+      0.93
+     ]
+    }
+   },
+   {
+    "name": "star81",
+    "translation": [
+     251.9,
+     256.7,
+     153.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.55,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.37,
+      0.43,
+      0.46
+     ]
+    }
+   },
+   {
+    "name": "star82",
+    "translation": [
+     197.0,
+     -71.1,
+     112.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.26,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.6,
+      0.87,
+      0.61
+     ]
+    }
+   },
+   {
+    "name": "star83",
+    "translation": [
+     -191.3,
+     29.8,
+     -263.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.18,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.64,
+      0.8,
+      0.99
+     ]
+    }
+   },
+   {
+    "name": "star84",
+    "translation": [
+     69.7,
+     -77.3,
+     -349.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.57,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.72,
+      0.43,
+      0.83
+     ]
+    }
+   },
+   {
+    "name": "star85",
+    "translation": [
+     224.8,
+     192.4,
+     114.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.98,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.34,
+      0.63,
+      0.59
+     ]
+    }
+   },
+   {
+    "name": "star86",
+    "translation": [
+     -76.0,
+     -36.6,
+     -95.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.27,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.59,
+      0.56,
+      0.41
+     ]
+    }
+   },
+   {
+    "name": "star87",
+    "translation": [
+     -143.8,
+     -141.6,
+     -96.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.58,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.71,
+      0.86,
+      0.7
+     ]
+    }
+   },
+   {
+    "name": "star88",
+    "translation": [
+     335.7,
+     -141.7,
+     -11.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.59,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.47,
+      0.33,
+      0.49
+     ]
+    }
+   },
+   {
+    "name": "star89",
+    "translation": [
+     -38.2,
+     266.0,
+     196.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.74,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.42,
+      0.74,
+      0.92
+     ]
+    }
+   },
+   {
+    "name": "star90",
+    "translation": [
+     -75.1,
+     -88.7,
+     55.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.31,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.63,
+      0.79,
+      0.62
+     ]
+    }
+   },
+   {
+    "name": "star91",
+    "translation": [
+     -118.1,
+     -210.4,
+     -197.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.92,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.46,
+      0.83,
+      0.74
+     ]
+    }
+   },
+   {
+    "name": "star92",
+    "translation": [
+     -145.4,
+     -162.8,
+     -21.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.28,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.39,
+      0.39,
+      0.82
+     ]
+    }
+   },
+   {
+    "name": "star93",
+    "translation": [
+     -85.8,
+     231.7,
+     -28.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.25,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.8,
+      0.71,
+      0.84
+     ]
+    }
+   },
+   {
+    "name": "star94",
+    "translation": [
+     50.8,
+     118.5,
+     -44.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.47,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.64,
+      0.71,
+      0.86
+     ]
+    }
+   },
+   {
+    "name": "star95",
+    "translation": [
+     107.7,
+     -317.8,
+     116.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.55,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.81,
+      0.44,
+      0.48
+     ]
+    }
+   },
+   {
+    "name": "star96",
+    "translation": [
+     -97.4,
+     -176.5,
+     277.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.22,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.77,
+      0.53,
+      0.77
+     ]
+    }
+   },
+   {
+    "name": "star97",
+    "translation": [
+     -98.4,
+     -171.9,
+     -130.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.18,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.51,
+      0.62,
+      0.47
+     ]
+    }
+   },
+   {
+    "name": "star98",
+    "translation": [
+     57.6,
+     -150.8,
+     236.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.6,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.41,
+      0.81,
+      0.95
+     ]
+    }
+   },
+   {
+    "name": "star99",
+    "translation": [
+     -21.2,
+     256.8,
+     225.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.51,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.62,
+      0.65,
+      0.39
+     ]
+    }
+   },
+   {
+    "name": "star100",
+    "translation": [
+     -317.6,
+     -69.5,
+     118.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.2,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.72,
+      0.55,
+      0.43
+     ]
+    }
+   },
+   {
+    "name": "star101",
+    "translation": [
+     -175.7,
+     277.1,
+     87.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.14,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.52,
+      0.76,
+      0.93
+     ]
+    }
+   },
+   {
+    "name": "star102",
+    "translation": [
+     201.8,
+     -240.4,
+     136.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.97,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.77,
+      0.73,
+      0.75
+     ]
+    }
+   },
+   {
+    "name": "star103",
+    "translation": [
+     187.0,
+     -120.9,
+     -152.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.22,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.38,
+      0.48,
+      0.72
+     ]
+    }
+   },
+   {
+    "name": "star104",
+    "translation": [
+     159.4,
+     -129.4,
+     -166.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.29,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.35,
+      0.46,
+      0.94
+     ]
+    }
+   },
+   {
+    "name": "star105",
+    "translation": [
+     -221.2,
+     -257.8,
+     28.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.27,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.35,
+      0.63,
+      0.98
+     ]
+    }
+   },
+   {
+    "name": "star106",
+    "translation": [
+     9.2,
+     207.0,
+     85.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.79,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.62,
+      0.39,
+      0.97
+     ]
+    }
+   },
+   {
+    "name": "star107",
+    "translation": [
+     -116.8,
+     -205.9,
+     -136.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.26,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.57,
+      0.65,
+      0.72
+     ]
+    }
+   },
+   {
+    "name": "star108",
+    "translation": [
+     235.8,
+     177.7,
+     -170.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.68,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.35,
+      0.81,
+      0.71
+     ]
+    }
+   },
+   {
+    "name": "star109",
+    "translation": [
+     12.0,
+     200.3,
+     105.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.38,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.77,
+      0.4,
+      0.76
+     ]
+    }
+   },
+   {
+    "name": "star110",
+    "translation": [
+     -156.4,
+     307.0,
+     169.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.52,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.84,
+      0.83,
+      0.94
+     ]
+    }
+   },
+   {
+    "name": "star111",
+    "translation": [
+     -211.3,
+     5.9,
+     -35.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.57,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.44,
+      0.46,
+      0.4
+     ]
+    }
+   },
+   {
+    "name": "star112",
+    "translation": [
+     -69.8,
+     -3.4,
+     109.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.2,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.36,
+      0.33,
+      0.47
+     ]
+    }
+   },
+   {
+    "name": "star113",
+    "translation": [
+     63.3,
+     -112.7,
+     -264.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.66,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.48,
+      0.49,
+      0.82
+     ]
+    }
+   },
+   {
+    "name": "star114",
+    "translation": [
+     -4.9,
+     -165.2,
+     -113.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.6,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.55,
+      0.71,
+      0.99
+     ]
+    }
+   },
+   {
+    "name": "star115",
+    "translation": [
+     92.6,
+     -216.7,
+     298.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.42,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.45,
+      0.87,
+      0.75
+     ]
+    }
+   },
+   {
+    "name": "star116",
+    "translation": [
+     113.7,
+     -86.8,
+     -120.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.36,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.58,
+      0.5,
+      0.8
+     ]
+    }
+   },
+   {
+    "name": "star117",
+    "translation": [
+     105.4,
+     24.7,
+     -72.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.0,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.32,
+      0.85,
+      0.52
+     ]
+    }
+   },
+   {
+    "name": "star118",
+    "translation": [
+     191.8,
+     -130.3,
+     90.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.95,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.77,
+      0.78,
+      0.5
+     ]
+    }
+   },
+   {
+    "name": "star119",
+    "translation": [
+     -247.6,
+     155.1,
+     91.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.34,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.31,
+      0.63,
+      0.8
+     ]
+    }
+   },
+   {
+    "name": "star120",
+    "translation": [
+     9.4,
+     8.3,
+     285.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.39,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.82,
+      0.47,
+      0.99
+     ]
+    }
+   },
+   {
+    "name": "star121",
+    "translation": [
+     -246.0,
+     -125.1,
+     -22.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.42,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.37,
+      0.35,
+      0.96
+     ]
+    }
+   },
+   {
+    "name": "star122",
+    "translation": [
+     73.3,
+     -299.6,
+     240.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.48,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.38,
+      0.49,
+      0.97
+     ]
+    }
+   },
+   {
+    "name": "star123",
+    "translation": [
+     185.2,
+     204.6,
+     287.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.45,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.36,
+      0.74,
+      0.48
+     ]
+    }
+   },
+   {
+    "name": "star124",
+    "translation": [
+     241.3,
+     96.5,
+     -217.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.65,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.45,
+      0.6,
+      0.62
+     ]
+    }
+   },
+   {
+    "name": "star125",
+    "translation": [
+     -76.3,
+     -201.7,
+     -144.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.81,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.7,
+      0.77,
+      0.92
+     ]
+    }
+   },
+   {
+    "name": "star126",
+    "translation": [
+     -117.7,
+     233.1,
+     313.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.27,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.42,
+      0.45,
+      0.93
+     ]
+    }
+   },
+   {
+    "name": "star127",
+    "translation": [
+     190.7,
+     -23.5,
+     256.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.0,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.47,
+      0.67,
+      0.57
+     ]
+    }
+   },
+   {
+    "name": "star128",
+    "translation": [
+     95.3,
+     267.6,
+     -185.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.68,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.41,
+      0.33,
+      0.88
+     ]
+    }
+   },
+   {
+    "name": "star129",
+    "translation": [
+     50.3,
+     169.3,
+     89.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.76,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.75,
+      0.6,
+      0.69
+     ]
+    }
+   },
+   {
+    "name": "star130",
+    "translation": [
+     60.3,
+     -59.1,
+     158.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.02,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.62,
+      0.57,
+      0.73
+     ]
+    }
+   },
+   {
+    "name": "star131",
+    "translation": [
+     131.7,
+     -123.1,
+     -31.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.9,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.61,
+      0.73,
+      0.52
+     ]
+    }
+   },
+   {
+    "name": "star132",
+    "translation": [
+     22.4,
+     149.2,
+     -273.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.49,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.39,
+      0.88,
+      0.41
+     ]
+    }
+   },
+   {
+    "name": "star133",
+    "translation": [
+     25.2,
+     239.4,
+     2.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.61,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.31,
+      0.7,
+      0.94
+     ]
+    }
+   },
+   {
+    "name": "star134",
+    "translation": [
+     15.6,
+     7.2,
+     146.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.51,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.59,
+      0.65,
+      0.53
+     ]
+    }
+   },
+   {
+    "name": "star135",
+    "translation": [
+     102.5,
+     71.6,
+     -143.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.47,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.77,
+      0.7,
+      0.46
+     ]
+    }
+   },
+   {
+    "name": "star136",
+    "translation": [
+     -0.2,
+     147.6,
+     74.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.44,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.31,
+      0.8,
+      0.51
+     ]
+    }
+   },
+   {
+    "name": "star137",
+    "translation": [
+     -319.5,
+     90.1,
+     -226.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.37,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.33,
+      0.39,
+      0.87
+     ]
+    }
+   },
+   {
+    "name": "star138",
+    "translation": [
+     407.6,
+     -54.7,
+     -40.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.21,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.7,
+      0.8,
+      0.74
+     ]
+    }
+   },
+   {
+    "name": "star139",
+    "translation": [
+     130.2,
+     22.1,
+     98.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.28,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.57,
+      0.5,
+      0.47
+     ]
+    }
+   },
+   {
+    "name": "star140",
+    "translation": [
+     -109.3,
+     -51.4,
+     102.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.12,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.67,
+      0.32,
+      0.72
+     ]
+    }
+   },
+   {
+    "name": "star141",
+    "translation": [
+     105.1,
+     -325.3,
+     127.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.69,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.82,
+      0.65,
+      0.49
+     ]
+    }
+   },
+   {
+    "name": "star142",
+    "translation": [
+     -19.2,
+     -112.7,
+     -144.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.84,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.77,
+      0.74,
+      0.5
+     ]
+    }
+   },
+   {
+    "name": "star143",
+    "translation": [
+     -75.6,
+     233.1,
+     37.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.62,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.41,
+      0.35,
+      0.39
+     ]
+    }
+   },
+   {
+    "name": "star144",
+    "translation": [
+     -144.1,
+     211.6,
+     -54.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.53,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.38,
+      0.73,
+      0.65
+     ]
+    }
+   },
+   {
+    "name": "star145",
+    "translation": [
+     -54.0,
+     260.1,
+     59.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.3,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.75,
+      0.74,
+      0.88
+     ]
+    }
+   },
+   {
+    "name": "star146",
+    "translation": [
+     229.9,
+     -18.7,
+     228.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.16,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.81,
+      0.82,
+      0.85
+     ]
+    }
+   },
+   {
+    "name": "star147",
+    "translation": [
+     136.3,
+     25.1,
+     -22.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.07,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.69,
+      0.87,
+      0.44
+     ]
+    }
+   },
+   {
+    "name": "star148",
+    "translation": [
+     38.3,
+     -13.7,
+     232.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.3,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.42,
+      0.81,
+      0.44
+     ]
+    }
+   },
+   {
+    "name": "star149",
+    "translation": [
+     -63.8,
+     251.5,
+     217.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.23,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.62,
+      0.71,
+      0.91
+     ]
+    }
+   },
+   {
+    "name": "star150",
+    "translation": [
+     99.5,
+     307.1,
+     -254.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.51,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.76,
+      0.51,
+      0.98
+     ]
+    }
+   },
+   {
+    "name": "star151",
+    "translation": [
+     22.6,
+     136.2,
+     -112.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.91,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.67,
+      0.82,
+      0.94
+     ]
+    }
+   },
+   {
+    "name": "star152",
+    "translation": [
+     -156.9,
+     67.7,
+     24.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.72,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.71,
+      0.58,
+      0.68
+     ]
+    }
+   },
+   {
+    "name": "star153",
+    "translation": [
+     52.7,
+     141.4,
+     -58.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.18,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.5,
+      0.47,
+      0.67
+     ]
+    }
+   },
+   {
+    "name": "star154",
+    "translation": [
+     -1.9,
+     56.8,
+     -127.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.36,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.43,
+      0.68,
+      0.61
+     ]
+    }
+   },
+   {
+    "name": "star155",
+    "translation": [
+     -104.4,
+     163.2,
+     -28.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.86,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.75,
+      0.34,
+      0.55
+     ]
+    }
+   },
+   {
+    "name": "star156",
+    "translation": [
+     -158.3,
+     -89.3,
+     25.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.1,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.71,
+      0.38,
+      0.9
+     ]
+    }
+   },
+   {
+    "name": "star157",
+    "translation": [
+     12.5,
+     3.8,
+     337.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.57,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.46,
+      0.33,
+      1.0
+     ]
+    }
+   },
+   {
+    "name": "star158",
+    "translation": [
+     -185.0,
+     242.3,
+     66.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.04,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.58,
+      0.48,
+      0.52
+     ]
+    }
+   },
+   {
+    "name": "star159",
+    "translation": [
+     392.9,
+     -34.3,
+     -81.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.33,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.38,
+      0.67,
+      0.39
+     ]
+    }
+   },
+   {
+    "name": "star160",
+    "translation": [
+     -133.7,
+     200.2,
+     54.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.86,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.46,
+      0.63,
+      0.85
+     ]
+    }
+   },
+   {
+    "name": "star161",
+    "translation": [
+     150.1,
+     -108.4,
+     -85.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.22,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.77,
+      0.75,
+      0.55
+     ]
+    }
+   },
+   {
+    "name": "star162",
+    "translation": [
+     -191.5,
+     -260.5,
+     134.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.99,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.63,
+      0.54,
+      0.73
+     ]
+    }
+   },
+   {
+    "name": "star163",
+    "translation": [
+     -64.0,
+     -156.2,
+     -303.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.22,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.47,
+      0.51,
+      0.97
+     ]
+    }
+   },
+   {
+    "name": "star164",
+    "translation": [
+     -74.1,
+     36.4,
+     203.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.57,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.38,
+      0.87,
+      0.88
+     ]
+    }
+   },
+   {
+    "name": "star165",
+    "translation": [
+     372.8,
+     170.3,
+     54.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.19,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.55,
+      0.78,
+      0.64
+     ]
+    }
+   },
+   {
+    "name": "star166",
+    "translation": [
+     208.9,
+     -39.9,
+     17.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.56,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.42,
+      0.82,
+      0.68
+     ]
+    }
+   },
+   {
+    "name": "star167",
+    "translation": [
+     49.1,
+     272.6,
+     -157.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.5,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.32,
+      0.51,
+      0.68
+     ]
+    }
+   },
+   {
+    "name": "star168",
+    "translation": [
+     -184.5,
+     -191.9,
+     146.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.66,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.84,
+      0.77,
+      0.63
+     ]
+    }
+   },
+   {
+    "name": "star169",
+    "translation": [
+     -29.8,
+     69.9,
+     277.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.59,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.57,
+      0.4,
+      0.43
+     ]
+    }
+   },
+   {
+    "name": "star170",
+    "translation": [
+     -219.7,
+     89.6,
+     143.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.84,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.7,
+      0.52,
+      0.42
+     ]
+    }
+   },
+   {
+    "name": "star171",
+    "translation": [
+     -336.1,
+     95.2,
+     -217.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.18,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.52,
+      0.37,
+      0.72
+     ]
+    }
+   },
+   {
+    "name": "star172",
+    "translation": [
+     215.7,
+     -196.0,
+     -138.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.53,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.65,
+      0.32,
+      0.74
+     ]
+    }
+   },
+   {
+    "name": "star173",
+    "translation": [
+     -150.0,
+     -148.6,
+     28.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.65,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.77,
+      0.37,
+      0.82
+     ]
+    }
+   },
+   {
+    "name": "star174",
+    "translation": [
+     -191.6,
+     312.2,
+     -162.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.8,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.73,
+      0.79,
+      0.54
+     ]
+    }
+   },
+   {
+    "name": "star175",
+    "translation": [
+     -206.7,
+     -130.5,
+     227.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.23,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.47,
+      0.67,
+      0.79
+     ]
+    }
+   },
+   {
+    "name": "star176",
+    "translation": [
+     -82.3,
+     224.8,
+     -56.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.6,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.43,
+      0.61,
+      0.55
+     ]
+    }
+   },
+   {
+    "name": "star177",
+    "translation": [
+     191.1,
+     -63.9,
+     24.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.36,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.33,
+      0.83,
+      0.66
+     ]
+    }
+   },
+   {
+    "name": "star178",
+    "translation": [
+     -187.0,
+     2.2,
+     -270.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.89,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.42,
+      0.59,
+      0.87
+     ]
+    }
+   },
+   {
+    "name": "star179",
+    "translation": [
+     -172.2,
+     -166.0,
+     97.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.17,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.37,
+      0.55,
+      0.83
+     ]
+    }
+   },
+   {
+    "name": "star180",
+    "translation": [
+     111.7,
+     100.6,
+     -235.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.79,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.8,
+      0.42,
+      0.5
+     ]
+    }
+   },
+   {
+    "name": "star181",
+    "translation": [
+     50.2,
+     -138.1,
+     -23.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.82,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.81,
+      0.5,
+      0.86
+     ]
+    }
+   },
+   {
+    "name": "star182",
+    "translation": [
+     38.0,
+     -185.2,
+     21.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.52,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.81,
+      0.76,
+      0.88
+     ]
+    }
+   },
+   {
+    "name": "star183",
+    "translation": [
+     10.0,
+     135.2,
+     17.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.99,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.35,
+      0.39,
+      0.73
+     ]
+    }
+   },
+   {
+    "name": "star184",
+    "translation": [
+     -72.4,
+     -274.9,
+     80.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.17,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.38,
+      0.61,
+      0.75
+     ]
+    }
+   },
+   {
+    "name": "star185",
+    "translation": [
+     16.2,
+     -229.9,
+     168.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.06,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.82,
+      0.69,
+      0.39
+     ]
+    }
+   },
+   {
+    "name": "star186",
+    "translation": [
+     -221.6,
+     103.0,
+     -139.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.14,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.8,
+      0.74,
+      0.92
+     ]
+    }
+   },
+   {
+    "name": "star187",
+    "translation": [
+     -137.9,
+     -59.8,
+     -29.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.16,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.72,
+      0.4,
+      0.76
+     ]
+    }
+   },
+   {
+    "name": "star188",
+    "translation": [
+     29.7,
+     -136.0,
+     -34.3
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.89,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.83,
+      0.7,
+      0.61
+     ]
+    }
+   },
+   {
+    "name": "star189",
+    "translation": [
+     118.3,
+     -167.5,
+     -342.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.27,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.79,
+      0.38,
+      0.43
+     ]
+    }
+   },
+   {
+    "name": "star190",
+    "translation": [
+     170.6,
+     332.4,
+     -50.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.3,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.63,
+      0.43,
+      0.56
+     ]
+    }
+   },
+   {
+    "name": "star191",
+    "translation": [
+     201.0,
+     255.3,
+     124.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.91,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.48,
+      0.83,
+      0.56
+     ]
+    }
+   },
+   {
+    "name": "star192",
+    "translation": [
+     -115.9,
+     -25.1,
+     -380.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.12,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.62,
+      0.68,
+      0.54
+     ]
+    }
+   },
+   {
+    "name": "star193",
+    "translation": [
+     32.3,
+     65.1,
+     -116.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.02,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.85,
+      0.53,
+      0.79
+     ]
+    }
+   },
+   {
+    "name": "star194",
+    "translation": [
+     -179.4,
+     -114.9,
+     279.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.27,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.65,
+      0.37,
+      0.99
+     ]
+    }
+   },
+   {
+    "name": "star195",
+    "translation": [
+     -147.6,
+     204.5,
+     324.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.94,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.8,
+      0.57,
+      1.0
+     ]
+    }
+   },
+   {
+    "name": "star196",
+    "translation": [
+     108.0,
+     294.9,
+     92.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.6,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.51,
+      0.46,
+      0.76
+     ]
+    }
+   },
+   {
+    "name": "star197",
+    "translation": [
+     -21.3,
+     322.1,
+     1.9
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.45,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.8,
+      0.79,
+      0.7
+     ]
+    }
+   },
+   {
+    "name": "star198",
+    "translation": [
+     -6.0,
+     -276.1,
+     305.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.65,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.67,
+      0.37,
+      0.88
+     ]
+    }
+   },
+   {
+    "name": "star199",
+    "translation": [
+     -65.1,
+     -20.1,
+     134.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.65,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.85,
+      0.62,
+      0.76
+     ]
+    }
+   },
+   {
+    "name": "star200",
+    "translation": [
+     305.2,
+     138.9,
+     -48.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.29,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.36,
+      0.73,
+      0.58
+     ]
+    }
+   },
+   {
+    "name": "star201",
+    "translation": [
+     -98.5,
+     -243.4,
+     39.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.58,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.74,
+      0.43,
+      0.81
+     ]
+    }
+   },
+   {
+    "name": "star202",
+    "translation": [
+     -123.1,
+     -28.1,
+     -9.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.34,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.82,
+      0.66,
+      0.75
+     ]
+    }
+   },
+   {
+    "name": "star203",
+    "translation": [
+     75.0,
+     -117.1,
+     90.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.63,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.6,
+      0.4,
+      0.85
+     ]
+    }
+   },
+   {
+    "name": "star204",
+    "translation": [
+     -44.7,
+     -386.8,
+     -140.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.06,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.55,
+      0.39,
+      0.55
+     ]
+    }
+   },
+   {
+    "name": "star205",
+    "translation": [
+     -190.3,
+     -19.8,
+     -87.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.58,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.82,
+      0.58,
+      0.7
+     ]
+    }
+   },
+   {
+    "name": "star206",
+    "translation": [
+     -311.7,
+     -190.5,
+     132.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.0,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.57,
+      0.52,
+      0.56
+     ]
+    }
+   },
+   {
+    "name": "star207",
+    "translation": [
+     123.6,
+     -70.2,
+     -88.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.63,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.39,
+      0.77,
+      0.86
+     ]
+    }
+   },
+   {
+    "name": "star208",
+    "translation": [
+     235.6,
+     -173.5,
+     -49.4
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.92,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.38,
+      0.46,
+      0.49
+     ]
+    }
+   },
+   {
+    "name": "star209",
+    "translation": [
+     19.2,
+     -169.0,
+     6.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.57,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.59,
+      0.73,
+      0.61
+     ]
+    }
+   },
+   {
+    "name": "star210",
+    "translation": [
+     -142.2,
+     -254.5,
+     -84.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.99,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.74,
+      0.69,
+      0.92
+     ]
+    }
+   },
+   {
+    "name": "star211",
+    "translation": [
+     103.0,
+     67.4,
+     166.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.38,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.57,
+      0.4,
+      0.6
+     ]
+    }
+   },
+   {
+    "name": "star212",
+    "translation": [
+     179.9,
+     98.8,
+     -57.1
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.45,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.41,
+      0.35,
+      0.73
+     ]
+    }
+   },
+   {
+    "name": "star213",
+    "translation": [
+     126.5,
+     52.2,
+     -106.2
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.78,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.45,
+      0.57,
+      0.97
+     ]
+    }
+   },
+   {
+    "name": "star214",
+    "translation": [
+     223.1,
+     -206.0,
+     -251.6
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.48,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.39,
+      0.63,
+      0.4
+     ]
+    }
+   },
+   {
+    "name": "star215",
+    "translation": [
+     -35.4,
+     68.2,
+     99.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.81,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.37,
+      0.84,
+      0.88
+     ]
+    }
+   },
+   {
+    "name": "star216",
+    "translation": [
+     237.5,
+     56.7,
+     39.7
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.79,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.58,
+      0.69,
+      0.87
+     ]
+    }
+   },
+   {
+    "name": "star217",
+    "translation": [
+     49.2,
+     17.0,
+     -201.8
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 0.91,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.8,
+      0.87,
+      0.54
+     ]
+    }
+   },
+   {
+    "name": "star218",
+    "translation": [
+     -38.5,
+     -322.3,
+     129.5
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.26,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.32,
+      0.63,
+      0.9
+     ]
+    }
+   },
+   {
+    "name": "star219",
+    "translation": [
+     102.2,
+     -115.8,
+     -67.0
+    ],
+    "mesh": {
+     "builder": "sphere",
+     "args": {
+      "radius": 1.15,
+      "segments": 6,
+      "rings": 4,
+      "color": [
+       0.86,
+       0.9,
+       1.0
+      ]
+     }
+    },
+    "material": {
+     "preset": "marble",
+     "base_color": [
+      0.86,
+      0.9,
+      1.0
+     ],
+     "roughness": 0.5,
+     "metallic": 0.0,
+     "emissive": [
+      0.35,
+      0.87,
+      0.47
+     ]
+    }
+   }
+  ]
+ }
+}
